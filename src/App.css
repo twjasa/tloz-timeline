@@ -1,0 +1,17 @@
+@font-face {
+  font-family: HyliaSerif;
+  src: url('/src/assets/font/HyliaSerif.otf') format('opentype');
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: 'HyliaSerif';
+}
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}

@@ -1,0 +1,90 @@
+:root {
+  --boxCorner: 40px;
+  --cornerColor: rgb(213, 213, 48);
+  --smallBoxCorner: 50px;
+}
+
+.title {
+  /* all caps */
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.eraContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  background-position: 77% 63%;
+  position: relative;
+  padding: 10px 10px;
+  height: 179px;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.backgroundImgEra{
+  position: absolute;
+  z-index: -2;
+  left: -15%;
+  top: -159%;
+  opacity: 0.5;
+}
+
+h1 {
+  color: white;
+}
+
+.mask1 {
+  width: 96%;
+  height: 84%;
+  z-index: 2;
+  position: absolute;
+  /* background-color: var(--cornerColor); */
+  border: 17px solid var(--cornerColor);
+  
+}
+
+/* .mask1 {
+  width: var(--boxCorner);
+  height: var(--boxCorner);
+  background-color: var(--cornerColor);
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  z-index: 1;
+} */
+
+.mask2 {
+  width: var(--smallBoxCorner);
+  height: var(--smallBoxCorner);
+  position: absolute;
+  background-color: rgb(0, 238, 238);
+  left: 0;
+  top: 0;
+  z-index: 2;
+  clip-path: polygon(100% 0, 0 0, 0 100%);
+}
+
+.mask3{
+  width: var(--smallBoxCorner);
+  height: var(--smallBoxCorner);
+  position: absolute;
+  background-color: rgb(238, 127, 0);
+  left: 0;
+  top: 0;
+  z-index: 3;
+  clip-path: polygon(20% 20%, 45% 20%, 45% 45%, 20% 45%);
+}
+
+.mask4{
+  width: var(--smallBoxCorner);
+  height: var(--smallBoxCorner);
+  position: absolute;
+  background-color: rgb(182, 0, 238);
+  left: 0;
+  top: 0;
+  z-index: 6;
+  clip-path: polygon(50% 50%, 75% 50%, 75% 75%, 50% 75% );
+}
