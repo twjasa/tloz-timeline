@@ -1,0 +1,100 @@
+$smallBoxCorner: 50px;
+$backgroundColorWebsite: #242424;
+$zeldaColor: #b29759;
+$borderSize: 6px;
+$eraWidth: 100px;
+$triangleSize: calc($smallBoxCorner - $borderSize - $borderSize); /* 42px */
+$initialPath: $triangleSize; /* 42px */
+$finalPathLine0: calc($triangleSize + $borderSize); /* 46px */
+$finalPathLine1: calc($finalPathLine0 + $borderSize); /* 50px */
+$finalPathLine2: calc($finalPathLine1 + $borderSize); /* 54px */
+$finalPathLine3: calc($finalPathLine2 + $borderSize); /* 58px */
+
+
+.triangleContainer {
+  width: $triangleSize;
+  height: $triangleSize;
+  position: absolute;
+  background-color: $zeldaColor;
+  left: calc(-3 * $borderSize);
+  top: calc(-3 * $borderSize);
+  z-index: 2;
+  clip-path: polygon(100% 0, 0 0, 0 100%);
+}
+
+.line0 {
+  clip-path: polygon(
+    0 $initialPath,
+    $initialPath 0, 
+    $finalPathLine0 0, 
+    0 $finalPathLine0
+  );
+  width: $finalPathLine0;
+  height: $finalPathLine0;
+  z-index: 4;
+  left: calc(-3 * $borderSize);
+  top: calc(-3 * $borderSize);
+  position: absolute;
+  background-color: $backgroundColorWebsite;
+}
+
+.line1 {
+  clip-path: polygon(
+    0 $finalPathLine0, 
+    $finalPathLine0 0, 
+    $finalPathLine1 0, 
+    0 $finalPathLine1
+  );
+  width: $finalPathLine0;
+  height: $finalPathLine0;
+  z-index: 3;
+  left: calc(-3 * $borderSize);
+  top: calc(-3 * $borderSize);
+  position: absolute;
+  background-color: $zeldaColor;
+}
+
+.line2 {
+  clip-path: polygon(
+    0 $finalPathLine1, 
+    $finalPathLine1 0, 
+    $finalPathLine2 0, 
+    0 $finalPathLine2
+  );
+  width: $finalPathLine0;
+  height: $finalPathLine0;
+  z-index: 3;
+  left: calc(-3 * $borderSize);
+  top: calc(-3 * $borderSize);
+  position: absolute;
+  background-color: $backgroundColorWebsite;
+}
+
+.line3{
+  clip-path: polygon(
+    0px $finalPathLine2, 
+    $finalPathLine2 0px, 
+    $finalPathLine3 0px, 
+    0px $finalPathLine3
+  );
+  width: $finalPathLine0;
+  height: $finalPathLine0;
+  z-index: 3;
+  left: calc(-3 * $borderSize);
+  top: calc(-3 * $borderSize);
+  position: absolute;
+  background-color: $zeldaColor;
+}
+
+.emptyTriangle {
+  width: $triangleSize;
+  height: $triangleSize;
+  position: absolute;
+  background-color: $backgroundColorWebsite;
+  left: calc(-3 * $borderSize);
+  top: calc(-3 * $borderSize);
+  z-index: 2;
+  clip-path: polygon(0 54%, 54% 0, 50% 50%);
+}
+
+

@@ -1,17 +1,13 @@
 // import React from "react";
-import styles from "./era.module.css";
+import { TriangleCorner } from "../TriangleCorner/TriangleCorner";
+import styles from "./era.module.scss";
 
 export const Era = ({ title }: { title: string }) => {
   return (
     <div className={styles.externalBorder1}>
       <div className={styles.externalBorder0}>
         <div className={styles.eraContainer}>
-          <div className={styles.triangleContainer} />
-          <div className={styles.emptyTriangle} />
-          <div className={styles.line0} />
-          <div className={styles.line1} />
-          <div className={styles.line2} />
-          <div className={styles.line3} />
+          <TriangleCorner position={0} />
           <div className={styles.innerContainer} style={{ overflow: "hidden" }}>
             <img
               src="/src/assets/link_impa.png"
