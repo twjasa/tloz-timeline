@@ -1,6 +1,5 @@
-import { useState } from "react";
 import "./App.css";
-import { Era } from "./components/Era";
+import { Era } from "./components/Era/Era";
 
 function App() {
   return (
