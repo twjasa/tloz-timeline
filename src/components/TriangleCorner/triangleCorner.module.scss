@@ -2,22 +2,22 @@
 
 $smallBoxCorner: 50px;
 $borderSize: 6px;
-$eraWidth: 100px;
 $triangleSize: calc($smallBoxCorner - $borderSize - $borderSize);
 $initialPath: $triangleSize;
 $finalPathLine0: calc($triangleSize + $borderSize);
 $finalPathLine1: calc($finalPathLine0 + $borderSize);
-$finalPathLine2: calc($finalPathLine1 + $borderSize); 
-$finalPathLine3: calc($finalPathLine2 + $borderSize); 
+$finalPathLine2: calc($finalPathLine1 + $borderSize);
+$finalPathLine3: calc($finalPathLine2 + $borderSize);
 
+:export {
+  boderSize: $borderSize;
+}
 
 .triangleContainer {
   width: $triangleSize;
   height: $triangleSize;
   position: absolute;
   background-color: $zeldaColor;
-  left: calc(-3 * $borderSize);
-  top: calc(-3 * $borderSize);
   z-index: 2;
   clip-path: polygon(100% 0, 0 0, 0 100%);
 }
@@ -32,8 +32,6 @@ $finalPathLine3: calc($finalPathLine2 + $borderSize);
   width: $finalPathLine0;
   height: $finalPathLine0;
   z-index: 4;
-  left: calc(-3 * $borderSize);
-  top: calc(-3 * $borderSize);
   position: absolute;
   background-color: $backgroundColorWebsite;
 }
@@ -48,8 +46,6 @@ $finalPathLine3: calc($finalPathLine2 + $borderSize);
   width: $finalPathLine0;
   height: $finalPathLine0;
   z-index: 3;
-  left: calc(-3 * $borderSize);
-  top: calc(-3 * $borderSize);
   position: absolute;
   background-color: $zeldaColor;
 }
@@ -64,8 +60,6 @@ $finalPathLine3: calc($finalPathLine2 + $borderSize);
   width: $finalPathLine0;
   height: $finalPathLine0;
   z-index: 3;
-  left: calc(-3 * $borderSize);
-  top: calc(-3 * $borderSize);
   position: absolute;
   background-color: $backgroundColorWebsite;
 }
@@ -80,8 +74,6 @@ $finalPathLine3: calc($finalPathLine2 + $borderSize);
   width: $finalPathLine0;
   height: $finalPathLine0;
   z-index: 3;
-  left: calc(-3 * $borderSize);
-  top: calc(-3 * $borderSize);
   position: absolute;
   background-color: $zeldaColor;
 }
@@ -91,8 +83,6 @@ $finalPathLine3: calc($finalPathLine2 + $borderSize);
   height: $triangleSize;
   position: absolute;
   background-color: $backgroundColorWebsite;
-  left: calc(-3 * $borderSize);
-  top: calc(-3 * $borderSize);
   z-index: 2;
   clip-path: polygon(0 54%, 54% 0, 50% 50%);
 }

@@ -1,6 +1,6 @@
 // import React from "react";
 import { TriangleCorner } from "../TriangleCorner/TriangleCorner";
-import styles from "./eraStyle.module.scss";
+import styles from "./era.module.scss";
 
 export const Era = ({ title }: { title: string }) => {
   return (
@@ -8,14 +8,17 @@ export const Era = ({ title }: { title: string }) => {
       <div className={styles.externalBorder0}>
         <div className={styles.eraContainer}>
           <TriangleCorner position={0} />
-          <div className={styles.innerContainer} style={{ overflow: "hidden" }}>
+          <TriangleCorner position={1} />
+          <TriangleCorner position={2} />
+          <TriangleCorner position={3} />
+          <div className={styles.innerContainer}>
             <img
               src="/src/assets/link_impa.png"
               className={styles.backgroundImgEra}
             />
             {/* <div className="mask3" /> */}
             {/* <div className="mask4" /> */}
-            <h1 className="title">{title}</h1>
+            <h1 className={styles.title}>{title}</h1>
           </div>
         </div>
       </div>
