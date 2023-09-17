@@ -1,5 +1,5 @@
 // import React from "react";
-import styles from "./triangleCorner.module.scss";
+import styles from "./triangleCornerStyle.module.scss";
 
 interface TriangleCornerProps {
   position: number;

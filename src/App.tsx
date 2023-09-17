@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { Era } from "./components/Era/Era";
 
 function App() {

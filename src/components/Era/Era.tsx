@@ -1,6 +1,6 @@
 // import React from "react";
 import { TriangleCorner } from "../TriangleCorner/TriangleCorner";
-import styles from "./era.module.scss";
+import styles from "./eraStyle.module.scss";
 
 export const Era = ({ title }: { title: string }) => {
   return (
