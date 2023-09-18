@@ -1,17 +1,19 @@
 @import '/src/theme/colors.scss';
+@import '/src/index.scss';
 
 $borderSize: 6px;
 $eraHeight: 170px;
 $eraWidth: 700px;
 
 .externalBorder1 {
-  border: $borderSize solid $zeldaColor;
+  border: $borderSize solid #ff000000;
   z-index: 0;
   width: calc($eraWidth + $borderSize * 4);
   position: relative;
+  box-shadow: 3px 3px 9px 0px rgba(0, 0, 0, 0.75);
 }
 .externalBorder0 {
-  border: $borderSize solid $backgroundColorWebsite;
+  border: $borderSize solid #ff000000;
   z-index: 0;
   width: calc($eraWidth + $borderSize * 2);
   position: relative;
@@ -22,6 +24,9 @@ $eraWidth: 700px;
   text-transform: uppercase;
   width: fit-content;
   text-shadow: 2px 2px 2px black;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .eraContainer {
@@ -50,10 +55,23 @@ $eraWidth: 700px;
 .backgroundImgEra{
   position: absolute;
   z-index: -2;
-  top: -180%;
-  left: -25%;
   opacity: 0.5;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
+.golden {
+  border-color: $golden;
+  color: $golden;
+}
 
+.silver {
+  border-color: $silver;
+  color: $silver;
+}
 
+.zeldaColor {
+  border-color: $zeldaColor;
+  color: $zeldaColor;
+}

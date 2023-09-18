@@ -33,7 +33,6 @@ $finalPathLine3: calc($finalPathLine2 + $borderSize);
   height: $finalPathLine0;
   z-index: 4;
   position: absolute;
-  background-color: $backgroundColorWebsite;
 }
 
 .line1 {
@@ -82,9 +81,21 @@ $finalPathLine3: calc($finalPathLine2 + $borderSize);
   width: $triangleSize;
   height: $triangleSize;
   position: absolute;
-  background-color: $backgroundColorWebsite;
   z-index: 2;
   clip-path: polygon(0 54%, 54% 0, 50% 50%);
 }
 
+.golden {
+  border-color: $golden;
+  background-color: $golden;
+}
 
+.silver {
+  border-color: $silver;
+  background-color: $silver;
+}
+
+.zeldaColor {
+  border-color: $zeldaColor;
+  background-color: $zeldaColor;
+}

@@ -1,11 +1,13 @@
 import { useMemo } from "react";
 import styles from "./triangleCorner.module.scss";
+import clsx from "clsx";
 
 interface TriangleCornerProps {
   position: number;
+  color: "golden" | "silver" | "zeldaColor";
 }
 
-export const TriangleCorner = ({ position }: TriangleCornerProps) => {
+export const TriangleCorner = ({ position, color }: TriangleCornerProps) => {
   const injectStyle = useMemo(() => {
     const borderSize = styles.boderSize;
     const offset = parseInt(borderSize) * -3;
@@ -40,12 +42,24 @@ export const TriangleCorner = ({ position }: TriangleCornerProps) => {
   }, [position]);
   return (
     <div id={`triangle-${position}`}>
-      <div className={styles.triangleContainer} style={injectStyle} />
-      <div className={styles.emptyTriangle} style={injectStyle} />
-      <div className={styles.line0} style={injectStyle} />
-      <div className={styles.line1} style={injectStyle} />
-      <div className={styles.line2} style={injectStyle} />
-      <div className={styles.line3} style={injectStyle} />
+      <div
+        className={clsx(styles.triangleContainer, styles[color])}
+        style={injectStyle}
+      />
+      <div
+        className={clsx(styles.emptyTriangle, "noiseBackground")}
+        style={injectStyle}
+      />
+      <div
+        className={clsx(styles.line0, "noiseBackground")}
+        style={injectStyle}
+      />
+      <div className={clsx(styles.line1, styles[color])} style={injectStyle} />
+      <div
+        className={clsx(styles.line2, "noiseBackground")}
+        style={injectStyle}
+      />
+      <div className={clsx(styles.line3, styles[color])} style={injectStyle} />
     </div>
   );
 };
