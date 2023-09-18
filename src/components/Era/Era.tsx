@@ -12,10 +12,7 @@ export const Era = ({ title }: { title: string }) => {
           <TriangleCorner position={2} />
           <TriangleCorner position={3} />
           <div className={styles.innerContainer}>
-            <img
-              src="/src/assets/link_impa.png"
-              className={styles.backgroundImgEra}
-            />
+            <img src="link_impa.png" className={styles.backgroundImgEra} />
             {/* <div className="mask3" /> */}
             {/* <div className="mask4" /> */}
             <h1 className={styles.title}>{title}</h1>
