@@ -1,0 +1,21 @@
+@import '/src/theme/colors.scss';
+
+.container {
+  display: flex;
+  height: 100%;
+  width: auto;
+  justify-content: center;
+}
+
+.line {
+  height: auto;
+  width: 20px;
+  background-color: black;
+  margin-right: 20px;
+}
+
+.text {
+  font-size: xx-large;
+  text-shadow: black 3px 3px 2px;
+  font-family: Impact
+}
