@@ -1,8 +1,13 @@
 interface releasesI {
   year: number;
   name: string;
-  eras: Array<eraI | string>;
+  eras: Array<eraI | connectionI>;
 };
+
+interface connectionI {
+  title: string;
+  id: string;
+}
 
 interface eraI {
   title: string;
@@ -19,13 +24,13 @@ export const releases: releasesI[] = [
       {
         title: "ganon invades hyrule",
         color: "silver",
-        backgroundImage: "link_impa.png",
+        backgroundImage: "ganonInvadesHyrule",
       },
-      "Immediately after",
+      { title: "Immediately after", id: "gih-tloz" },
       {
         title: "The legend of zelda",
         color: "golden",
-        backgroundImage: "tloz1_link_observing.png",
+        backgroundImage: "theLegendOfZelda",
         backgroundPosition: { left: 0, top: -50 },
       },
     ]
@@ -37,26 +42,26 @@ export const releases: releasesI[] = [
       {
         title: "the tragedy of princess zelda I",
         color: "silver",
-        backgroundImage: "tragedyOfPrincessZelda-taol.png",
+        backgroundImage: "tragedyOfPrincessZeldaI",
       },
-      "??? (A long time)",
+      { title: "??? (A long time)", id: "ttopzI-gih" },
       {
         title: "ganon invades hyrule",
         color: "silver",
-        backgroundImage: "link_impa.png",
+        backgroundImage: "ganonInvadesHyrule",
       },
-      "Immediately after",
+      { title: "Immediately after", id: "gih-tloz" },
       {
         title: "The legend of zelda",
         color: "golden",
-        backgroundImage: "tloz1_link_observing.png",
+        backgroundImage: "theLegendOfZelda",
         backgroundPosition: { left: 0, top: -50 },
       },
-      "4 years later",
+      { title: "4 years later", id: "tloz-zeldaII:taol" },
       {
         title: "Zelda II: The Adventure of Link",
         color: "golden",
-        backgroundImage: "zeldaIITAoL-impaLink.png",
+        backgroundImage: "zeldaIITAoL",
         // backgroundPosition: { left: 0, top: -50 },
       },
     ]
@@ -68,56 +73,56 @@ export const releases: releasesI[] = [
       {
         title: "Creation",
         color: "silver",
-        backgroundImage: "alttp_goddesses.png",
+        backgroundImage: "creation1",
       },
-      "??? (A long time)",
+      { title: "??? (A long time)", id: "creation1-cotms" },
       {
         title: "Creation of the master sword",
         color: "silver",
-        backgroundImage: "master_sword.jpg",
+        backgroundImage: "creationOfTheMasterSword",
       },
-      "??? (A long time)",
+      { title: "??? (A long time)", id: "cotms-ggtct" },
       {
         title: "Ganondorf gets the complete triforce",
         color: "silver",
-        backgroundImage: "triforce_alttp.png",
+        backgroundImage: "ganondorfGetsTheCompleteTriforce",
       },
-      "Undefined time after",
+      { title: "Undefined time after", id: "ggtct-tsw" },
       {
         title: "The sealing war",
         color: "silver",
-        backgroundImage: "imprisoning_war.webp",
+        backgroundImage: "theSealingWar",
       },
-      "Centuries later",
+      { title: "Centuries later", id: "tsw-alttp" },
       {
         title: "A LINK TO THE PAST",
         color: "golden",
-        backgroundImage: "lttp.webp",
+        backgroundImage: "aLinkToThePast",
       },
-      "??? (A long time)",
+      { title: "??? (A long time)", id: "alttp-ttopzI" },
       {
         title: "the tragedy of princess zelda I",
         color: "silver",
-        backgroundImage: "tragedyOfPrincessZelda-taol.png",
+        backgroundImage: "tragedyOfPrincessZeldaI",
       },
-      "??? (A long time)",
+      { title: "??? (A long time)", id: "ttopzI-gih" },
       {
         title: "ganon invades hyrule",
         color: "silver",
-        backgroundImage: "link_impa.png",
+        backgroundImage: "ganonInvadesHyrule",
       },
-      "Immediately after",
+      { title: "Immediately after", id: "gih-tloz" },
       {
         title: "The legend of zelda",
         color: "golden",
-        backgroundImage: "tloz1_link_observing.png",
+        backgroundImage: "theLegendOfZelda",
         backgroundPosition: { left: 0, top: -50 },
       },
-      "4 years later",
+      { title: "4 years later", id: "tloz-zeldaII-taol" },
       {
         title: "Zelda II: The Adventure of Link",
         color: "golden",
-        backgroundImage: "zeldaIITAoL-impaLink.png",
+        backgroundImage: "zeldaIITAoL",
         // backgroundPosition: { left: 0, top: -50 },
       },
     ]

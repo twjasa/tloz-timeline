@@ -16,7 +16,10 @@ export const Era = ({
   backgroundPosition,
 }: EraProps) => {
   return (
-    <div className={clsx(styles.externalBorder1, styles[color])}>
+    <div
+      id={backgroundImage}
+      className={clsx(styles.externalBorder1, styles[color])}
+    >
       <div className={clsx(styles.externalBorder0)}>
         <div className={clsx(styles.eraContainer, styles[color])}>
           <TriangleCorner position={0} color={color} />
@@ -25,7 +28,7 @@ export const Era = ({
           <TriangleCorner position={3} color={color} />
           <div className={styles.innerContainer}>
             <img
-              src={backgroundImage}
+              src={backgroundImage + ".png"}
               className={styles.backgroundImgEra}
               style={backgroundPosition ?? {}}
             />
