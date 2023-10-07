@@ -7,6 +7,7 @@ interface EraProps {
   color: "golden" | "silver" | "zeldaColor";
   backgroundImage: string;
   backgroundPosition?: { left: string | number; top: string | number };
+  show: boolean;
 }
 
 export const Era = ({
@@ -14,11 +15,13 @@ export const Era = ({
   color,
   backgroundImage,
   backgroundPosition,
+  show,
 }: EraProps) => {
   return (
     <div
       id={backgroundImage}
       className={clsx(styles.externalBorder1, styles[color])}
+      style={{ opacity: show ? 1 : 0 }}
     >
       <div className={clsx(styles.externalBorder0)}>
         <div className={clsx(styles.eraContainer, styles[color])}>
