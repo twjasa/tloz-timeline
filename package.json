@@ -11,8 +11,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "animejs": "^3.2.1",
-    "react": "^18.2.0",
+    "animejs": "3.2.1",
+    "panzoom": "9.4.3",
+    "react": "18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
