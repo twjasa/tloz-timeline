@@ -6,7 +6,8 @@ import { clipPathAnimation, releases } from './data/releases';
 import anime from 'animejs/lib/anime.es.js';
 import useStep from './hooks/useStep';
 import { AnimeInstance } from 'animejs';
-import createPanZoom from 'panzoom';
+// @ts-ignore
+import createPanZoom from './panzoom/index.js';
 
 function App() {
   const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
@@ -51,6 +52,7 @@ function App() {
   useEffect(() => {
     if (prevStep.current !== step) {
       canceledAnimation.current = true;
+      // panzoomRef.current.smoothMoveTo(1000, 1000, 20);
       animationRef.current.forEach((animation) => {
         if (animation) {
           animation.pause();
