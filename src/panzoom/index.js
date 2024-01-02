@@ -897,7 +897,8 @@ export default function createPanZoom(domElement, options) {
     return { x: offsetX, y: offsetY };
   }
 
-  function smoothZoom(clientX, clientY, scaleMultiplier) {
+  function smoothZoom(clientX, clientY, scaleMultiplier, duration = 0.4) {
+    const newDuration = duration * 1000
     var fromValue = transform.scale;
     var from = { scale: fromValue };
     var to = { scale: scaleMultiplier * fromValue };
@@ -910,6 +911,7 @@ export default function createPanZoom(domElement, options) {
         zoomAbs(clientX, clientY, v.scale);
       },
       done: triggerZoomEnd,
+      duration: newDuration,
     });
   }
 

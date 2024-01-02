@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.scss';
 import { Era } from './components/Era/Era';
 import { TimelinePath } from './components/TimelinePath/TimelinePath';
 import { clipPathAnimation, releases } from './data/releases';
 import anime from 'animejs/lib/anime.es.js';
 import useStep from './hooks/useStep';
-import { AnimeInstance } from 'animejs';
+import { AnimeInstance, set } from 'animejs';
 // @ts-ignore
 import createPanZoom from './panzoom/index.js';
 
@@ -15,6 +15,9 @@ function App() {
   const animationRef = useRef<AnimeInstance[]>([]);
   const canceledAnimation = useRef(false);
   const panzoomRef = useRef<any>();
+  const [title, setTitle] = useState(
+    `${releases[step].name} - year ${releases[step].year}`,
+  );
 
   const animateElement = (
     element: HTMLElement,
@@ -49,8 +52,17 @@ function App() {
     panzoomRef.current = createPanZoom(document.querySelector('main')!);
   }, []);
 
+  const zoomToPos = async (zoom: { x: number; y: number; z: number }) => {
+    await panzoomRef.current.smoothZoom(zoom.x, zoom.y, zoom.z, 8);
+  };
+
   useEffect(() => {
+    const nextRelease = releases[step];
     if (prevStep.current !== step) {
+      // const zoom = nextRelease.zoom;
+      // if (zoom) {
+      //   zoomToPos(zoom);
+      // }
       canceledAnimation.current = true;
       // panzoomRef.current.smoothMoveTo(1000, 1000, 20);
       animationRef.current.forEach((animation) => {
@@ -62,11 +74,27 @@ function App() {
       canceledAnimation.current = false;
       animationRef.current = [];
     }
-    if (releases[step].animations.length > 0) {
+    if (nextRelease.animations.length > 0) {
+      // panzoomRef.current.smoothMoveTo(1000, 1000, 10);
+      // panzoomRef.current.smoothZoom(800,1000, 0.5, 3);
+
       runSequentialAnimations(releases[step].animations, 0);
     }
     prevStep.current = step;
   }, [step]);
+
+  const setScene = () => {
+    const zoom = releases[step + 1].zoom;
+    if (zoom) {
+      zoomToPos(zoom);
+      setTimeout(() => {
+        incrementStep();
+      }, 4000); // TODO: get duration from animation
+    } else {
+      incrementStep();
+    }
+    setTitle(`${releases[step + 1].name} - year ${releases[step + 1].year}`);
+  };
 
   return (
     <>
@@ -91,12 +119,10 @@ function App() {
         })}
       </main>
       <section className="rightButtonContainer">
-        <button className="rightButton" onClick={incrementStep} />
+        <button className="rightButton" onClick={setScene} />
       </section>
       <section className="releaseTitle">
-        <span style={{ marginTop: 10 }}>
-          {`${releases[step].name} - year ${releases[step].year}`}
-        </span>
+        <span style={{ marginTop: 10 }}>{title}</span>
       </section>
     </>
   );

@@ -3,6 +3,8 @@ interface releasesI {
   name: string;
   eras: Array<eraI | connectionI>;
   animations: { id: string; action: "up" | "down" | "zoom"; }[];
+  cameraPosition?: { x: number; y: number; };
+  zoom?: { x: number; y: number; z: number; };
 };
 
 interface connectionI {
@@ -102,6 +104,8 @@ export const releases: releasesI[] = [
   {
     year: 1991,
     name: "The Legend of Zelda: A Link to the Past",
+    cameraPosition: { x: 0, y: 0 },
+    zoom: { x: 800, y: 1000, z: 0.5 },
     eras: [
       {
         title: "Creation",
