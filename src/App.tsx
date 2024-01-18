@@ -8,6 +8,7 @@ import useStep from './hooks/useStep';
 import { AnimeInstance } from 'animejs';
 // @ts-ignore
 import createPanZoom from './panzoom/index.js';
+import styles from './components/Era/era.module.scss';
 
 function App() {
   const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
@@ -93,9 +94,9 @@ function App() {
       extraTop = Math.max(extraTop, -top);
       extraBottom = Math.max(extraBottom, top + clientHeight - mainHeight);
       extraLeft = Math.max(extraLeft, -left);
-      extraRight = Math.max(extraRight, left + clientWidth);
+      extraRight = Math.max(extraRight, left + clientWidth - mainWidth);
     }
-
+    debugger;
     if (extraRight < mainWidth) {
       extraRight = 0;
     } else {
@@ -106,22 +107,22 @@ function App() {
       mainHeight / (extraBottom + extraTop + mainHeight * 1.5),
     );
 
-    extraTop = extraTop * zoomLvl;
-    extraLeft = extraLeft * zoomLvl;
-    extraRight = extraRight * zoomLvl;
-    const newWidth = mainWidth * zoomLvl;
+    extraTop *= zoomLvl;
+    extraLeft *= zoomLvl;
+    extraRight *= zoomLvl;
+    // const newWidth = mainWidth * zoomLvl;
     const newHeight = mainHeight * zoomLvl;
     let initialPaddingX = 0;
     if (extraRight > 0) {
-      initialPaddingX = 255 * zoomLvl;
+      initialPaddingX = (mainWidth - parseInt(styles.eraWidth, 10)) / 2;
+      initialPaddingX *= zoomLvl;
     }
     let initialPaddingY = 0;
     if (extraTop > 0) {
       initialPaddingY = 600 * zoomLvl;
     }
-    const newX =
-      (mainWidth - newWidth + extraLeft - extraRight - initialPaddingX) / 2;
-    const newY = (mainHeight - extraTop + newHeight) / 2;
+    const newX = (mainWidth - extraLeft + extraRight - initialPaddingX) / 2;
+    const newY = (mainHeight + extraTop + initialPaddingY) / 2;
     // const centerWindowHeight = window.screen.height / 2
     // const transformedExtraTop = extraTop * zoomLvl;
     // console.log(newWidth, newHeight, zoomLvl);
@@ -136,7 +137,7 @@ function App() {
     // console.log(`newWidth: ${newWidth}`);
     // console.log(`newHeight: ${newHeight}`);
     // panzoomRef.current.zoomAbs(0, 0, zoomLvl);
-    panzoomRef.current.smoothZoomCenter(newX, newY, zoomLvl, 5);
+    panzoomRef.current.zoomTo(newX, newY, zoomLvl, 5);
     // panzoomRef.current.getTran;
   };
 

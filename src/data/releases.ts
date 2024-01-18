@@ -1,3 +1,4 @@
+import styles from '../components/Era/era.module.scss';
 interface releasesI {
   year: number;
   name: string;
@@ -41,6 +42,8 @@ export const clipPathAnimation: ClipPathAnimation = {
   up: ['polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)']
 };
 
+const centerPercentageX = `calc(50% - ${(parseInt(styles.eraWidth, 10) + 12) / 2}px)`;
+
 export const releases: releasesI[] = [
   {
     year: 1986,
@@ -51,13 +54,13 @@ export const releases: releasesI[] = [
         color: "silver",
         backgroundImage: "ganonInvadesHyrule",
         show: true,
-        position: { left: '25%', top: "34%" },
+        position: { left: centerPercentageX, top: "34%" },
       },
       {
         title: "Immediately after",
         id: "gih-tloz",
         show: true,
-        position: { left: '43%', top: "calc(50vh - 39px)" }
+        position: { left: '43%', top: "47.2%" }
       },
       {
         title: "The legend of zelda",
@@ -65,7 +68,7 @@ export const releases: releasesI[] = [
         backgroundImage: "theLegendOfZelda",
         backgroundPosition: { left: 2, top: -30 },
         show: true,
-        position: { left: '25%', top: "53.1%" }
+        position: { left: centerPercentageX, top: "53.4%" }
       },
     ],
     animations: [
@@ -77,30 +80,31 @@ export const releases: releasesI[] = [
   {
     year: 1987,
     name: "Zelda II: The Adventure of Link",
+    // centerWindow: true,
     eras: [
       {
         title: "the tragedy of princess zelda I",
         color: "silver",
         backgroundImage: "tragedyOfPrincessZeldaI",
         show: false,
-        position: { left: '25%', top: "15%" },
+        position: { left: centerPercentageX, top: "14.4%" },
       },
       {
         title: "??? (A long time)", id: "ttopzI-gih", show: false,
-        position: { left: '43%', top: "28.1%" }
+        position: { left: '43%', top: "27.7%" }
       },
       {
         title: "ganon invades hyrule",
         color: "silver",
         backgroundImage: "ganonInvadesHyrule",
         show: true,
-        position: { left: '25%', top: "34%" },
+        position: { left: centerPercentageX, top: "34%" },
       },
       {
         title: "Immediately after",
         id: "gih-tloz",
         show: true,
-        position: { left: '43%', top: "calc(50vh - 39px)" }
+        position: { left: '43%', top: "47.2%" }
       },
       {
         title: "The legend of zelda",
@@ -108,19 +112,19 @@ export const releases: releasesI[] = [
         backgroundImage: "theLegendOfZelda",
         backgroundPosition: { left: 2, top: -30 },
         show: true,
-        position: { left: '25%', top: "53.1%" }
+        position: { left: centerPercentageX, top: "53.4%" }
       },
       {
         title: "4 years later", id: "tloz-zeldaIItaol",
         show: false,
-        position: { left: '43%', top: "66.2%" }
+        position: { left: '43%', top: "66.5%" }
       },
       {
         title: "Zelda II: The Adventure of Link",
         color: "golden",
         backgroundImage: "zeldaIITAoL",
         show: false,
-        position: { left: '25%', top: "72.4%" }
+        position: { left: centerPercentageX, top: "72.9%" }
       },
     ],
     animations: [
@@ -139,36 +143,36 @@ export const releases: releasesI[] = [
         title: "Creation",
         color: "silver",
         backgroundImage: "creation1",
-        show: true,
-        position: { left: '110%', top: "-31%" },
+        show: false,
+        position: { left: centerPercentageX, top: "-83%" },
       },
       {
         title: "??? (A long time)", id: "creation1-cotms",
-        show: true,
-        position: { left: '43%', top: "-31%" },
+        show: false,
+        position: { left: '43%', top: "-69.8%" },
       },
       {
         title: "Creation of the master sword",
         color: "silver",
         backgroundImage: "creationOfTheMasterSword",
-        show: true,
-        position: { left: '25%', top: "-31%" },
+        show: false,
+        position: { left: centerPercentageX, top: "-63.6%" },
       },
       {
         title: "??? (A long time)", id: "cotms-ggtct",
-        show: true,
-        position: { left: '43%', top: "-31%" },
+        show: false,
+        position: { left: '43%', top: "-50.4%" },
       },
       {
         title: "Ganondorf gets the complete triforce",
         color: "silver",
         backgroundImage: "ganondorfGetsTheCompleteTriforce",
-        show: true,
-        position: { left: '25%', top: "-31%" },
+        show: false,
+        position: { left: centerPercentageX, top: "-44.2%" },
       },
       {
         title: "Undefined time after",
-        show: true,
+        show: false,
         id: "ggtct-tsw",
         position: { left: '43%', top: "-31%" },
       },
@@ -176,51 +180,51 @@ export const releases: releasesI[] = [
         title: "The sealing war",
         color: "silver",
         backgroundImage: "theSealingWar",
-        show: true,
-        position: { left: '25%', top: "-31%" },
+        show: false,
+        position: { left: centerPercentageX, top: "-25%" },
       },
       {
         title: "Centuries later",
-        show: true,
+        show: false,
         id: "tsw-alttp",
-        position: { left: '43%', top: "-31%" },
+        position: { left: '43%', top: "-11.6%" },
       },
       {
         title: "A LINK TO THE PAST",
         color: "golden",
         backgroundImage: "aLinkToThePast",
-        show: true,
-        position: { left: '25%', top: "-31%" },
+        show: false,
+        position: { left: centerPercentageX, top: "-5.2%" },
       },
       {
         title: "??? (A long time)",
-        show: true,
+        show: false,
         id: "alttp-ttopzI",
-        position: { left: '43%', top: "-31%" },
+        position: { left: '43%', top: "8.1%" },
       },
       {
         title: "the tragedy of princess zelda I",
         color: "silver",
         backgroundImage: "tragedyOfPrincessZeldaI",
-        show: false,
-        position: { left: '25%', top: "15%" },
+        show: true,
+        position: { left: centerPercentageX, top: "14.4%" },
       },
       {
         title: "??? (A long time)", id: "ttopzI-gih", show: false,
-        position: { left: '43%', top: "28.1%" }
+        position: { left: '43%', top: "27.7%" }
       },
       {
         title: "ganon invades hyrule",
         color: "silver",
         backgroundImage: "ganonInvadesHyrule",
         show: true,
-        position: { left: '25%', top: "34%" },
+        position: { left: centerPercentageX, top: "34%" },
       },
       {
         title: "Immediately after",
         id: "gih-tloz",
         show: true,
-        position: { left: '43%', top: "calc(50vh - 39px)" }
+        position: { left: '43%', top: "47.2%" }
       },
       {
         title: "The legend of zelda",
@@ -228,32 +232,32 @@ export const releases: releasesI[] = [
         backgroundImage: "theLegendOfZelda",
         backgroundPosition: { left: 2, top: -30 },
         show: true,
-        position: { left: '25%', top: "53.1%" }
+        position: { left: centerPercentageX, top: "53.4%" }
       },
       {
         title: "4 years later", id: "tloz-zeldaIItaol",
         show: true,
-        position: { left: '43%', top: "66.2%" }
+        position: { left: '43%', top: "66.5%" }
       },
       {
         title: "Zelda II: The Adventure of Link",
         color: "golden",
         backgroundImage: "zeldaIITAoL",
         show: true,
-        position: { left: '25%', top: "72.4%" }
+        position: { left: centerPercentageX, top: "72.9%" }
       },
     ],
     animations: [
-      // { id: 'alttp-ttopzI', action: 'up' },
-      // { id: 'aLinkToThePast', action: 'up' },
-      // { id: 'tsw-alttp', action: 'up' },
-      // { id: 'theSealingWar', action: 'up' },
-      // { id: 'ggtct-tsw', action: 'up' },
-      // { id: 'ganondorfGetsTheCompleteTriforce', action: 'up' },
-      // { id: 'cotms-ggtct', action: 'up' },
-      // { id: 'creationOfTheMasterSword', action: 'up' },
-      // { id: 'creation1-cotms', action: 'up' },
-      // { id: 'creation1', action: 'up' },
+      { id: '#alttp-ttopzI', action: 'up' },
+      { id: '#aLinkToThePast', action: 'up' },
+      { id: '#tsw-alttp', action: 'up' },
+      { id: '#theSealingWar', action: 'up' },
+      { id: '#ggtct-tsw', action: 'up' },
+      { id: '#ganondorfGetsTheCompleteTriforce', action: 'up' },
+      { id: '#cotms-ggtct', action: 'up' },
+      { id: '#creationOfTheMasterSword', action: 'up' },
+      { id: '#creation1-cotms', action: 'up' },
+      { id: '#creation1', action: 'up' },
     ]
   },
   {

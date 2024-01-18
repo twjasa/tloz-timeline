@@ -5,6 +5,12 @@ $borderSize: 6px;
 $eraHeight: 130px;
 $eraWidth: 530px;
 
+:export {
+  eraHeight: $eraHeight;
+  eraWidth: $eraWidth;
+  borderSize: $borderSize;
+}
+
 @mixin absolute-width($width) {
   width: $width;
 }
@@ -14,7 +20,6 @@ $eraWidth: 530px;
   z-index: 0;
   width: $eraWidth;
   position: fixed;
-  left: 25%;
   box-shadow: 3px 3px 9px 0px rgba(0, 0, 0, 0.75);
 }
 .externalBorder0 {
