@@ -5,7 +5,7 @@ import kinetic from './lib/kinetic.js';
 import createTextSelectionInterceptor from './lib/makeTextSelectionInterceptor.js';
 import Transform from './lib/transform.js';
 import { makeSvgController, isSVGElement } from './lib/makeSvgController.js';
-import {makeDomController, isDomElement} from './lib/makeDomController.js';
+import { makeDomController, isDomElement } from './lib/makeDomController.js';
 
 var domTextSelectionInterceptor = createTextSelectionInterceptor();
 var fakeTextSelectorInterceptor = createTextSelectionInterceptor(true);
@@ -129,6 +129,7 @@ export default function createPanZoom(domElement, options) {
     zoomTo: publicZoomTo,
     zoomAbs: zoomAbs,
     smoothZoom: smoothZoom,
+    smoothZoomCenter: smoothZoomCenter,
     smoothZoomAbs: smoothZoomAbs,
     showRectangle: showRectangle,
 
@@ -462,7 +463,7 @@ export default function createPanZoom(domElement, options) {
   }
 
   function smoothMoveTo(x, y, duration = 0.4) {
-    const newDuration = duration * 1000
+    const newDuration = duration * 1000;
     internalMoveBy(x - transform.x, y - transform.y, true, newDuration);
   }
 
@@ -786,7 +787,7 @@ export default function createPanZoom(domElement, options) {
       // Need to refactor
       offset = getTransformOriginOffset();
     }
-    smoothZoom(offset.x, offset.y, zoomDoubleClickSpeed);
+    // smoothZoom(offset.x, offset.y, zoomDoubleClickSpeed);
   }
 
   function onMouseDown(e) {
@@ -898,7 +899,7 @@ export default function createPanZoom(domElement, options) {
   }
 
   function smoothZoom(clientX, clientY, scaleMultiplier, duration = 0.4) {
-    const newDuration = duration * 1000
+    const newDuration = duration * 1000;
     var fromValue = transform.scale;
     var from = { scale: fromValue };
     var to = { scale: scaleMultiplier * fromValue };
@@ -915,7 +916,59 @@ export default function createPanZoom(domElement, options) {
     });
   }
 
-  function smoothZoomAbs(clientX, clientY, toScaleValue) {
+  function smoothZoomCenter(clientX, clientY, scaleMultiplier, duration = 0.4) {
+    const newDuration = duration * 1000;
+    var fromValue = transform.scale;
+    var from = { scale: fromValue };
+    var to = { scale: scaleMultiplier * fromValue };
+    smoothScroll.cancel();
+    cancelZoomAnimation();
+    ////
+
+    zoomToAnimation = animate(from, to, {
+      step: function (v) {
+        var ratio = v.scale / transform.scale;
+
+        if (isNaN(clientX) || isNaN(clientY) || isNaN(ratio)) {
+          throw new Error('zoom requires valid numbers');
+        }
+
+        var newScale = transform.scale * ratio;
+
+        if (newScale < minZoom) {
+          if (transform.scale === minZoom) return;
+
+          ratio = minZoom / transform.scale;
+        }
+        if (newScale > maxZoom) {
+          if (transform.scale === maxZoom) return;
+
+          ratio = maxZoom / transform.scale;
+        }
+
+        var size = transformToScreen(clientX, clientY);
+        // transform.x = size.x - transform.x;
+        // transform.y = size.y - transform.y;
+        transform.x = size.x - ratio * (size.x - transform.x);
+        transform.y = size.y - ratio * (size.y - transform.y);
+        if (bounds && boundsPadding === 1 && minZoom === 1) {
+          transform.scale *= ratio;
+          keepTransformInsideBounds();
+        } else {
+          var transformAdjusted = keepTransformInsideBounds();
+          if (!transformAdjusted) transform.scale *= ratio;
+        }
+
+        triggerEvent('zoom');
+
+        makeDirty();
+      },
+      done: triggerZoomEnd,
+      duration: newDuration,
+    });
+  }
+
+  function smoothZoomAbs(clientX, clientY, toScaleValue, duration = 0.4) {
     var fromValue = transform.scale;
     var from = { scale: fromValue };
     var to = { scale: toScaleValue };
@@ -927,6 +980,7 @@ export default function createPanZoom(domElement, options) {
       step: function (v) {
         zoomAbs(clientX, clientY, v.scale);
       },
+      duration: duration * 1000,
     });
   }
 
@@ -1045,4 +1099,3 @@ function rigidScroll() {
     cancel: noop,
   };
 }
-

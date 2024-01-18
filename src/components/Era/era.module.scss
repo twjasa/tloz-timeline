@@ -3,7 +3,7 @@
 
 $borderSize: 6px;
 $eraHeight: 130px;
-$eraWidth: 50%;
+$eraWidth: 530px;
 
 @mixin absolute-width($width) {
   width: $width;
@@ -13,14 +13,14 @@ $eraWidth: 50%;
   border: $borderSize solid #ff000000;
   z-index: 0;
   width: $eraWidth;
-  position: relative;
+  position: fixed;
+  left: 25%;
   box-shadow: 3px 3px 9px 0px rgba(0, 0, 0, 0.75);
 }
 .externalBorder0 {
   border: $borderSize solid #ff000000;
   z-index: 0;
   width: calc(100% - $borderSize * 4);
-  position: relative;
 }
 
 .title {

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function useStep(maxStep = 0, minStep = 0) {
   const [step, setStep] = useState(0);
 
-  const incrementStep = () => {
-    setStep((prevStep) => Math.min(prevStep + 1, maxStep));
+  const incrementStep = async () => {
+    await setStep((prevStep) => Math.min(prevStep + 1, maxStep));
   };
 
   const decrementStep = () => {

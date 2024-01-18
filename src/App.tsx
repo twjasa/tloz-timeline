@@ -5,7 +5,7 @@ import { TimelinePath } from './components/TimelinePath/TimelinePath';
 import { clipPathAnimation, releases } from './data/releases';
 import anime from 'animejs/lib/anime.es.js';
 import useStep from './hooks/useStep';
-import { AnimeInstance, set } from 'animejs';
+import { AnimeInstance } from 'animejs';
 // @ts-ignore
 import createPanZoom from './panzoom/index.js';
 
@@ -24,14 +24,24 @@ function App() {
     clipPathDirection: string,
     onComplete: () => void,
   ) => {
+    let props: any = {};
+    if (['up', 'down'].includes((element as any).action)) {
+      props = {
+        opacity: [0, 1],
+        // begin: () => {
+        //   const updatedElementId = element.id.slice(1);
+        //   document.getElementById(updatedElementId)!.style.display = 'flex';
+        // },
+      };
+    }
     animationRef.current.push(
       anime({
-        targets: `#${element.id}`,
+        targets: element.id,
         clipPath: clipPathAnimation[clipPathDirection],
-        opacity: [0, 1],
         easing: 'easeOutSine',
         duration: 1000,
         delay: 500,
+        ...props,
         complete: () => {
           if (!canceledAnimation.current) onComplete();
         },
@@ -49,20 +59,90 @@ function App() {
   };
 
   useEffect(() => {
-    panzoomRef.current = createPanZoom(document.querySelector('main')!);
+    if (panzoomRef.current)
+      panzoomRef.current.on('zoom', () => {
+        // console.log(panzoomRef.current.getTransform());
+      });
+  });
+
+  useEffect(() => {
+    panzoomRef.current = createPanZoom(document.querySelector('main')!, {
+      // bounds: true,
+      // boundsPadding: 0.1,
+    });
+    // panzoomRef.current.
+    // panzoomRef.current.smoothZoom(800, 1000, 0.5, 1);
   }, []);
 
-  const zoomToPos = async (zoom: { x: number; y: number; z: number }) => {
-    await panzoomRef.current.smoothZoom(zoom.x, zoom.y, zoom.z, 8);
+  const centerWindow = async () => {
+    const panzoomWindow = document.querySelector('main');
+    const children = panzoomWindow?.children || [];
+    let extraTop = 0;
+    let extraBottom = 0;
+    let extraLeft = 0;
+    let extraRight = 0;
+    let mainHeight = panzoomWindow?.getBoundingClientRect().height || 0;
+    let mainWidth = panzoomWindow?.getBoundingClientRect().width || 0;
+    for (let child of children as any) {
+      const {
+        offsetTop: top,
+        offsetLeft: left,
+        clientHeight,
+        clientWidth = 0,
+      } = child;
+      extraTop = Math.max(extraTop, -top);
+      extraBottom = Math.max(extraBottom, top + clientHeight - mainHeight);
+      extraLeft = Math.max(extraLeft, -left);
+      extraRight = Math.max(extraRight, left + clientWidth);
+    }
+
+    if (extraRight < mainWidth) {
+      extraRight = 0;
+    } else {
+      extraRight = Math.max(0, Math.abs(extraRight - mainWidth));
+    }
+    const zoomLvl = Math.min(
+      mainWidth / (extraLeft + extraRight + mainWidth * 1.5),
+      mainHeight / (extraBottom + extraTop + mainHeight * 1.5),
+    );
+
+    extraTop = extraTop * zoomLvl;
+    extraLeft = extraLeft * zoomLvl;
+    extraRight = extraRight * zoomLvl;
+    const newWidth = mainWidth * zoomLvl;
+    const newHeight = mainHeight * zoomLvl;
+    let initialPaddingX = 0;
+    if (extraRight > 0) {
+      initialPaddingX = 255 * zoomLvl;
+    }
+    let initialPaddingY = 0;
+    if (extraTop > 0) {
+      initialPaddingY = 600 * zoomLvl;
+    }
+    const newX =
+      (mainWidth - newWidth + extraLeft - extraRight - initialPaddingX) / 2;
+    const newY = (mainHeight - extraTop + newHeight) / 2;
+    // const centerWindowHeight = window.screen.height / 2
+    // const transformedExtraTop = extraTop * zoomLvl;
+    // console.log(newWidth, newHeight, zoomLvl);
+    console.log(`mainHeight: ${mainHeight}`);
+    console.log(`newHeight: ${newHeight}`);
+    console.log(`extraTop: ${extraTop}`);
+    console.log(`initialPaddingY: ${initialPaddingY}`);
+    console.log(`zoomLvl: ${zoomLvl}`);
+    console.log(`newY: ${newY}`);
+    // console.log(`mainHeight: ${mainHeight}`);
+    // console.log(`newY: ${newY}`);
+    // console.log(`newWidth: ${newWidth}`);
+    // console.log(`newHeight: ${newHeight}`);
+    // panzoomRef.current.zoomAbs(0, 0, zoomLvl);
+    panzoomRef.current.smoothZoomCenter(newX, newY, zoomLvl, 5);
+    // panzoomRef.current.getTran;
   };
 
   useEffect(() => {
     const nextRelease = releases[step];
     if (prevStep.current !== step) {
-      // const zoom = nextRelease.zoom;
-      // if (zoom) {
-      //   zoomToPos(zoom);
-      // }
       canceledAnimation.current = true;
       // panzoomRef.current.smoothMoveTo(1000, 1000, 20);
       animationRef.current.forEach((animation) => {
@@ -83,13 +163,28 @@ function App() {
     prevStep.current = step;
   }, [step]);
 
-  const setScene = () => {
-    const zoom = releases[step + 1].zoom;
-    if (zoom) {
-      zoomToPos(zoom);
-      setTimeout(() => {
-        incrementStep();
-      }, 4000); // TODO: get duration from animation
+  const moveElements = (
+    elements: string[],
+    moves: { x: number; y: number },
+  ) => {
+    anime({
+      targets: elements,
+      translateX: moves.x,
+      translateY: moves.y,
+      easing: 'easeOutSine',
+      duration: 2000,
+    });
+  };
+
+  const setScene = async () => {
+    const nextStep = releases[step + 1];
+    const zoom = nextStep.centerWindow;
+    const makeSpace = nextStep.makeSpace;
+    if (zoom || makeSpace) {
+      await incrementStep();
+      if (zoom) centerWindow();
+      if (makeSpace)
+        moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
     } else {
       incrementStep();
     }
@@ -108,10 +203,9 @@ function App() {
           if ('id' in release) {
             return (
               <TimelinePath
-                show={release.show}
                 text={release.title}
                 key={release.id}
-                id={release.id}
+                {...release}
               />
             );
           }

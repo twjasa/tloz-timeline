@@ -1,13 +1,14 @@
 // import React from "react";
-import { TriangleCorner } from "../TriangleCorner/TriangleCorner";
-import styles from "./era.module.scss";
-import clsx from "clsx";
+import { TriangleCorner } from '../TriangleCorner/TriangleCorner';
+import styles from './era.module.scss';
+import clsx from 'clsx';
 interface EraProps {
   title: string;
-  color: "golden" | "silver" | "zeldaColor";
+  color: 'golden' | 'silver' | 'zeldaColor';
   backgroundImage: string;
   backgroundPosition?: { left: string | number; top: string | number };
   show: boolean;
+  position?: { left: number | string; top: number | string };
 }
 
 export const Era = ({
@@ -16,12 +17,13 @@ export const Era = ({
   backgroundImage,
   backgroundPosition,
   show,
+  position,
 }: EraProps) => {
   return (
     <div
       id={backgroundImage}
       className={clsx(styles.externalBorder1, styles[color])}
-      style={{ opacity: show ? 1 : 0 }}
+      style={{ opacity: show ? 1 : 0, ...position }}
     >
       <div className={clsx(styles.externalBorder0)}>
         <div className={clsx(styles.eraContainer, styles[color])}>
@@ -31,7 +33,7 @@ export const Era = ({
           <TriangleCorner position={3} color={color} />
           <div className={styles.innerContainer}>
             <img
-              src={backgroundImage + ".png"}
+              src={backgroundImage + '.png'}
               className={styles.backgroundImgEra}
               style={backgroundPosition ?? {}}
             />

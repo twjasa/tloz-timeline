@@ -2,15 +2,26 @@ interface releasesI {
   year: number;
   name: string;
   eras: Array<eraI | connectionI>;
-  animations: { id: string; action: "up" | "down" | "zoom"; }[];
-  cameraPosition?: { x: number; y: number; };
-  zoom?: { x: number; y: number; z: number; };
+  animations: {
+    id: string | string[];
+    action:
+    "up" |
+    "down" |
+    "zoom" |
+    "hide" |
+    "translateY" |
+    "translateX" |
+    "translateXY";
+  }[];
+  centerWindow?: boolean;
+  makeSpace?: { x: number; y: number; ids: string[]; };
 };
 
 interface connectionI {
   title: string;
   id: string;
   show: boolean;
+  position?: { left: string | number; top: string | number; };
 }
 
 interface eraI {
@@ -19,6 +30,7 @@ interface eraI {
   backgroundImage: string;
   backgroundPosition?: { left: number, top: number; };
   show: boolean;
+  position?: { left: string | number; top: string | number; };
 }
 type ClipPathAnimation = {
   [key: string]: string[];
@@ -38,15 +50,22 @@ export const releases: releasesI[] = [
         title: "ganon invades hyrule",
         color: "silver",
         backgroundImage: "ganonInvadesHyrule",
-        show: false,
+        show: true,
+        position: { left: '25%', top: "34%" },
       },
-      { title: "Immediately after", id: "gih-tloz", show: false },
+      {
+        title: "Immediately after",
+        id: "gih-tloz",
+        show: true,
+        position: { left: '43%', top: "calc(50vh - 39px)" }
+      },
       {
         title: "The legend of zelda",
         color: "golden",
         backgroundImage: "theLegendOfZelda",
-        backgroundPosition: { left: 0, top: -50 },
-        show: false,
+        backgroundPosition: { left: 2, top: -30 },
+        show: true,
+        position: { left: '25%', top: "53.1%" }
       },
     ],
     animations: [
@@ -64,169 +83,197 @@ export const releases: releasesI[] = [
         color: "silver",
         backgroundImage: "tragedyOfPrincessZeldaI",
         show: false,
-
+        position: { left: '25%', top: "15%" },
       },
-      { title: "??? (A long time)", id: "ttopzI-gih", show: false },
+      {
+        title: "??? (A long time)", id: "ttopzI-gih", show: false,
+        position: { left: '43%', top: "28.1%" }
+      },
       {
         title: "ganon invades hyrule",
         color: "silver",
         backgroundImage: "ganonInvadesHyrule",
         show: true,
-
+        position: { left: '25%', top: "34%" },
       },
-      { title: "Immediately after", id: "gih-tloz", show: true },
+      {
+        title: "Immediately after",
+        id: "gih-tloz",
+        show: true,
+        position: { left: '43%', top: "calc(50vh - 39px)" }
+      },
       {
         title: "The legend of zelda",
         color: "golden",
         backgroundImage: "theLegendOfZelda",
-        backgroundPosition: { left: 0, top: -50 },
+        backgroundPosition: { left: 2, top: -30 },
         show: true,
-
+        position: { left: '25%', top: "53.1%" }
       },
       {
         title: "4 years later", id: "tloz-zeldaIItaol",
         show: false,
+        position: { left: '43%', top: "66.2%" }
       },
       {
         title: "Zelda II: The Adventure of Link",
         color: "golden",
         backgroundImage: "zeldaIITAoL",
         show: false,
+        position: { left: '25%', top: "72.4%" }
       },
     ],
     animations: [
-      { id: "ttopzI-gih", action: 'up' },
-      { id: 'tragedyOfPrincessZeldaI', action: 'up' },
-      { id: 'tloz-zeldaIItaol', action: 'down' },
-      { id: 'zeldaIITAoL', action: 'down' },
+      { id: "#ttopzI-gih", action: 'up' },
+      { id: '#tragedyOfPrincessZeldaI', action: 'up' },
+      { id: '#tloz-zeldaIItaol', action: 'down' },
+      { id: '#zeldaIITAoL', action: 'down' },
     ]
   },
   {
     year: 1991,
     name: "The Legend of Zelda: A Link to the Past",
-    cameraPosition: { x: 0, y: 0 },
-    zoom: { x: 800, y: 1000, z: 0.5 },
+    centerWindow: true,
     eras: [
       {
         title: "Creation",
         color: "silver",
         backgroundImage: "creation1",
-        show: false,
-
+        show: true,
+        position: { left: '110%', top: "-31%" },
       },
       {
         title: "??? (A long time)", id: "creation1-cotms",
-        show: false,
+        show: true,
+        position: { left: '43%', top: "-31%" },
       },
       {
         title: "Creation of the master sword",
         color: "silver",
         backgroundImage: "creationOfTheMasterSword",
-        show: false,
-
+        show: true,
+        position: { left: '25%', top: "-31%" },
       },
       {
         title: "??? (A long time)", id: "cotms-ggtct",
-        show: false,
+        show: true,
+        position: { left: '43%', top: "-31%" },
       },
       {
         title: "Ganondorf gets the complete triforce",
         color: "silver",
         backgroundImage: "ganondorfGetsTheCompleteTriforce",
-        show: false,
-
+        show: true,
+        position: { left: '25%', top: "-31%" },
       },
       {
         title: "Undefined time after",
-        show: false,
-        id: "ggtct-tsw"
+        show: true,
+        id: "ggtct-tsw",
+        position: { left: '43%', top: "-31%" },
       },
       {
         title: "The sealing war",
         color: "silver",
         backgroundImage: "theSealingWar",
-        show: false,
-
+        show: true,
+        position: { left: '25%', top: "-31%" },
       },
       {
         title: "Centuries later",
-        show: false,
-        id: "tsw-alttp"
+        show: true,
+        id: "tsw-alttp",
+        position: { left: '43%', top: "-31%" },
       },
       {
         title: "A LINK TO THE PAST",
         color: "golden",
         backgroundImage: "aLinkToThePast",
-        show: false,
-
+        show: true,
+        position: { left: '25%', top: "-31%" },
       },
       {
         title: "??? (A long time)",
-        show: false,
-        id: "alttp-ttopzI"
+        show: true,
+        id: "alttp-ttopzI",
+        position: { left: '43%', top: "-31%" },
       },
       {
         title: "the tragedy of princess zelda I",
         color: "silver",
         backgroundImage: "tragedyOfPrincessZeldaI",
-        show: true,
-
+        show: false,
+        position: { left: '25%', top: "15%" },
       },
       {
-        title: "??? (A long time)",
-        show: true,
-        id: "ttopzI-gih"
+        title: "??? (A long time)", id: "ttopzI-gih", show: false,
+        position: { left: '43%', top: "28.1%" }
       },
       {
         title: "ganon invades hyrule",
         color: "silver",
         backgroundImage: "ganonInvadesHyrule",
         show: true,
-
+        position: { left: '25%', top: "34%" },
       },
       {
         title: "Immediately after",
+        id: "gih-tloz",
         show: true,
-        id: "gih-tloz"
+        position: { left: '43%', top: "calc(50vh - 39px)" }
       },
       {
         title: "The legend of zelda",
         color: "golden",
         backgroundImage: "theLegendOfZelda",
-        backgroundPosition: { left: 0, top: -50 },
+        backgroundPosition: { left: 2, top: -30 },
         show: true,
-
+        position: { left: '25%', top: "53.1%" }
       },
       {
-        title: "4 years later",
+        title: "4 years later", id: "tloz-zeldaIItaol",
         show: true,
-        id: "tloz-zeldaII-taol"
+        position: { left: '43%', top: "66.2%" }
       },
       {
         title: "Zelda II: The Adventure of Link",
         color: "golden",
         backgroundImage: "zeldaIITAoL",
         show: true,
-        // backgroundPosition: { left: 0, top: -50 },
+        position: { left: '25%', top: "72.4%" }
       },
     ],
     animations: [
-      { id: '1991-zoom', action: 'zoom' },
-      { id: 'alttp-ttopzI', action: 'up' },
-      { id: 'aLinkToThePast', action: 'up' },
-      { id: 'tsw-alttp', action: 'up' },
-      { id: 'theSealingWar', action: 'up' },
-      { id: 'ggtct-tsw', action: 'up' },
-      { id: 'ganondorfGetsTheCompleteTriforce', action: 'up' },
-      { id: 'cotms-ggtct', action: 'up' },
-      { id: 'creationOfTheMasterSword', action: 'up' },
-      { id: 'creation1-cotms', action: 'up' },
-      { id: 'creation1', action: 'up' },
+      // { id: 'alttp-ttopzI', action: 'up' },
+      // { id: 'aLinkToThePast', action: 'up' },
+      // { id: 'tsw-alttp', action: 'up' },
+      // { id: 'theSealingWar', action: 'up' },
+      // { id: 'ggtct-tsw', action: 'up' },
+      // { id: 'ganondorfGetsTheCompleteTriforce', action: 'up' },
+      // { id: 'cotms-ggtct', action: 'up' },
+      // { id: 'creationOfTheMasterSword', action: 'up' },
+      // { id: 'creation1-cotms', action: 'up' },
+      // { id: 'creation1', action: 'up' },
     ]
   },
   {
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
+    centerWindow: true,
+    makeSpace: {
+      x: 0, y: -244.06, ids: [
+        '#alttp-la',
+        '#aLinkToThePast',
+        '#tsw-alttp',
+        '#theSealingWar',
+        '#ggtct-tsw',
+        '#ganondorfGetsTheCompleteTriforce',
+        '#cotms-ggtct',
+        '#creationOfTheMasterSword',
+        '#creation1-cotms',
+        '#creation1',
+      ]
+    },
     eras: [
       {
         title: "Creation",
@@ -342,7 +389,8 @@ export const releases: releasesI[] = [
       }
     ],
     animations: [
-
+      { id: "#alttp-la", action: 'down' },
+      { id: "#linksAwakening", action: 'down' },
     ]
   }
 ];
