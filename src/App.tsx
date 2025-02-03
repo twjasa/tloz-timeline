@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import './App.scss';
-import { Era } from './components/Era/Era';
-import { TimelinePath } from './components/TimelinePath/TimelinePath';
-import { clipPathAnimation, releases } from './data/releases';
-import anime from 'animejs/lib/anime.es.js';
-import useStep from './hooks/useStep';
-import { AnimeInstance } from 'animejs';
+import { useEffect, useRef, useState } from "react";
+import "./App.scss";
+import { Era } from "./components/Era/Era";
+import { TimelinePath } from "./components/TimelinePath/TimelinePath";
+import { clipPathAnimation, releases } from "./data/releases";
+import anime from "animejs/lib/anime.es.js";
+import useStep from "./hooks/useStep";
+import { AnimeInstance } from "animejs";
 // @ts-ignore
-import createPanZoom from './panzoom/index.js';
-import styles from './components/Era/era.module.scss';
+import createPanZoom from "./panzoom/index.js";
+import styles from "./components/Era/era.module.scss";
 
 function App() {
   const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
@@ -17,16 +17,16 @@ function App() {
   const canceledAnimation = useRef(false);
   const panzoomRef = useRef<any>();
   const [title, setTitle] = useState(
-    `${releases[step].name} - year ${releases[step].year}`,
+    `${releases[step].name} - year ${releases[step].year}`
   );
 
   const animateElement = (
     element: HTMLElement,
     clipPathDirection: string,
-    onComplete: () => void,
+    onComplete: () => void
   ) => {
     let props: any = {};
-    if (['up', 'down'].includes((element as any).action)) {
+    if (["up", "down"].includes((element as any).action)) {
       props = {
         opacity: [0, 1],
         // begin: () => {
@@ -39,14 +39,14 @@ function App() {
       anime({
         targets: element.id,
         clipPath: clipPathAnimation[clipPathDirection],
-        easing: 'easeOutSine',
+        easing: "easeOutSine",
         duration: 1000,
         delay: 500,
         ...props,
         complete: () => {
           if (!canceledAnimation.current) onComplete();
         },
-      }),
+      })
     );
   };
 
@@ -61,13 +61,13 @@ function App() {
 
   useEffect(() => {
     if (panzoomRef.current)
-      panzoomRef.current.on('zoom', () => {
+      panzoomRef.current.on("zoom", () => {
         // console.log(panzoomRef.current.getTransform());
       });
   });
 
   useEffect(() => {
-    panzoomRef.current = createPanZoom(document.querySelector('main')!, {
+    panzoomRef.current = createPanZoom(document.querySelector("main")!, {
       // bounds: true,
       // boundsPadding: 0.1,
     });
@@ -76,69 +76,31 @@ function App() {
   }, []);
 
   const centerWindow = async () => {
-    const panzoomWindow = document.querySelector('main');
+    const panzoomWindow = document.querySelector("main");
     const children = panzoomWindow?.children || [];
     let extraTop = 0;
     let extraBottom = 0;
     let extraLeft = 0;
     let extraRight = 0;
     let mainHeight = panzoomWindow?.getBoundingClientRect().height || 0;
+    console.log(`mainHeight: ${mainHeight}`);
     let mainWidth = panzoomWindow?.getBoundingClientRect().width || 0;
     for (let child of children as any) {
       const {
-        offsetTop: top,
-        offsetLeft: left,
+        offsetTop: top = 0,
+        offsetLeft: left = 0,
         clientHeight,
         clientWidth = 0,
       } = child;
-      extraTop = Math.max(extraTop, -top);
-      extraBottom = Math.max(extraBottom, top + clientHeight - mainHeight);
-      extraLeft = Math.max(extraLeft, -left);
-      extraRight = Math.max(extraRight, left + clientWidth - mainWidth);
+      extraTop = Math.min(extraTop, top);
     }
-    debugger;
-    if (extraRight < mainWidth) {
-      extraRight = 0;
-    } else {
-      extraRight = Math.max(0, Math.abs(extraRight - mainWidth));
-    }
-    const zoomLvl = Math.min(
-      mainWidth / (extraLeft + extraRight + mainWidth * 1.5),
-      mainHeight / (extraBottom + extraTop + mainHeight * 1.5),
-    );
+    extraTop = Math.abs(extraTop);
+    const mainHeightIncreased = mainHeight + extraTop;
+    const newZoom = mainHeight / mainHeightIncreased;
+    const newY = mainHeight + extraBottom / 2;
+    const newX = mainWidth / 2;
 
-    extraTop *= zoomLvl;
-    extraLeft *= zoomLvl;
-    extraRight *= zoomLvl;
-    // const newWidth = mainWidth * zoomLvl;
-    const newHeight = mainHeight * zoomLvl;
-    let initialPaddingX = 0;
-    if (extraRight > 0) {
-      initialPaddingX = (mainWidth - parseInt(styles.eraWidth, 10)) / 2;
-      initialPaddingX *= zoomLvl;
-    }
-    let initialPaddingY = 0;
-    if (extraTop > 0) {
-      initialPaddingY = 600 * zoomLvl;
-    }
-    const newX = (mainWidth - extraLeft + extraRight - initialPaddingX) / 2;
-    const newY = (mainHeight + extraTop + initialPaddingY) / 2;
-    // const centerWindowHeight = window.screen.height / 2
-    // const transformedExtraTop = extraTop * zoomLvl;
-    // console.log(newWidth, newHeight, zoomLvl);
-    console.log(`mainHeight: ${mainHeight}`);
-    console.log(`newHeight: ${newHeight}`);
-    console.log(`extraTop: ${extraTop}`);
-    console.log(`initialPaddingY: ${initialPaddingY}`);
-    console.log(`zoomLvl: ${zoomLvl}`);
-    console.log(`newY: ${newY}`);
-    // console.log(`mainHeight: ${mainHeight}`);
-    // console.log(`newY: ${newY}`);
-    // console.log(`newWidth: ${newWidth}`);
-    // console.log(`newHeight: ${newHeight}`);
-    // panzoomRef.current.zoomAbs(0, 0, zoomLvl);
-    panzoomRef.current.zoomTo(newX, newY, zoomLvl, 5);
-    // panzoomRef.current.getTran;
+    panzoomRef.current.smoothZoom(newX, newY, newZoom, 5);
   };
 
   useEffect(() => {
@@ -166,13 +128,13 @@ function App() {
 
   const moveElements = (
     elements: string[],
-    moves: { x: number; y: number },
+    moves: { x: number; y: number }
   ) => {
     anime({
       targets: elements,
       translateX: moves.x,
       translateY: moves.y,
-      easing: 'easeOutSine',
+      easing: "easeOutSine",
       duration: 2000,
     });
   };
@@ -199,9 +161,57 @@ function App() {
           <button className="leftButton" onClick={decrementStep} />
         )}
       </section>
-      <main>
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: 0,
+          bottom: 0,
+          width: "1px",
+          backgroundColor: "blue",
+          transform: "translateX(-50%)",
+          zIndex: 1000,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: 0,
+          right: 0,
+          height: "2px",
+          backgroundColor: "blue",
+          transform: "translateY(-50%)",
+          zIndex: 1000,
+        }}
+      />
+      <main style={{ backgroundColor: "brown", position: "relative" }}>
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: 0,
+            bottom: 0,
+            width: "2px",
+            backgroundColor: "white",
+            transform: "translateX(-50%)",
+            zIndex: 1000,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: 0,
+            right: 0,
+            height: "2px",
+            backgroundColor: "white",
+            transform: "translateY(-50%)",
+            zIndex: 1000,
+          }}
+        />
         {releases[step].eras.map((release) => {
-          if ('id' in release) {
+          if ("id" in release) {
             return (
               <TimelinePath
                 text={release.title}
