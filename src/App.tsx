@@ -1,23 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import { Era } from "./components/Era/Era";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
 import { clipPathAnimation, releases } from "./data/releases";
+import { debug_center_releases } from "./data/debug_center_releases";
 import anime from "animejs/lib/anime.es.js";
 import useStep from "./hooks/useStep";
 import { AnimeInstance } from "animejs";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
-import styles from "./components/Era/era.module.scss";
+import { ERA_HEIGHT, ERA_WIDTH } from "./constants/variables.js";
 
 function App() {
-  const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
+  const { step, incrementStep, decrementStep } = useStep(
+    debug_center_releases.length - 1
+  );
   const prevStep = useRef(step);
   const animationRef = useRef<AnimeInstance[]>([]);
   const canceledAnimation = useRef(false);
   const panzoomRef = useRef<any>();
   const [title, setTitle] = useState(
-    `${releases[step].name} - year ${releases[step].year}`
+    `${debug_center_releases[step].name} - year ${debug_center_releases[step].year}`
   );
 
   const animateElement = (
@@ -40,8 +45,8 @@ function App() {
         targets: element.id,
         clipPath: clipPathAnimation[clipPathDirection],
         easing: "easeOutSine",
-        duration: 1000,
-        delay: 500,
+        duration: 100,
+        delay: 100,
         ...props,
         complete: () => {
           if (!canceledAnimation.current) onComplete();
@@ -61,8 +66,8 @@ function App() {
 
   useEffect(() => {
     if (panzoomRef.current)
-      panzoomRef.current.on("zoom", () => {
-        // console.log(panzoomRef.current.getTransform());
+      panzoomRef.current.on("pan", () => {
+        console.log(panzoomRef.current.getClientRect());
       });
   });
 
@@ -82,29 +87,51 @@ function App() {
     let extraBottom = 0;
     let extraLeft = 0;
     let extraRight = 0;
-    let mainHeight = panzoomWindow?.getBoundingClientRect().height || 0;
-    console.log(`mainHeight: ${mainHeight}`);
-    let mainWidth = panzoomWindow?.getBoundingClientRect().width || 0;
-    for (let child of children as any) {
-      const {
-        offsetTop: top = 0,
-        offsetLeft: left = 0,
-        clientHeight,
-        clientWidth = 0,
-      } = child;
-      extraTop = Math.min(extraTop, top);
+    const mainHeight = panzoomWindow?.getBoundingClientRect().height || 0;
+    const mainWidth = panzoomWindow?.getBoundingClientRect().width || 0;
+    for (const child of children as any) {
+      const { offsetTop: top = 0, offsetLeft: left = 0 } = child;
+      if (left < 0) {
+        extraLeft = Math.min(extraLeft, left);
+      } else {
+        if (top + ERA_WIDTH > mainWidth) {
+          extraRight = Math.max(extraRight, Math.abs(mainWidth - left));
+        }
+      }
+      if (top < 0) {
+        extraTop = Math.min(extraTop, top);
+      }
+      if (top > 0) {
+        if (top + ERA_HEIGHT > mainHeight) {
+          extraBottom = Math.max(extraBottom, Math.abs(mainHeight - top));
+        }
+      }
     }
     extraTop = Math.abs(extraTop);
-    const mainHeightIncreased = mainHeight + extraTop;
+    if (extraBottom > 0) {
+      extraBottom += ERA_HEIGHT;
+    }
+    extraRight += ERA_WIDTH;
+    extraLeft = Math.abs(extraLeft);
+    const mainHeightIncreased = mainHeight + extraBottom + extraTop;
     const newZoom = mainHeight / mainHeightIncreased;
-    const newY = mainHeight + extraBottom / 2;
     const newX = mainWidth / 2;
 
-    panzoomRef.current.smoothZoom(newX, newY, newZoom, 5);
+    let newY = mainHeight / 2;
+    console.log(extraTop, extraBottom, mainHeight, mainHeightIncreased);
+    if (extraTop > extraBottom) {
+      newY = mainHeight - extraTop / 2;
+    }
+    panzoomRef.current.smoothZoom(
+      newX,
+      mainHeight + mainHeight / newZoom,
+      newZoom,
+      5
+    );
   };
 
   useEffect(() => {
-    const nextRelease = releases[step];
+    const nextRelease = debug_center_releases[step];
     if (prevStep.current !== step) {
       canceledAnimation.current = true;
       // panzoomRef.current.smoothMoveTo(1000, 1000, 20);
@@ -121,7 +148,7 @@ function App() {
       // panzoomRef.current.smoothMoveTo(1000, 1000, 10);
       // panzoomRef.current.smoothZoom(800,1000, 0.5, 3);
 
-      runSequentialAnimations(releases[step].animations, 0);
+      runSequentialAnimations(nextRelease.animations, 0);
     }
     prevStep.current = step;
   }, [step]);
@@ -140,7 +167,7 @@ function App() {
   };
 
   const setScene = async () => {
-    const nextStep = releases[step + 1];
+    const nextStep = debug_center_releases[step + 1];
     const zoom = nextStep.centerWindow;
     const makeSpace = nextStep.makeSpace;
     if (zoom || makeSpace) {
@@ -151,7 +178,11 @@ function App() {
     } else {
       incrementStep();
     }
-    setTitle(`${releases[step + 1].name} - year ${releases[step + 1].year}`);
+    setTitle(
+      `${debug_center_releases[step + 1].name} - year ${
+        debug_center_releases[step + 1].year
+      }`
+    );
   };
 
   return (
@@ -210,7 +241,7 @@ function App() {
             zIndex: 1000,
           }}
         />
-        {releases[step].eras.map((release) => {
+        {debug_center_releases[step].eras.map((release) => {
           if ("id" in release) {
             return (
               <TimelinePath
@@ -226,9 +257,9 @@ function App() {
       <section className="rightButtonContainer">
         <button className="rightButton" onClick={setScene} />
       </section>
-      <section className="releaseTitle">
+      {/* <section className="releaseTitle">
         <span style={{ marginTop: 10 }}>{title}</span>
-      </section>
+      </section> */}
     </>
   );
 }
