@@ -12,6 +12,7 @@ import { AnimeInstance } from "animejs";
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
 import { ERA_HEIGHT, ERA_WIDTH } from "./constants/variables.js";
+import { centerWindow } from "./utils/centerWindow";
 
 function App() {
   const { step, incrementStep, decrementStep } = useStep(
@@ -67,7 +68,7 @@ function App() {
   useEffect(() => {
     if (panzoomRef.current)
       panzoomRef.current.on("pan", () => {
-        console.log(panzoomRef.current.getClientRect());
+        // console.log(panzoomRef.current.getClientRect());
       });
   });
 
@@ -79,56 +80,6 @@ function App() {
     // panzoomRef.current.
     // panzoomRef.current.smoothZoom(800, 1000, 0.5, 1);
   }, []);
-
-  const centerWindow = async () => {
-    const panzoomWindow = document.querySelector("main");
-    const children = panzoomWindow?.children || [];
-    let extraTop = 0;
-    let extraBottom = 0;
-    let extraLeft = 0;
-    let extraRight = 0;
-    const mainHeight = panzoomWindow?.getBoundingClientRect().height || 0;
-    const mainWidth = panzoomWindow?.getBoundingClientRect().width || 0;
-    for (const child of children as any) {
-      const { offsetTop: top = 0, offsetLeft: left = 0 } = child;
-      if (left < 0) {
-        extraLeft = Math.min(extraLeft, left);
-      } else {
-        if (top + ERA_WIDTH > mainWidth) {
-          extraRight = Math.max(extraRight, Math.abs(mainWidth - left));
-        }
-      }
-      if (top < 0) {
-        extraTop = Math.min(extraTop, top);
-      }
-      if (top > 0) {
-        if (top + ERA_HEIGHT > mainHeight) {
-          extraBottom = Math.max(extraBottom, Math.abs(mainHeight - top));
-        }
-      }
-    }
-    extraTop = Math.abs(extraTop);
-    if (extraBottom > 0) {
-      extraBottom += ERA_HEIGHT;
-    }
-    extraRight += ERA_WIDTH;
-    extraLeft = Math.abs(extraLeft);
-    const mainHeightIncreased = mainHeight + extraBottom + extraTop;
-    const newZoom = mainHeight / mainHeightIncreased;
-    const newX = mainWidth / 2;
-
-    let newY = mainHeight / 2;
-    console.log(extraTop, extraBottom, mainHeight, mainHeightIncreased);
-    if (extraTop > extraBottom) {
-      newY = mainHeight - extraTop / 2;
-    }
-    panzoomRef.current.smoothZoom(
-      newX,
-      mainHeight + mainHeight / newZoom,
-      newZoom,
-      5
-    );
-  };
 
   useEffect(() => {
     const nextRelease = debug_center_releases[step];
@@ -172,7 +123,7 @@ function App() {
     const makeSpace = nextStep.makeSpace;
     if (zoom || makeSpace) {
       await incrementStep();
-      if (zoom) centerWindow();
+      if (zoom) centerWindow(panzoomRef);
       if (makeSpace)
         moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
     } else {

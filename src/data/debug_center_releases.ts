@@ -18,7 +18,7 @@ export type AnimationType = {
   "translateY" |
   "translateX" |
   "translateXY";
-}
+};
 
 export interface connectionI {
   title: string;
@@ -114,14 +114,14 @@ export const debug_center_releases: releasesI[] = [
         color: "silver",
         backgroundImage: "creation1",
         show: false,
-        position: { left: centerPercentageX, top: "-120%" },
+        position: { left: centerPercentageX, top: "-50%" },
       },
       {
         title: "A LINK TO THE PAST",
         color: "golden",
         backgroundImage: "aLinkToThePast",
         show: false,
-        position: { left: centerPercentageX, top: "130%" },
+        position: { left: centerPercentageX, top: "30%" },
       },
     ],
     animations: [
