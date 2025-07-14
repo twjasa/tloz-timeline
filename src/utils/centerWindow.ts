@@ -11,7 +11,7 @@ const easings = {
 type EasingName = keyof typeof easings;
 type PaddingValue = number | `${number}%`;
 
-export const centerWindow = (
+export const centerWindow = async (
   panzoomRef: any,
   duration: number = 500,
   easingName: EasingName = "easeInOutQuad",
@@ -92,22 +92,26 @@ export const centerWindow = (
   const easingFn = easings[easingName] || easings.linear;
   const startTime = performance.now();
 
-  function animate(currentTime: number) {
-    const elapsed = currentTime - startTime;
-    const t = Math.min(elapsed / duration, 1);
-    const easedT = easingFn(t);
+  return new Promise<void>((resolve) => {
+    function animate(currentTime: number) {
+      const elapsed = currentTime - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const easedT = easingFn(t);
 
-    const currentScale = startScale + (targetScale - startScale) * easedT;
-    const currentX = startX + (targetX - startX) * easedT;
-    const currentY = startY + (targetY - startY) * easedT;
+      const currentScale = startScale + (targetScale - startScale) * easedT;
+      const currentX = startX + (targetX - startX) * easedT;
+      const currentY = startY + (targetY - startY) * easedT;
 
-    panzoom.zoomAbs(0, 0, currentScale);
-    panzoom.moveTo(currentX, currentY);
+      panzoom.zoomAbs(0, 0, currentScale);
+      panzoom.moveTo(currentX, currentY);
 
-    if (t < 1) {
-      requestAnimationFrame(animate);
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        resolve();
+      }
     }
-  }
 
-  requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
+  });
 };

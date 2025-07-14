@@ -46,7 +46,7 @@ function App() {
         targets: element.id,
         clipPath: clipPathAnimation[clipPathDirection],
         easing: "easeOutSine",
-        duration: 100,
+        duration: 1000,
         delay: 100,
         ...props,
         complete: () => {
@@ -104,16 +104,19 @@ function App() {
     prevStep.current = step;
   }, [step]);
 
-  const moveElements = (
+  const moveElements = async (
     elements: string[],
     moves: { x: number; y: number }
   ) => {
-    anime({
-      targets: elements,
-      translateX: moves.x,
-      translateY: moves.y,
-      easing: "easeOutSine",
-      duration: 2000,
+    return new Promise<void>((resolve) => {
+      anime({
+        targets: elements,
+        translateX: moves.x,
+        translateY: moves.y,
+        easing: "easeOutSine",
+        duration: 3000,
+        complete: () => resolve(),
+      });
     });
   };
 
@@ -123,9 +126,9 @@ function App() {
     const makeSpace = nextStep.makeSpace;
     if (zoom || makeSpace) {
       await incrementStep();
-      if (zoom) await centerWindow(panzoomRef, 2000, "easeOutCubic", 100, 50);
       if (makeSpace)
-        moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
+        await moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
+      if (zoom) await centerWindow(panzoomRef, 2000, "easeOutCubic", 100, 50);
     } else {
       incrementStep();
     }
