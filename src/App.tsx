@@ -4,26 +4,26 @@ import "./App.scss";
 import { Era } from "./components/Era/Era";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
 import { clipPathAnimation, releases } from "./data/releases";
-import { debug_center_releases } from "./data/debug_center_releases";
+import {
+  debug_extratop,
+  debug_extratop_and_extrabottom,
+} from "./data/debug_releases";
 import anime from "animejs/lib/anime.es.js";
 import useStep from "./hooks/useStep";
 import { AnimeInstance } from "animejs";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
-import { ERA_HEIGHT, ERA_WIDTH } from "./constants/variables.js";
 import { centerWindow } from "./utils/centerWindow";
 
 function App() {
-  const { step, incrementStep, decrementStep } = useStep(
-    debug_center_releases.length - 1
-  );
+  const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
   const prevStep = useRef(step);
   const animationRef = useRef<AnimeInstance[]>([]);
   const canceledAnimation = useRef(false);
   const panzoomRef = useRef<any>();
   const [title, setTitle] = useState(
-    `${debug_center_releases[step].name} - year ${debug_center_releases[step].year}`
+    `${releases[step].name} - year ${releases[step].year}`
   );
 
   const animateElement = (
@@ -82,7 +82,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const nextRelease = debug_center_releases[step];
+    const nextRelease = releases[step];
     if (prevStep.current !== step) {
       canceledAnimation.current = true;
       // panzoomRef.current.smoothMoveTo(1000, 1000, 20);
@@ -118,22 +118,18 @@ function App() {
   };
 
   const setScene = async () => {
-    const nextStep = debug_center_releases[step + 1];
+    const nextStep = releases[step + 1];
     const zoom = nextStep.centerWindow;
     const makeSpace = nextStep.makeSpace;
     if (zoom || makeSpace) {
       await incrementStep();
-      if (zoom) centerWindow(panzoomRef);
+      if (zoom) await centerWindow(panzoomRef, 2000, "easeOutCubic");
       if (makeSpace)
         moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
     } else {
       incrementStep();
     }
-    setTitle(
-      `${debug_center_releases[step + 1].name} - year ${
-        debug_center_releases[step + 1].year
-      }`
-    );
+    setTitle(`${releases[step + 1].name} - year ${releases[step + 1].year}`);
   };
 
   return (
@@ -143,7 +139,7 @@ function App() {
           <button className="leftButton" onClick={decrementStep} />
         )}
       </section>
-      <div
+      {/* <div
         style={{
           position: "absolute",
           left: "50%",
@@ -154,8 +150,8 @@ function App() {
           transform: "translateX(-50%)",
           zIndex: 1000,
         }}
-      />
-      <div
+      /> */}
+      {/* <div
         style={{
           position: "absolute",
           top: "50%",
@@ -166,9 +162,15 @@ function App() {
           transform: "translateY(-50%)",
           zIndex: 1000,
         }}
-      />
-      <main style={{ backgroundColor: "brown", position: "relative" }}>
-        <div
+      /> */}
+      <main
+        style={{
+          // backgroundColor: "brown",
+          position: "relative",
+        }}
+        id="main"
+      >
+        {/* <div
           style={{
             position: "absolute",
             left: "50%",
@@ -191,8 +193,8 @@ function App() {
             transform: "translateY(-50%)",
             zIndex: 1000,
           }}
-        />
-        {debug_center_releases[step].eras.map((release) => {
+        /> */}
+        {releases[step].eras.map((release) => {
           if ("id" in release) {
             return (
               <TimelinePath
