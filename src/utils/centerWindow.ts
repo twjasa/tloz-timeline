@@ -1,5 +1,3 @@
-type EasingName = keyof typeof easings;
-
 const easings = {
   linear: (t: number) => t,
   easeInQuad: (t: number) => t * t,
@@ -10,11 +8,15 @@ const easings = {
     t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
 };
 
+type EasingName = keyof typeof easings;
+type PaddingValue = number | `${number}%`;
 
 export const centerWindow = (
   panzoomRef: any,
   duration: number = 500,
-  easingName: EasingName = "easeInOutQuad"
+  easingName: EasingName = "easeInOutQuad",
+  paddingBottom: PaddingValue = 0,
+  paddingTop: PaddingValue = 0
 ) => {
   const panzoomWindow = document.querySelector("main");
   if (!panzoomWindow || !panzoomRef.current) return;
@@ -22,7 +24,29 @@ export const centerWindow = (
   const children = Array.from(panzoomWindow.children) as HTMLElement[];
   if (children.length === 0) return;
 
-  let minLeft = Infinity, minTop = Infinity, maxRight = -Infinity, maxBottom = -Infinity;
+  // Calcular padding en píxeles (sea número o porcentaje)
+  let paddingBottomPx = 0;
+  if (typeof paddingBottom === "string" && paddingBottom.endsWith("%")) {
+    const percent = parseFloat(paddingBottom);
+    paddingBottomPx = (panzoomWindow.clientHeight * percent) / 100;
+  } else if (typeof paddingBottom === "number") {
+    paddingBottomPx = paddingBottom;
+  }
+
+  let paddingTopPx = 0;
+  if (typeof paddingTop === "string" && paddingTop.endsWith("%")) {
+    const percent = parseFloat(paddingTop);
+    paddingTopPx = (panzoomWindow.clientHeight * percent) / 100;
+  } else if (typeof paddingTop === "number") {
+    paddingTopPx = paddingTop;
+  }
+
+  // Bounding box del contenido
+  let minLeft = Infinity,
+    minTop = Infinity,
+    maxRight = -Infinity,
+    maxBottom = -Infinity;
+
   for (const child of children) {
     const rect = child.getBoundingClientRect();
     const parentRect = panzoomWindow.getBoundingClientRect();
@@ -40,16 +64,20 @@ export const centerWindow = (
 
   const contentWidth = maxRight - minLeft;
   const contentHeight = maxBottom - minTop;
+
   const containerWidth = panzoomWindow.clientWidth;
   const containerHeight = panzoomWindow.clientHeight;
 
-  const targetScale = Math.min(containerWidth / contentWidth, containerHeight / contentHeight);
+  const targetScale = Math.min(
+    containerWidth / contentWidth,
+    (containerHeight - paddingBottomPx - paddingTopPx) / contentHeight
+  );
 
   const contentCenterX = minLeft + contentWidth / 2;
   const contentCenterY = minTop + contentHeight / 2;
 
   const viewportCenterX = containerWidth / 2;
-  const viewportCenterY = containerHeight / 2;
+  const viewportCenterY = paddingTopPx + (containerHeight - paddingBottomPx - paddingTopPx) / 2;
 
   const targetX = viewportCenterX - contentCenterX * targetScale;
   const targetY = viewportCenterY - contentCenterY * targetScale;
@@ -62,7 +90,6 @@ export const centerWindow = (
   const startY = transform.y;
 
   const easingFn = easings[easingName] || easings.linear;
-
   const startTime = performance.now();
 
   function animate(currentTime: number) {

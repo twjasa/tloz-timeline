@@ -123,7 +123,7 @@ function App() {
     const makeSpace = nextStep.makeSpace;
     if (zoom || makeSpace) {
       await incrementStep();
-      if (zoom) await centerWindow(panzoomRef, 2000, "easeOutCubic");
+      if (zoom) await centerWindow(panzoomRef, 2000, "easeOutCubic", 100, 50);
       if (makeSpace)
         moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
     } else {
@@ -210,9 +210,9 @@ function App() {
       <section className="rightButtonContainer">
         <button className="rightButton" onClick={setScene} />
       </section>
-      {/* <section className="releaseTitle">
+      <section className="releaseTitle">
         <span style={{ marginTop: 10 }}>{title}</span>
-      </section> */}
+      </section>
     </>
   );
 }
