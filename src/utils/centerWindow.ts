@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const easings = {
   linear: (t: number) => t,
   easeInQuad: (t: number) => t * t,
@@ -41,7 +42,6 @@ export const centerWindow = async (
     paddingTopPx = paddingTop;
   }
 
-  // Bounding box del contenido
   let minLeft = Infinity,
     minTop = Infinity,
     maxRight = -Infinity,

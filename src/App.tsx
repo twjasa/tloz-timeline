@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./App.scss";
 import { Era } from "./components/Era/Era";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
 import { clipPathAnimation, releases } from "./data/releases";
-import {
-  debug_extratop,
-  debug_extratop_and_extrabottom,
-} from "./data/debug_releases";
+// import {
+//   debug_extratop,
+//   debug_extratop_and_extrabottom,
+// } from "./data/debug_releases";
 import anime from "animejs/lib/anime.es.js";
 import useStep from "./hooks/useStep";
 import { AnimeInstance } from "animejs";
@@ -26,44 +26,49 @@ function App() {
     `${releases[step].name} - year ${releases[step].year}`
   );
 
-  const animateElement = (
-    element: HTMLElement,
-    clipPathDirection: string,
-    onComplete: () => void
-  ) => {
-    let props: any = {};
-    if (["up", "down"].includes((element as any).action)) {
-      props = {
-        opacity: [0, 1],
-        // begin: () => {
-        //   const updatedElementId = element.id.slice(1);
-        //   document.getElementById(updatedElementId)!.style.display = 'flex';
-        // },
-      };
-    }
-    animationRef.current.push(
-      anime({
-        targets: element.id,
-        clipPath: clipPathAnimation[clipPathDirection],
-        easing: "easeOutSine",
-        duration: 1000,
-        delay: 100,
-        ...props,
-        complete: () => {
-          if (!canceledAnimation.current) onComplete();
-        },
-      })
-    );
-  };
+  const animateElement = useCallback(
+    (
+      element: HTMLElement,
+      clipPathDirection: string,
+      onComplete: () => void
+    ) => {
+      let props: any = {};
+      if (["up", "down"].includes((element as any).action)) {
+        props = {
+          opacity: [0, 1],
+          // begin: () => {
+          //   const updatedElementId = element.id.slice(1);
+          //   document.getElementById(updatedElementId)!.style.display = 'flex';
+          // },
+        };
+      }
+      animationRef.current.push(
+        anime({
+          targets: element.id,
+          clipPath: clipPathAnimation[clipPathDirection],
+          easing: "easeOutSine",
+          duration: 1000,
+          delay: 100,
+          ...props,
+          complete: () => {
+            if (!canceledAnimation.current) onComplete();
+          },
+        })
+      );
+    },
+    []
+  );
 
-  const runSequentialAnimations = (elements: any[], index: number) => {
-    if (index < elements.length) {
-      const clipPathDirection = elements[index].action;
-      animateElement(elements[index], clipPathDirection, () => {
-        runSequentialAnimations(elements, index + 1);
-      });
-    }
-  };
+  const runSequentialAnimations = useMemo(() => {
+    return (elements: any[], index: number) => {
+      if (index < elements.length) {
+        const clipPathDirection = elements[index].action;
+        animateElement(elements[index], clipPathDirection, () => {
+          runSequentialAnimations(elements, index + 1);
+        });
+      }
+    };
+  }, [animateElement]);
 
   useEffect(() => {
     if (panzoomRef.current)
@@ -85,7 +90,6 @@ function App() {
     const nextRelease = releases[step];
     if (prevStep.current !== step) {
       canceledAnimation.current = true;
-      // panzoomRef.current.smoothMoveTo(1000, 1000, 20);
       animationRef.current.forEach((animation) => {
         if (animation) {
           animation.pause();
@@ -96,13 +100,15 @@ function App() {
       animationRef.current = [];
     }
     if (nextRelease.animations.length > 0) {
-      // panzoomRef.current.smoothMoveTo(1000, 1000, 10);
-      // panzoomRef.current.smoothZoom(800,1000, 0.5, 3);
-
-      runSequentialAnimations(nextRelease.animations, 0);
+      setTimeout(
+        () => {
+          runSequentialAnimations(nextRelease.animations, 0);
+        },
+        nextRelease.centerWindow ? 2000 : 0
+      );
     }
     prevStep.current = step;
-  }, [step]);
+  }, [step, runSequentialAnimations]);
 
   const moveElements = async (
     elements: string[],

@@ -16,7 +16,7 @@ interface releasesI {
   }[];
   centerWindow?: boolean;
   makeSpace?: { x: number; y: number; ids: string[]; };
-};
+}
 
 interface connectionI {
   title: string;
@@ -128,8 +128,8 @@ export const releases: releasesI[] = [
       },
     ],
     animations: [
-      { id: "#ttopzI-gih", action: 'up' },
-      { id: '#tragedyOfPrincessZeldaI', action: 'up' },
+      { id: '#tragedyOfPrincessZeldaI', action: 'down' },
+      { id: "#ttopzI-gih", action: 'down' },
       { id: '#tloz-zeldaIItaol', action: 'down' },
       { id: '#zeldaIITAoL', action: 'down' },
     ]
@@ -248,16 +248,16 @@ export const releases: releasesI[] = [
       },
     ],
     animations: [
-      { id: '#alttp-ttopzI', action: 'up' },
-      { id: '#aLinkToThePast', action: 'up' },
-      { id: '#tsw-alttp', action: 'up' },
-      { id: '#theSealingWar', action: 'up' },
-      { id: '#ggtct-tsw', action: 'up' },
-      { id: '#ganondorfGetsTheCompleteTriforce', action: 'up' },
-      { id: '#cotms-ggtct', action: 'up' },
-      { id: '#creationOfTheMasterSword', action: 'up' },
-      { id: '#creation1-cotms', action: 'up' },
-      { id: '#creation1', action: 'up' },
+      { id: '#creation1', action: 'down' },
+      { id: '#creation1-cotms', action: 'down' },
+      { id: '#creationOfTheMasterSword', action: 'down' },
+      { id: '#cotms-ggtct', action: 'down' },
+      { id: '#ganondorfGetsTheCompleteTriforce', action: 'down' },
+      { id: '#ggtct-tsw', action: 'down' },
+      { id: '#theSealingWar', action: 'down' },
+      { id: '#tsw-alttp', action: 'down' },
+      { id: '#aLinkToThePast', action: 'down' },
+      { id: '#alttp-ttopzI', action: 'down' },
     ]
   },
   {
