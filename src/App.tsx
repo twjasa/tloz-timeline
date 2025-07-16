@@ -15,6 +15,7 @@ import { AnimeInstance } from "animejs";
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
 import { centerWindow } from "./utils/centerWindow";
+import { ZOOM_DURATION } from "./constants/variables.js";
 
 function App() {
   const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
@@ -104,7 +105,7 @@ function App() {
         () => {
           runSequentialAnimations(nextRelease.animations, 0);
         },
-        nextRelease.centerWindow ? 2000 : 0
+        nextRelease.centerWindow ? ZOOM_DURATION : 0
       );
     }
     prevStep.current = step;
@@ -134,7 +135,9 @@ function App() {
       await incrementStep();
       if (makeSpace)
         await moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
-      if (zoom) await centerWindow(panzoomRef, 2000, "easeOutCubic", 100, 50);
+      if (zoom) {
+        await centerWindow(panzoomRef, ZOOM_DURATION, "easeOutCubic", 100, 50);
+      }
     } else {
       incrementStep();
     }
