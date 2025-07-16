@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { parseTransformMatrix } from './transformUtils';
+
 const easings = {
   linear: (t: number) => t,
   easeInQuad: (t: number) => t * t,
@@ -48,13 +50,20 @@ export const centerWindow = async (
     maxBottom = -Infinity;
 
   for (const child of children) {
-    const rect = child.getBoundingClientRect();
-    const parentRect = panzoomWindow.getBoundingClientRect();
+    // Get the base position using offsetLeft/offsetTop
+    const baseLeft = child.offsetLeft + panzoomWindow.scrollLeft;
+    const baseTop = child.offsetTop + panzoomWindow.scrollTop;
 
-    const left = rect.left - parentRect.left + panzoomWindow.scrollLeft;
-    const top = rect.top - parentRect.top + panzoomWindow.scrollTop;
-    const right = left + rect.width;
-    const bottom = top + rect.height;
+    // Get computed styles to extract transform values
+    const computedStyle = window.getComputedStyle(child);
+    const transform = computedStyle.transform;
+    const { translateX, translateY, scale } = parseTransformMatrix(transform);
+
+    // Apply transform to the base position
+    const left = baseLeft + translateX;
+    const top = baseTop + translateY;
+    const right = left + (child.offsetWidth * scale);
+    const bottom = top + (child.offsetHeight * scale);
 
     minLeft = Math.min(minLeft, left);
     minTop = Math.min(minTop, top);
