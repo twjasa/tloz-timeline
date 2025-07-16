@@ -15,7 +15,7 @@ interface releasesI {
     "translateXY";
   }[];
   centerWindow?: boolean;
-  makeSpace?: { x: number; y: number; ids: string[]; };
+  makeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[];
 }
 
 interface connectionI {
@@ -264,7 +264,7 @@ export const releases: releasesI[] = [
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
     centerWindow: true,
-    makeSpace: {
+    makeSpace: [{
       x: 0, y: -244.06, ids: [
         '#alttp-la',
         '#aLinkToThePast',
@@ -277,7 +277,7 @@ export const releases: releasesI[] = [
         '#creation1-cotms',
         '#creation1',
       ]
-    },
+    }],
     eras: [
       {
         title: "Creation",
@@ -412,6 +412,18 @@ export const releases: releasesI[] = [
     year: 1998,
     name: "The Legend of Zelda: Ocarina of Time",
     centerWindow: true,
+    makeSpace: [{
+      x: 0, y: -481.06, ids: [
+        '#creation1',
+        '#creation1-cotms',
+        '#creationOfTheMasterSword',
+      ]
+    },
+    {
+      x: 0, y: -481.06, height: "316px", ids: [
+        '#cotms-ggtct',
+      ]
+    }],
     eras: [
       {
         title: "Creation",
@@ -541,59 +553,59 @@ export const releases: releasesI[] = [
         show: false,
         color: "golden",
         backgroundImage: "ocarinaOfTimeAdult",
-        position: { left: '43%', top: "8.1%" },
+        position: { left: '90%', top: "-43.9%" },
       },
       {
         title: "7 years",
         show: false,
         id: "oot-adult-oot-child",
-        position: { left: '43%', top: "8.1%" },
+        position: { left: '100%', top: "-49.9%" },
       },
       {
         title: "Ocarina of Time (Child)",
         show: false,
         color: "golden",
         backgroundImage: "ocarinaOfTimeChild",
-        position: { left: '43%', top: "8.1%" },
+        position: { left: '90%', top: "-62.9%" },
       },
       {
         title: "9 years",
         show: false,
         id: "oot-child-tfw",
-        position: { left: '43%', top: "8.1%" },
+        position: { left: '100%', top: "-68.9%" },
       },
       {
         title: "The Fierce War",
         color: "silver",
         backgroundImage: "theFierceWar",
         show: false,
-        position: { left: '43%', top: "8.1%" },
+        position: { left: '90%', top: "-81.9%" },
       },
       {
         title: "??? (A long time)",
         show: false,
         id: "cotms2-tfw",
-        position: { left: '43%', top: "8.1%" },
+        position: { left: '105%', top: "-87.9%" },
       },
       {
         title: "Creation of the master sword",
         show: false,
         color: "silver",
         backgroundImage: "creationOfTheMasterSword2",
-        position: { left: '90%', top: "-82.9%" },
+        position: { left: '90%', top: "-100.9%" },
       },
       {
         title: "??? (A long time)",
         show: false,
         id: "cotms2-creation2",
-        position: { left: '105%', top: "-89%" },
+        position: { left: '105%', top: "-107%" },
       },
       {
         title: "Creation",
         show: false,
         color: "silver",
         backgroundImage: "creation2",
-        position: { left: '90%', top: "-102.2%" },
+        position: { left: '90%', top: "-120.2%" },
       },
     ],
     animations: [
@@ -602,6 +614,10 @@ export const releases: releasesI[] = [
       { id: "#creationOfTheMasterSword2", action: 'down' },
       { id: "#cotms2-tfw", action: 'down' },
       { id: "#theFierceWar", action: 'down' },
+      { id: "#oot-child-tfw", action: 'down' },
+      { id: "#ocarinaOfTimeChild", action: 'down' },
+      { id: "#oot-adult-oot-child", action: 'down' },
+      { id: "#ocarinaOfTimeAdult", action: 'down' },
     ]
   }
 ];

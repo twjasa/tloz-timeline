@@ -113,13 +113,14 @@ function App() {
 
   const moveElements = async (
     elements: string[],
-    moves: { x: number; y: number }
+    moves: { x: number; y: number; height?: number | string }
   ) => {
     return new Promise<void>((resolve) => {
       anime({
         targets: elements,
         translateX: moves.x,
         translateY: moves.y,
+        height: moves.height,
         easing: "easeOutSine",
         duration: 3000,
         complete: () => resolve(),
@@ -133,8 +134,11 @@ function App() {
     const makeSpace = nextStep.makeSpace;
     if (zoom || makeSpace) {
       await incrementStep();
-      if (makeSpace)
-        await moveElements(makeSpace.ids, { x: makeSpace.x, y: makeSpace.y });
+      if (makeSpace) {
+        makeSpace.forEach(async (space) => {
+          await moveElements(space.ids, { ...space });
+        });
+      }
       if (zoom) {
         await centerWindow(panzoomRef, ZOOM_DURATION, "easeOutCubic", 100, 50);
       }
