@@ -22,7 +22,13 @@ export const TimelinePath = ({
       className={styles.container}
       style={{ opacity: show ? 1 : 0, ...position }}
     >
-      <div className={styles.line} />
+      <div
+        className={
+          orientation === "horizontal"
+            ? styles.horizontalLine
+            : styles.verticalLine
+        }
+      />
       <h1 className={styles.text}>{text}</h1>
     </div>
   );
