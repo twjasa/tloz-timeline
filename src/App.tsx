@@ -122,7 +122,7 @@ function App() {
         translateY: moves.y,
         height: moves.height,
         easing: "easeOutSine",
-        duration: 3000,
+        duration: ZOOM_DURATION,
         complete: () => resolve(),
       });
     });
@@ -135,9 +135,9 @@ function App() {
     if (zoom || makeSpace) {
       await incrementStep();
       if (makeSpace) {
-        makeSpace.forEach(async (space) => {
+        for (const space of makeSpace) {
           await moveElements(space.ids, { ...space });
-        });
+        }
       }
       if (zoom) {
         await centerWindow(panzoomRef, ZOOM_DURATION, "easeOutCubic", 100, 50);

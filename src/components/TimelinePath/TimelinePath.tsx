@@ -1,11 +1,12 @@
 // import React from "react";
-import styles from './timelinePath.module.scss';
+import styles from "./timelinePath.module.scss";
 
 interface TimelinePathProps {
   text: string;
   id: string;
   show: boolean;
   position?: { left: number | string; top: number | string };
+  orientation?: "horizontal" | "vertical";
 }
 
 export const TimelinePath = ({
@@ -13,6 +14,7 @@ export const TimelinePath = ({
   id,
   show,
   position,
+  orientation = "vertical",
 }: TimelinePathProps) => {
   return (
     <div
