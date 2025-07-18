@@ -20,7 +20,7 @@ export const get1986 = (): Array<eraI | connectionI> => [
     title: "The legend of zelda",
     color: "golden",
     backgroundImage: "theLegendOfZelda",
-    backgroundPosition: { left: 2, top: -30 },
+    backgroundPosition: { left: 2, top: 0 },
     show: true,
     position: { left: centerPercentageX, top: "53.4%" }
   },
