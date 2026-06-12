@@ -38,7 +38,8 @@ export const centerWindow = async (
   duration: number = 500,
   easingName: EasingName = "easeInOutQuad",
   paddingBottom: PaddingValue = 0,
-  paddingTop: PaddingValue = 0
+  paddingTop: PaddingValue = 0,
+  signal?: AbortSignal
 ) => {
   const panzoomWindow = document.querySelector("main");
   if (!panzoomWindow || !panzoomRef.current) return;
@@ -121,7 +122,26 @@ export const centerWindow = async (
   const startTime = performance.now();
 
   return new Promise<void>((resolve) => {
+    let cancelled = false;
+
+    const jumpToEnd = () => {
+      cancelled = true;
+      panzoom.zoomAbs(0, 0, targetScale);
+      panzoom.moveTo(targetX, targetY);
+      resolve();
+    };
+
+    if (signal) {
+      if (signal.aborted) {
+        jumpToEnd();
+        return;
+      }
+      signal.addEventListener('abort', jumpToEnd, { once: true });
+    }
+
     function animate(currentTime: number) {
+      if (cancelled) return;
+
       const elapsed = currentTime - startTime;
       const t = Math.min(elapsed / duration, 1);
       const easedT = easingFn(t);
@@ -136,6 +156,7 @@ export const centerWindow = async (
       if (t < 1) {
         requestAnimationFrame(animate);
       } else {
+        if (signal) signal.removeEventListener('abort', jumpToEnd);
         resolve();
       }
     }

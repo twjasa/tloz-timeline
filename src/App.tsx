@@ -33,9 +33,71 @@ function App() {
   const animationRef = useRef<AnimeInstance[]>([]);
   const canceledAnimation = useRef(false);
   const panzoomRef = useRef<any>();
+  const transitionAbortRef = useRef<AbortController | null>(null);
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isTransitioningRef = useRef(false);
+  const currentStepRef = useRef(step);
   const [title, setTitle] = useState(
     `${releases[step].name} - year ${releases[step].year}`
   );
+
+  /**
+   * Completa instantáneamente todas las animaciones activas:
+   * - anime.js (clip-path y moveElements)
+   * - centerWindow (rAF via AbortController)
+   * - setTimeout pendiente para las animaciones secuenciales
+   */
+  const finishAllAnimations = useCallback(() => {
+    // 1. Cancelar timeout pendiente de animaciones secuenciales
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
+    // Asegurar que TODOS los elementos de la animación del paso actual queden visibles
+    // Esto es crucial porque si se skipió antes de que las animaciones comenzaran,
+    // se quedarían invisibles para siempre.
+    const currentStepData = releases[currentStepRef.current];
+    if (currentStepData && currentStepData.animations) {
+      currentStepData.animations.forEach((anim) => {
+        const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+        selectors.forEach(selector => {
+          // El ID puede ser un selector directo (si no tiene '#') o puede que necesite '#'.
+          // En los datos veo cosas como '#aLinkToThePast' y 'ganonInvadesHyrule'.
+          // Si no tiene '#' o '.' asumimos que es un ID.
+          const query = selector.startsWith('#') || selector.startsWith('.') ? selector : `#${selector}`;
+          const el = document.querySelector(query) as HTMLElement;
+          if (el) {
+            if (["up", "down"].includes(anim.action)) {
+              el.style.opacity = '1';
+            }
+            if (clipPathAnimation[anim.action]) {
+              el.style.clipPath = clipPathAnimation[anim.action][1];
+            }
+          }
+        });
+      });
+    }
+
+    // 2. Completar todas las instancias de anime.js al instante
+    canceledAnimation.current = true;
+    animationRef.current.forEach((animation) => {
+      if (animation) {
+        animation.pause();
+        animation.seek(animation.duration);
+      }
+    });
+    canceledAnimation.current = false;
+    animationRef.current = [];
+
+    // 3. Abortar centerWindow (salta al estado final)
+    if (transitionAbortRef.current) {
+      transitionAbortRef.current.abort();
+      transitionAbortRef.current = null;
+    }
+
+    isTransitioningRef.current = false;
+  }, []);
 
   /**
    * Anima un elemento individual usando clip-path con anime.js.
@@ -127,15 +189,29 @@ function App() {
       canceledAnimation.current = false;
       animationRef.current = [];
     }
+    
+    // Clear any existing timeout from previous renders
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
     if (nextRelease.animations.length > 0) {
-      setTimeout(
+      const delay = nextRelease.centerWindow ? ZOOM_DURATION : 0;
+      animationTimeoutRef.current = setTimeout(
         () => {
           runSequentialAnimations(nextRelease.animations, 0);
         },
-        nextRelease.centerWindow ? ZOOM_DURATION : 0
+        delay
       );
     }
     prevStep.current = step;
+
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
   }, [step, runSequentialAnimations]);
 
   /**
@@ -153,7 +229,7 @@ function App() {
     moves: { x: number; y: number; height?: number | string }
   ) => {
     return new Promise<void>((resolve) => {
-      anime({
+      const instance = anime({
         targets: elements,
         translateX: moves.x,
         translateY: moves.y,
@@ -162,6 +238,8 @@ function App() {
         duration: ZOOM_DURATION,
         complete: () => resolve(),
       });
+      // Track it so finishAllAnimations can complete it instantly
+      animationRef.current.push(instance);
     });
   };
 
@@ -169,17 +247,32 @@ function App() {
    * Prepara la escena para el siguiente paso y avanza la timeline.
    *
    * Flujo:
-   * 1. Verifica si el siguiente paso requiere `makeSpace` o `centerWindow`.
-   * 2. Si requiere `makeSpace`, mueve los elementos existentes para hacer espacio.
-   * 3. Si requiere `centerWindow`, re-centra y ajusta el zoom del canvas.
-   * 4. Incrementa el paso (lo que dispara las animaciones de revelado en el `useEffect`).
-   * 5. Actualiza el título con el nombre y año del juego.
+   * 1. Completa instantáneamente todas las animaciones activas del paso anterior.
+   * 2. Verifica si el siguiente paso requiere `makeSpace` o `centerWindow`.
+   * 3. Si requiere `makeSpace`, mueve los elementos existentes para hacer espacio.
+   * 4. Si requiere `centerWindow`, re-centra y ajusta el zoom del canvas.
+   * 5. Incrementa el paso (lo que dispara las animaciones de revelado en el `useEffect`).
+   * 6. Actualiza el título con el nombre y año del juego.
    */
   const setScene = async () => {
-    const nextStep = releases[step + 1];
+    // Si ya estamos en el último paso, no hacemos nada
+    if (currentStepRef.current >= releases.length - 1) return;
+
+    // Completar todas las animaciones pendientes del paso anterior al instante
+    finishAllAnimations();
+
+    const nextStepIdx = currentStepRef.current + 1;
+    const nextStep = releases[nextStepIdx];
+    currentStepRef.current = nextStepIdx; // Update instantly to prevent race conditions on rapid clicks
+
     const zoom = nextStep.centerWindow;
     const makeSpace = nextStep.makeSpace;
+    
     if (zoom || makeSpace) {
+      isTransitioningRef.current = true;
+      const abortController = new AbortController();
+      transitionAbortRef.current = abortController;
+
       await incrementStep();
       if (makeSpace) {
         for (const space of makeSpace) {
@@ -187,12 +280,15 @@ function App() {
         }
       }
       if (zoom) {
-        await centerWindow(panzoomRef, ZOOM_DURATION, "easeOutCubic", 100, 50);
+        await centerWindow(panzoomRef, ZOOM_DURATION, "easeOutCubic", 100, 50, abortController.signal);
       }
+
+      isTransitioningRef.current = false;
+      transitionAbortRef.current = null;
     } else {
       incrementStep();
     }
-    setTitle(`${releases[step + 1].name} - year ${releases[step + 1].year}`);
+    setTitle(`${releases[nextStepIdx].name} - year ${releases[nextStepIdx].year}`);
   };
 
   return (
