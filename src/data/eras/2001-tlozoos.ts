@@ -1,4 +1,4 @@
-import { eraI, connectionI, centerPercentageX } from "../releases";
+import { eraI, connectionI, centerX } from "../releases";
 import { get2000 } from "./2000-tlozmm";
 
 // THE LEGEND OF ZELDA: ORACLE OF SEASONS/AGES
@@ -8,7 +8,7 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "A few months later?",
         show,
         id: "alttp-ooa",
-        position: { left: "43%", top: "-11.1%" },
+        position: { left: 1101, top: 1959 },
         // length: 146,
         orientation: "vertical"
     },
@@ -17,13 +17,13 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         show,
         color: "golden",
         backgroundImage: "oracleOfAges",
-        position: { left: centerPercentageX, top: "-5.2%" },
+        position: { left: centerX, top: 2034 },
     },
     {
         title: "Immediately after",
         show,
         id: "ooa-oos",
-        position: { left: "43%", top: "7.9%" },
+        position: { left: 1101, top: 2200 },
         orientation: "vertical"
     },
     {
@@ -31,13 +31,13 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         show,
         color: "golden",
         backgroundImage: "oracleOfSeasons",
-        position: { left: centerPercentageX, top: "13.8%" },
+        position: { left: centerX, top: 2275 },
     },
     {
         title: "A few months later?",
         show,
         id: "oos-la",
-        position: { left: "43%", top: "26.9%" },
+        position: { left: 1101, top: 2442 },
         orientation: "vertical"
     },
 ]

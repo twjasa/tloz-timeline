@@ -1,5 +1,5 @@
 import { connectionI } from "../debug_releases";
-import { centerPercentageX, eraI } from "../releases";
+import { centerX, eraI } from "../releases";
 
 // THE LEGEND OF ZELDA
 export const get1986 = (show = false): Array<eraI | connectionI> => [
@@ -8,13 +8,13 @@ export const get1986 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: "ganonInvadesHyrule",
     show,
-    position: { left: centerPercentageX, top: "34%" },
+    position: { left: centerX, top: 2532 },
   },
   {
     title: "Immediately after",
     id: "gih-tloz",
     show,
-    position: { left: '43%', top: "47.2%" }
+    position: { left: 1101, top: 2700 }
   },
   {
     title: "The legend of zelda",
@@ -22,6 +22,6 @@ export const get1986 = (show = false): Array<eraI | connectionI> => [
     backgroundImage: "theLegendOfZelda",
     backgroundPosition: { left: 2, top: 0 },
     show,
-    position: { left: centerPercentageX, top: "53.4%" }
+    position: { left: centerX, top: 2779 }
   },
 ]

@@ -15,7 +15,7 @@ import { AnimeInstance } from "animejs";
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
 import { centerWindow } from "./utils/centerWindow";
-import { ZOOM_DURATION } from "./constants/variables.js";
+import { ZOOM_DURATION, CENTER_PADDING, CENTER_EASING } from "./constants/variables.js";
 
 /**
  * Componente principal de la aplicación TLoZ Timeline.
@@ -177,12 +177,38 @@ function App() {
   });
 
   useEffect(() => {
-    panzoomRef.current = createPanZoom(document.querySelector("main")!, {
+    const pz = createPanZoom(document.querySelector("main")!, {
       // bounds: true,
       // boundsPadding: 0.1,
     });
-    // panzoomRef.current.
-    // panzoomRef.current.smoothZoom(800, 1000, 0.5, 1);
+    panzoomRef.current = pz;
+
+    // Calcular y aplicar el transform inicial instantáneamente
+    // para que el contenido se vea centrado desde el primer frame.
+    const main = document.querySelector("main")!;
+    const children = Array.from(main.children) as HTMLElement[];
+    if (children.length > 0) {
+      let minLeft = Infinity, minTop = Infinity, maxRight = -Infinity, maxBottom = -Infinity;
+      for (const child of children) {
+        const left = child.offsetLeft;
+        const top = child.offsetTop;
+        minLeft = Math.min(minLeft, left);
+        minTop = Math.min(minTop, top);
+        maxRight = Math.max(maxRight, left + child.offsetWidth);
+        maxBottom = Math.max(maxBottom, top + child.offsetHeight);
+      }
+      const contentWidth = maxRight - minLeft;
+      const contentHeight = maxBottom - minTop;
+      const padding = CENTER_PADDING;
+      const scale = Math.min(
+        (main.clientWidth - padding * 2) / contentWidth,
+        (main.clientHeight - padding * 2) / contentHeight
+      );
+      const targetX = main.clientWidth / 2 - (minLeft + contentWidth / 2) * scale;
+      const targetY = main.clientHeight / 2 - (minTop + contentHeight / 2) * scale;
+      pz.zoomAbs(0, 0, scale);
+      pz.moveTo(targetX, targetY);
+    }
   }, []);
 
   useEffect(() => {
@@ -289,7 +315,7 @@ function App() {
         }
       }
       if (zoom) {
-        await centerWindow(panzoomRef, ZOOM_DURATION, "easeOutCubic", 100, 50, abortController.signal);
+        await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, CENTER_PADDING, abortController.signal);
       }
 
       isTransitioningRef.current = false;

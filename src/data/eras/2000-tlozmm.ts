@@ -8,7 +8,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: "oot-adult-lwzog-1",
-    position: { left: '122%', top: "-38.1%" },
+    position: { left: 3123, top: 1616 },
     length: 146,
     orientation: "horizontal"
   },
@@ -16,7 +16,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: "oot-adult-lwzog-2",
-    position: { left: '115%', top: "-70.1%" },
+    position: { left: 2944, top: 1209 },
     length: 427,
     orientation: "vertical"
   },
@@ -24,7 +24,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: "oot-adult-lwzog-3",
-    position: { left: '100.67%', top: "-70.1%" },
+    position: { left: 2577, top: 1209 },
     length: 476,
     orientation: "horizontal"
   },
@@ -32,7 +32,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: "oot-adult-lwzog-4",
-    position: { left: '94%', top: "-69.1%" },
+    position: { left: 2406, top: 1222 },
     length: 81,
     orientation: "vertical"
   },
@@ -41,13 +41,13 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: "linkWarnsZeldaOfGanondorf",
-    position: { left: '90%', top: "-63.4%" },
+    position: { left: 2304, top: 1294 },
   },
   {
     title: "Several Months",
     show,
     id: "lwzog-mm",
-    position: { left: '97%', top: "-50.1%" },
+    position: { left: 2483, top: 1463 },
     length: 81,
     orientation: "vertical"
   },
@@ -56,6 +56,6 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "golden",
     backgroundImage: "majorasMask",
-    position: { left: '90%', top: "-44.2%" },
+    position: { left: 2304, top: 1538 },
   },
 ]

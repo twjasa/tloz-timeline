@@ -98,10 +98,10 @@ export const clipPathAnimation: ClipPathAnimation = {
 };
 
 /**
- * Valor CSS `calc()` que centra horizontalmente una era en el canvas,
- * considerando el ancho de la era más los bordes decorativos (12px).
+ * Posición horizontal fija (en px) de la columna principal de eras en el canvas.
+ * Derivada del viewport de desarrollo original: 2560/2 - (eraWidth + 12)/2 = 1009px.
  */
-export const centerPercentageX = `calc(50% - ${(parseInt(styles.eraWidth, 10) + 12) / 2}px)`;
+export const centerX = Math.round(2560 / 2 - (parseInt(styles.eraWidth, 10) + 12) / 2);
 
 /**
  * Array ordenado cronológicamente con todos los pasos de la timeline.
@@ -115,6 +115,7 @@ export const releases: releasesI[] = [
     year: 1986,
     name: "The Legend of Zelda",
     eras: get1986(true),
+    centerWindow: true,
     animations: [
       { id: 'ganonInvadesHyrule', action: 'down' },
       { id: 'gih-tloz', action: 'down' },
@@ -125,6 +126,7 @@ export const releases: releasesI[] = [
     year: 1987,
     name: "Zelda II: The Adventure of Link",
     eras: get1987(),
+    centerWindow: true,
     animations: [
       { id: '#tragedyOfPrincessZeldaI', action: 'down' },
       { id: "#ttopzI-gih", action: 'down' },
