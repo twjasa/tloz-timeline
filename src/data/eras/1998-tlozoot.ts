@@ -16,7 +16,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "7 years",
     show,
     id: "oot-adult-oot-child",
-    position: { left: '100%', top: "-50.9%" },
+    position: { left: '96%', top: "-50.9%" },
   },
   {
     title: "Ocarina of Time (Child)",
@@ -30,7 +30,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "9 years",
     show,
     id: "oot-child-tfw",
-    position: { left: '100%', top: "-69.7%" },
+    position: { left: '96%', top: "-69.7%" },
   },
   {
     title: "The Fierce War",
@@ -43,7 +43,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: "cotms2-tfw",
-    position: { left: '105%', top: "-88.9%" },
+    position: { left: '96%', top: "-88.9%" },
   },
   {
     title: "Creation of the master sword",
@@ -56,7 +56,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: "cotms2-creation2",
-    position: { left: '105%', top: "-107.6%" },
+    position: { left: '96%', top: "-107.6%" },
   },
   {
     title: "Creation",
