@@ -108,13 +108,13 @@ export const releases: releasesI[] = [
   {
     year: 1986,
     name: "The Legend of Zelda",
-    eras: get1986(),
+    eras: get1986(true),
     animations: [
       { id: 'ganonInvadesHyrule', action: 'down' },
       { id: 'gih-tloz', action: 'down' },
       { id: 'theLegendOfZelda', action: 'down' },
     ]
-  },
+  }, // "The Legend of Zelda" 
   {
     year: 1987,
     name: "Zelda II: The Adventure of Link",
@@ -125,7 +125,7 @@ export const releases: releasesI[] = [
       { id: '#tloz-zeldaIItaol', action: 'down' },
       { id: '#zeldaIITAoL', action: 'down' },
     ]
-  },
+  }, // "Zelda II: The Adventure of Link" 
   {
     year: 1991,
     name: "The Legend of Zelda: A Link to the Past",
@@ -143,7 +143,7 @@ export const releases: releasesI[] = [
       { id: '#aLinkToThePast', action: 'down' },
       { id: '#alttp-ttopzI', action: 'down' },
     ]
-  },
+  }, // "The Legend of Zelda: A Link to the Past" 
   {
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
@@ -167,7 +167,7 @@ export const releases: releasesI[] = [
       { id: "#alttp-la", action: 'down' },
       { id: "#linksAwakening", action: 'down' },
     ]
-  },
+  }, // "The Legend of Zelda: Link's Awakening"   
   {
     year: 1998,
     name: "The Legend of Zelda: Ocarina of Time",
@@ -196,7 +196,7 @@ export const releases: releasesI[] = [
       { id: "#oot-adult-oot-child", action: 'down' },
       { id: "#ocarinaOfTimeAdult", action: 'down' },
     ]
-  },
+  }, // "The Legend of Zelda: Ocarina of Time" 
   {
     year: 2000,
     name: "The Legend of Zelda: Majora's Mask",
@@ -219,5 +219,5 @@ export const releases: releasesI[] = [
       { id: "#oot-adult-lwzog", action: 'down' },
       { id: "#linkWarnsZeldaOfGanondorf", action: 'down' },
     ]
-  }
+  } // "The Legend of Zelda: Majora's Mask" 
 ];

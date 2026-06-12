@@ -3,10 +3,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./App.scss";
 import { Era } from "./components/Era/Era";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
-import { clipPathAnimation, releases } from "./data/releases";
+import { clipPathAnimation } from "./data/releases";
+import { releases } from "./data/releases";
 // import {
-//   debug_extratop,
-//   debug_extratop_and_extrabottom,
+//   debug_majoras_mask as releases,
 // } from "./data/debug_releases";
 import anime from "animejs/lib/anime.es.js";
 import useStep from "./hooks/useStep";

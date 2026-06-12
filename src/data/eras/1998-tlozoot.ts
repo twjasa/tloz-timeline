@@ -3,24 +3,24 @@ import { eraI } from "../releases";
 import { get1993 } from "./1993-tlozla";
 
 // THE LEGEND OF ZELDA: Ocarina of Time
-export const get1998 = (): Array<eraI | connectionI> => [
-  ...get1993(),
+export const get1998 = (show = false): Array<eraI | connectionI> => [
+  ...get1993(show),
   {
     title: "Ocarina of Time (Adult)",
-    show: false,
+    show,
     color: "golden",
     backgroundImage: "ocarinaOfTimeAdult",
     position: { left: '90%', top: "-44.2%" },
   },
   {
     title: "7 years",
-    show: false,
+    show,
     id: "oot-adult-oot-child",
     position: { left: '100%', top: "-50.9%" },
   },
   {
     title: "Ocarina of Time (Child)",
-    show: false,
+    show,
     color: "golden",
     backgroundImage: "ocarinaOfTimeChild",
     position: { left: '90%', top: "-63.0652%" },
@@ -28,7 +28,7 @@ export const get1998 = (): Array<eraI | connectionI> => [
   },
   {
     title: "9 years",
-    show: false,
+    show,
     id: "oot-child-tfw",
     position: { left: '100%', top: "-69.7%" },
   },
@@ -36,31 +36,31 @@ export const get1998 = (): Array<eraI | connectionI> => [
     title: "The Fierce War",
     color: "silver",
     backgroundImage: "theFierceWar",
-    show: false,
+    show,
     position: { left: '90%', top: "-82.8%" },
   },
   {
     title: "??? (A long time)",
-    show: false,
+    show,
     id: "cotms2-tfw",
     position: { left: '105%', top: "-88.9%" },
   },
   {
     title: "Creation of the master sword",
-    show: false,
+    show,
     color: "silver",
     backgroundImage: "creationOfTheMasterSword2",
     position: { left: '90%', top: "-100.777%" },
   },
   {
     title: "??? (A long time)",
-    show: false,
+    show,
     id: "cotms2-creation2",
     position: { left: '105%', top: "-107.6%" },
   },
   {
     title: "Creation",
-    show: false,
+    show,
     color: "silver",
     backgroundImage: "creation2",
     position: { left: '90%', top: "-120.15%" },

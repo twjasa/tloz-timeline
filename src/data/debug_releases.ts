@@ -1,11 +1,12 @@
 import styles from '../components/Era/era.module.scss';
+import { get2000 } from './eras/2000-tlozmm';
 export interface releasesI {
   year: number;
   name: string;
   eras: Array<eraI | connectionI>;
   animations: AnimationType[];
   centerWindow?: boolean;
-  makeSpace?: { x: number; y: number; ids: string[]; };
+  makeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[];
 }
 
 export type AnimationType = {
@@ -133,7 +134,7 @@ export const debug_extratop: releasesI[] = [
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
     centerWindow: true,
-    makeSpace: {
+    makeSpace: [{
       x: 0, y: -244.06, ids: [
         '#alttp-la',
         '#aLinkToThePast',
@@ -146,7 +147,7 @@ export const debug_extratop: releasesI[] = [
         '#creation1-cotms',
         '#creation1',
       ]
-    },
+    }],
     eras: [
       {
         title: "Creation",
@@ -355,7 +356,7 @@ export const debug_extratop_and_extrabottom: releasesI[] = [
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
     centerWindow: true,
-    makeSpace: {
+    makeSpace: [{
       x: 0, y: -244.06, ids: [
         '#alttp-la',
         '#aLinkToThePast',
@@ -368,7 +369,7 @@ export const debug_extratop_and_extrabottom: releasesI[] = [
         '#creation1-cotms',
         '#creation1',
       ]
-    },
+    }],
     eras: [
       {
         title: "Creation",
@@ -488,4 +489,30 @@ export const debug_extratop_and_extrabottom: releasesI[] = [
       { id: "#linksAwakening", action: 'down' },
     ]
   }
+];
+
+export const debug_majoras_mask: releasesI[] = [
+  {
+    year: 2000,
+    name: "The Legend of Zelda: Majora's Mask",
+    centerWindow: true,
+    makeSpace: [{
+      x: 800, y: 0, ids: [
+        '#creation2',
+        '#cotms2-creation2',
+        '#creationOfTheMasterSword2',
+        '#cotms2-tfw',
+        '#theFierceWar',
+        '#oot-child-tfw',
+        '#ocarinaOfTimeChild',
+        '#oot-adult-oot-child',
+        '#ocarinaOfTimeAdult',
+      ]
+    }],
+    eras: get2000(true),
+    animations: [
+      { id: "#oot-adult-lwzog", action: 'down' },
+      { id: "#linkWarnsZeldaOfGanondorf", action: 'down' },
+    ]
+  } // "The Legend of Zelda: Majora's Mask" 
 ];
