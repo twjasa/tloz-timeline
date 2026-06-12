@@ -68,11 +68,15 @@ function App() {
           const query = selector.startsWith('#') || selector.startsWith('.') ? selector : `#${selector}`;
           const el = document.querySelector(query) as HTMLElement;
           if (el) {
-            if (["up", "down", "left", "right"].includes(anim.action)) {
-              el.style.opacity = '1';
-            }
-            if (clipPathAnimation[anim.action]) {
-              el.style.clipPath = clipPathAnimation[anim.action][1];
+            if (anim.action === "hide") {
+              el.style.opacity = '0';
+            } else {
+              if (["up", "down", "left", "right"].includes(anim.action)) {
+                el.style.opacity = '1';
+              }
+              if (clipPathAnimation[anim.action]) {
+                el.style.clipPath = clipPathAnimation[anim.action][1];
+              }
             }
           }
         });
@@ -114,19 +118,24 @@ function App() {
       onComplete: () => void
     ) => {
       let props: any = {};
-      if (["up", "down", "left", "right"].includes((element as any).action)) {
+      const action = (element as any).action;
+      
+      if (["up", "down", "left", "right"].includes(action)) {
         props = {
           opacity: [0, 1],
-          // begin: () => {
-          //   const updatedElementId = element.id.slice(1);
-          //   document.getElementById(updatedElementId)!.style.display = 'flex';
-          // },
+        };
+      } else if (action === "hide") {
+        props = {
+          opacity: [1, 0],
         };
       }
+
+      const clipPathValue = clipPathAnimation[clipPathDirection];
+      
       animationRef.current.push(
         anime({
           targets: element.id,
-          clipPath: clipPathAnimation[clipPathDirection],
+          ...(clipPathValue ? { clipPath: clipPathValue } : {}),
           easing: "easeOutSine",
           duration: 1000,
           delay: 100,

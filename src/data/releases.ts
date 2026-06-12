@@ -1,6 +1,7 @@
 import styles from '../components/Era/era.module.scss';
 import { get1986, get1987, get1991, get1993, get1998 } from './eras';
 import { get2000 } from './eras/2000-tlozmm';
+import { get2001 } from './eras/2001-tlozoos';
 
 /**
  * Representa un paso (release/juego) en la secuencia de la timeline.
@@ -229,5 +230,32 @@ export const releases: releasesI[] = [
       { id: "#lwzog-mm", action: 'down' },
       { id: '#majorasMask', action: 'down' }
     ]
-  } // "The Legend of Zelda: Majora's Mask" 
+  }, // "The Legend of Zelda: Majora's Mask" 
+  {
+    year: 2001,
+    name: "The Legend of Zelda: Oracle of Ages/Seasons",
+    centerWindow: true,
+    makeSpace: [{
+      x: 0, y: 485, ids: [
+        "#linksAwakening",
+        "#alttp-ttopzI",
+        "#tragedyOfPrincessZeldaI",
+        "#ttopzI-gih",
+        "#ganonInvadesHyrule",
+        "#theLegendOfZelda",
+        "#gih-tloz",
+        "#zeldaIITAoL",
+        "#tloz-zeldaIItaol"
+      ]
+    }],
+    eras: get2001(),
+    animations: [
+      { id: "#alttp-la", action: 'hide' },
+      { id: "#alttp-ooa", action: 'down' },
+      { id: "#oracleOfAges", action: 'down' },
+      { id: "#ooa-oos", action: 'down' },
+      { id: "#oracleOfSeasons", action: 'down' },
+      { id: "#oos-la", action: "down" }
+    ]
+  }, // "The Legend of Zelda: Oracle of Ages" 
 ];

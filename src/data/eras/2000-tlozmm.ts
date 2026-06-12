@@ -52,7 +52,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     orientation: "vertical"
   },
   {
-    title: "The Legend of Zelda: Majora's Mask",
+    title: "Majora's Mask",
     show,
     color: "golden",
     backgroundImage: "majorasMask",
