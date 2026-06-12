@@ -1,11 +1,11 @@
-import wheel from 'wheel';
-import animate from 'amator';
-import eventify from 'ngraph.events';
-import kinetic from './lib/kinetic.js';
-import createTextSelectionInterceptor from './lib/makeTextSelectionInterceptor.js';
-import Transform from './lib/transform.js';
-import { makeSvgController, isSVGElement } from './lib/makeSvgController.js';
-import {makeDomController, isDomElement} from './lib/makeDomController.js';
+import wheel from "wheel";
+import animate from "amator";
+import eventify from "ngraph.events";
+import kinetic from "./lib/kinetic.js";
+import createTextSelectionInterceptor from "./lib/makeTextSelectionInterceptor.js";
+import Transform from "./lib/transform.js";
+import { makeSvgController, isSVGElement } from "./lib/makeSvgController.js";
+import { makeDomController, isDomElement } from "./lib/makeDomController.js";
 
 var domTextSelectionInterceptor = createTextSelectionInterceptor();
 var fakeTextSelectorInterceptor = createTextSelectionInterceptor(true);
@@ -29,7 +29,7 @@ export default function createPanZoom(domElement, options) {
 
   if (!panController) {
     throw new Error(
-      'Cannot create panzoom for the current type of dom element',
+      "Cannot create panzoom for the current type of dom element"
     );
   }
   var owner = panController.getOwner();
@@ -45,27 +45,27 @@ export default function createPanZoom(domElement, options) {
   }
 
   var filterKey =
-    typeof options.filterKey === 'function' ? options.filterKey : noop;
+    typeof options.filterKey === "function" ? options.filterKey : noop;
   // TODO: likely need to unite pinchSpeed with zoomSpeed
   var pinchSpeed =
-    typeof options.pinchSpeed === 'number' ? options.pinchSpeed : 1;
+    typeof options.pinchSpeed === "number" ? options.pinchSpeed : 1;
   var bounds = options.bounds;
   var maxZoom =
-    typeof options.maxZoom === 'number'
+    typeof options.maxZoom === "number"
       ? options.maxZoom
       : Number.POSITIVE_INFINITY;
-  var minZoom = typeof options.minZoom === 'number' ? options.minZoom : 0;
+  var minZoom = typeof options.minZoom === "number" ? options.minZoom : 0;
 
   var boundsPadding =
-    typeof options.boundsPadding === 'number' ? options.boundsPadding : 0.05;
+    typeof options.boundsPadding === "number" ? options.boundsPadding : 0.05;
   var zoomDoubleClickSpeed =
-    typeof options.zoomDoubleClickSpeed === 'number'
+    typeof options.zoomDoubleClickSpeed === "number"
       ? options.zoomDoubleClickSpeed
       : defaultDoubleTapZoomSpeed;
   var beforeWheel = options.beforeWheel || noop;
   var beforeMouseDown = options.beforeMouseDown || noop;
   var speed =
-    typeof options.zoomSpeed === 'number'
+    typeof options.zoomSpeed === "number"
       ? options.zoomSpeed
       : defaultZoomSpeed;
   var transformOrigin = parseTransformOrigin(options.transformOrigin);
@@ -103,7 +103,7 @@ export default function createPanZoom(domElement, options) {
   var pinchZoomLength;
 
   var smoothScroll;
-  if ('smoothScroll' in options && !options.smoothScroll) {
+  if ("smoothScroll" in options && !options.smoothScroll) {
     // If user explicitly asked us not to use smooth scrolling, we obey
     smoothScroll = rigidScroll();
   } else {
@@ -129,6 +129,7 @@ export default function createPanZoom(domElement, options) {
     zoomTo: publicZoomTo,
     zoomAbs: zoomAbs,
     smoothZoom: smoothZoom,
+    smoothZoomCenter: smoothZoomCenter,
     smoothZoomAbs: smoothZoomAbs,
     showRectangle: showRectangle,
 
@@ -154,11 +155,11 @@ export default function createPanZoom(domElement, options) {
   eventify(api);
 
   var initialX =
-    typeof options.initialX === 'number' ? options.initialX : transform.x;
+    typeof options.initialX === "number" ? options.initialX : transform.x;
   var initialY =
-    typeof options.initialY === 'number' ? options.initialY : transform.y;
+    typeof options.initialY === "number" ? options.initialY : transform.y;
   var initialZoom =
-    typeof options.initialZoom === 'number'
+    typeof options.initialZoom === "number"
       ? options.initialZoom
       : transform.scale;
 
@@ -196,7 +197,7 @@ export default function createPanZoom(domElement, options) {
     var rectWidth = rect.right - rect.left;
     var rectHeight = rect.bottom - rect.top;
     if (!Number.isFinite(rectWidth) || !Number.isFinite(rectHeight)) {
-      throw new Error('Invalid rectangle');
+      throw new Error("Invalid rectangle");
     }
 
     var dw = size.x / rectWidth;
@@ -291,7 +292,7 @@ export default function createPanZoom(domElement, options) {
 
   function setZoomSpeed(newSpeed) {
     if (!Number.isFinite(newSpeed)) {
-      throw new Error('Zoom speed should be a number');
+      throw new Error("Zoom speed should be a number");
     }
     speed = newSpeed;
   }
@@ -309,7 +310,7 @@ export default function createPanZoom(domElement, options) {
 
     keepTransformInsideBounds();
 
-    triggerEvent('pan');
+    triggerEvent("pan");
     makeDirty();
   }
 
@@ -361,7 +362,7 @@ export default function createPanZoom(domElement, options) {
   function getBoundingBox() {
     if (!bounds) return; // client does not want to restrict movement
 
-    if (typeof bounds === 'boolean') {
+    if (typeof bounds === "boolean") {
       // for boolean type we use parent container bounds
       var ownerRect = owner.getBoundingClientRect();
       var sceneWidth = ownerRect.width;
@@ -404,7 +405,7 @@ export default function createPanZoom(domElement, options) {
 
   function zoomByRatio(clientX, clientY, ratio) {
     if (isNaN(clientX) || isNaN(clientY) || isNaN(ratio)) {
-      throw new Error('zoom requires valid numbers');
+      throw new Error("zoom requires valid numbers");
     }
 
     var newScale = transform.scale * ratio;
@@ -434,7 +435,7 @@ export default function createPanZoom(domElement, options) {
       if (!transformAdjusted) transform.scale *= ratio;
     }
 
-    triggerEvent('zoom');
+    triggerEvent("zoom");
 
     makeDirty();
   }
@@ -447,7 +448,7 @@ export default function createPanZoom(domElement, options) {
   function centerOn(ui) {
     var parent = ui.ownerSVGElement;
     if (!parent)
-      throw new Error('ui element is required to be within the scene');
+      throw new Error("ui element is required to be within the scene");
 
     // TODO: should i use controller's screen CTM?
     var clientRect = ui.getBoundingClientRect();
@@ -462,7 +463,7 @@ export default function createPanZoom(domElement, options) {
   }
 
   function smoothMoveTo(x, y, duration = 0.4) {
-    const newDuration = duration * 1000
+    const newDuration = duration * 1000;
     internalMoveBy(x - transform.x, y - transform.y, true, newDuration);
   }
 
@@ -499,10 +500,10 @@ export default function createPanZoom(domElement, options) {
   }
 
   function listenForEvents() {
-    owner.addEventListener('mousedown', onMouseDown, { passive: false });
-    owner.addEventListener('dblclick', onDoubleClick, { passive: false });
-    owner.addEventListener('touchstart', onTouch, { passive: false });
-    owner.addEventListener('keydown', onKeyDown, { passive: false });
+    owner.addEventListener("mousedown", onMouseDown, { passive: false });
+    owner.addEventListener("dblclick", onDoubleClick, { passive: false });
+    owner.addEventListener("touchstart", onTouch, { passive: false });
+    owner.addEventListener("keydown", onKeyDown, { passive: false });
 
     // Need to listen on the owner container, so that we are not limited
     // by the size of the scrollable domElement
@@ -513,10 +514,10 @@ export default function createPanZoom(domElement, options) {
 
   function releaseEvents() {
     wheel.removeWheelListener(owner, onMouseWheel);
-    owner.removeEventListener('mousedown', onMouseDown);
-    owner.removeEventListener('keydown', onKeyDown);
-    owner.removeEventListener('dblclick', onDoubleClick);
-    owner.removeEventListener('touchstart', onTouch);
+    owner.removeEventListener("mousedown", onMouseDown);
+    owner.removeEventListener("keydown", onKeyDown);
+    owner.removeEventListener("dblclick", onDoubleClick);
+    owner.removeEventListener("touchstart", onTouch);
 
     if (frameAnimation) {
       window.cancelAnimationFrame(frameAnimation);
@@ -542,7 +543,7 @@ export default function createPanZoom(domElement, options) {
     // TODO: Should I allow to cancel this?
     panController.applyTransform(transform);
 
-    triggerEvent('transform');
+    triggerEvent("transform");
     frameAnimation = 0;
   }
 
@@ -588,6 +589,7 @@ export default function createPanZoom(domElement, options) {
 
     if (z) {
       var scaleMultiplier = getScaleMultiplier(z * 100);
+      // eslint-disable-next-line no-redeclare
       var offset = transformOrigin ? getTransformOriginOffset() : midPoint();
       publicZoomTo(offset.x, offset.y, scaleMultiplier);
     }
@@ -664,9 +666,9 @@ export default function createPanZoom(domElement, options) {
     }
 
     touchInProgress = true;
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', handleTouchEnd);
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
+    document.addEventListener("touchcancel", handleTouchEnd);
   }
 
   function handleTouchMove(e) {
@@ -703,6 +705,7 @@ export default function createPanZoom(domElement, options) {
       mouseX = (firstTouchPoint.x + secondTouchPoint.x) / 2;
       mouseY = (firstTouchPoint.y + secondTouchPoint.y) / 2;
       if (transformOrigin) {
+        // eslint-disable-next-line no-redeclare
         var offset = getTransformOriginOffset();
         mouseX = offset.x;
         mouseY = offset.y;
@@ -742,7 +745,7 @@ export default function createPanZoom(domElement, options) {
   function handleTouchEnd(e) {
     clearPendingClickEventTimeout();
     if (e.touches.length > 0) {
-      var offset = getOffsetXY(e.touches[0]);
+      // var offset = getOffsetXY(e.touches[0]);
       var point = transformToScreen(offset.x, offset.y);
       mouseX = point.x;
       mouseY = point.y;
@@ -758,7 +761,7 @@ export default function createPanZoom(domElement, options) {
           smoothZoom(
             lastSingleFingerOffset.x,
             lastSingleFingerOffset.y,
-            zoomDoubleClickSpeed,
+            zoomDoubleClickSpeed
           );
         }
       } else if (now - lastTouchStartTime < clickEventTimeInMS) {
@@ -780,13 +783,13 @@ export default function createPanZoom(domElement, options) {
 
   function onDoubleClick(e) {
     beforeDoubleClick(e);
-    var offset = getOffsetXY(e);
+    // const offset = getOffsetXY(e);
     if (transformOrigin) {
       // TODO: looks like this is duplicated in the file.
       // Need to refactor
-      offset = getTransformOriginOffset();
+      getTransformOriginOffset();
     }
-    smoothZoom(offset.x, offset.y, zoomDoubleClickSpeed);
+    // smoothZoom(offset.x, offset.y, zoomDoubleClickSpeed);
   }
 
   function onMouseDown(e) {
@@ -819,8 +822,8 @@ export default function createPanZoom(domElement, options) {
 
     // We need to listen on document itself, since mouse can go outside of the
     // window, and we will loose it
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
     textSelection.capture(e.target || e.srcElement);
 
     return false;
@@ -853,15 +856,15 @@ export default function createPanZoom(domElement, options) {
   }
 
   function releaseDocumentMouse() {
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+    document.removeEventListener("mousemove", onMouseMove);
+    document.removeEventListener("mouseup", onMouseUp);
     panstartFired = false;
   }
 
   function releaseTouches() {
-    document.removeEventListener('touchmove', handleTouchMove);
-    document.removeEventListener('touchend', handleTouchEnd);
-    document.removeEventListener('touchcancel', handleTouchEnd);
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+    document.removeEventListener("touchcancel", handleTouchEnd);
     panstartFired = false;
     multiTouch = false;
     touchInProgress = false;
@@ -898,7 +901,7 @@ export default function createPanZoom(domElement, options) {
   }
 
   function smoothZoom(clientX, clientY, scaleMultiplier, duration = 0.4) {
-    const newDuration = duration * 1000
+    const newDuration = duration * 1000;
     var fromValue = transform.scale;
     var from = { scale: fromValue };
     var to = { scale: scaleMultiplier * fromValue };
@@ -915,7 +918,59 @@ export default function createPanZoom(domElement, options) {
     });
   }
 
-  function smoothZoomAbs(clientX, clientY, toScaleValue) {
+  function smoothZoomCenter(clientX, clientY, scaleMultiplier, duration = 0.4) {
+    const newDuration = duration * 1000;
+    var fromValue = transform.scale;
+    var from = { scale: fromValue };
+    var to = { scale: scaleMultiplier * fromValue };
+    smoothScroll.cancel();
+    cancelZoomAnimation();
+    ////
+
+    zoomToAnimation = animate(from, to, {
+      step: function (v) {
+        var ratio = v.scale / transform.scale;
+
+        if (isNaN(clientX) || isNaN(clientY) || isNaN(ratio)) {
+          throw new Error("zoom requires valid numbers");
+        }
+
+        var newScale = transform.scale * ratio;
+
+        if (newScale < minZoom) {
+          if (transform.scale === minZoom) return;
+
+          ratio = minZoom / transform.scale;
+        }
+        if (newScale > maxZoom) {
+          if (transform.scale === maxZoom) return;
+
+          ratio = maxZoom / transform.scale;
+        }
+
+        var size = transformToScreen(clientX, clientY);
+        // transform.x = size.x - transform.x;
+        // transform.y = size.y - transform.y;
+        transform.x = size.x - ratio * (size.x - transform.x);
+        transform.y = size.y - ratio * (size.y - transform.y);
+        if (bounds && boundsPadding === 1 && minZoom === 1) {
+          transform.scale *= ratio;
+          keepTransformInsideBounds();
+        } else {
+          var transformAdjusted = keepTransformInsideBounds();
+          if (!transformAdjusted) transform.scale *= ratio;
+        }
+
+        triggerEvent("zoom");
+
+        makeDirty();
+      },
+      done: triggerZoomEnd,
+      duration: newDuration,
+    });
+  }
+
+  function smoothZoomAbs(clientX, clientY, toScaleValue, duration = 0.4) {
     var fromValue = transform.scale;
     var from = { scale: fromValue };
     var to = { scale: toScaleValue };
@@ -927,6 +982,7 @@ export default function createPanZoom(domElement, options) {
       step: function (v) {
         zoomAbs(clientX, clientY, v.scale);
       },
+      duration: duration * 1000,
     });
   }
 
@@ -959,7 +1015,7 @@ export default function createPanZoom(domElement, options) {
 
   function triggerPanStart() {
     if (!panstartFired) {
-      triggerEvent('panstart');
+      triggerEvent("panstart");
       panstartFired = true;
       smoothScroll.start();
     }
@@ -969,12 +1025,12 @@ export default function createPanZoom(domElement, options) {
     if (panstartFired) {
       // we should never run smooth scrolling if it was multiTouch (pinch zoom animation):
       if (!multiTouch) smoothScroll.stop();
-      triggerEvent('panend');
+      triggerEvent("panend");
     }
   }
 
   function triggerZoomEnd() {
-    triggerEvent('zoomend');
+    triggerEvent("zoomend");
   }
 
   function triggerEvent(name) {
@@ -984,7 +1040,7 @@ export default function createPanZoom(domElement, options) {
 
 function parseTransformOrigin(options) {
   if (!options) return;
-  if (typeof options === 'object') {
+  if (typeof options === "object") {
     if (!isNumber(options.x) || !isNumber(options.y))
       failTransformOrigin(options);
     return options;
@@ -997,12 +1053,12 @@ function failTransformOrigin(options) {
   console.error(options);
   throw new Error(
     [
-      'Cannot parse transform origin.',
-      'Some good examples:',
+      "Cannot parse transform origin.",
+      "Some good examples:",
       '  "center center" can be achieved with {x: 0.5, y: 0.5}',
       '  "top center" can be achieved with {x: 0.5, y: 0}',
       '  "bottom right" can be achieved with {x: 1, y: 1}',
-    ].join('\n'),
+    ].join("\n")
   );
 }
 
@@ -1010,7 +1066,7 @@ function noop() {}
 
 function validateBounds(bounds) {
   var boundsType = typeof bounds;
-  if (boundsType === 'undefined' || boundsType === 'boolean') return; // this is okay
+  if (boundsType === "undefined" || boundsType === "boolean") return; // this is okay
   // otherwise need to be more thorough:
   var validBounds =
     isNumber(bounds.left) &&
@@ -1020,8 +1076,8 @@ function validateBounds(bounds) {
 
   if (!validBounds)
     throw new Error(
-      'Bounds object is not valid. It can be: ' +
-        'undefined, boolean (true|false) or an object {left, top, right, bottom}',
+      "Bounds object is not valid. It can be: " +
+        "undefined, boolean (true|false) or an object {left, top, right, bottom}"
     );
 }
 
@@ -1045,4 +1101,3 @@ function rigidScroll() {
     cancel: noop,
   };
 }
-

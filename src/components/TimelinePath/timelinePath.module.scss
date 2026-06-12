@@ -1,15 +1,23 @@
-@import '/src/theme/colors.scss';
+@import "/src/theme/colors.scss";
 
 .container {
   display: flex;
-  height: 100%;
-  width: auto;
+  // height: 100%;
+  width: 321px;
+  position: fixed;
   justify-content: center;
 }
 
-.line {
+.verticalLine {
   height: auto;
   width: 20px;
+  background-color: black;
+  margin-right: 20px;
+}
+
+.horizontalLine {
+  height: 20px;
+  width: auto;
   background-color: black;
   margin-right: 20px;
 }
@@ -17,5 +25,5 @@
 .text {
   font-size: xx-large;
   text-shadow: black 3px 3px 2px;
-  font-family: Impact
+  font-family: Impact;
 }
