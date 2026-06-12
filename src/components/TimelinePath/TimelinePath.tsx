@@ -16,6 +16,7 @@ interface TimelinePathProps {
   show: boolean;
   position?: { left: number | string; top: number | string };
   orientation?: "horizontal" | "vertical";
+  length?: number | string;
 }
 
 /**
@@ -30,12 +31,25 @@ export const TimelinePath = ({
   show,
   position,
   orientation = "vertical",
+  length,
 }: TimelinePathProps) => {
+  const containerStyle = {
+    opacity: show ? 1 : 0,
+    ...position,
+    ...(orientation === "horizontal" && length ? { width: length, justifyContent: "flex-start" } : {}),
+    ...(orientation === "vertical" && length ? { height: length } : {}),
+  };
+
+  const lineStyle = {
+    ...(orientation === "horizontal" && length ? { width: "100%", height: 20 } : {}),
+    ...(orientation === "vertical" && length ? { height: "100%", width: 20 } : {}),
+  };
+
   return (
     <div
       id={id}
       className={styles.container}
-      style={{ opacity: show ? 1 : 0, ...position }}
+      style={containerStyle}
     >
       <div
         className={
@@ -43,6 +57,7 @@ export const TimelinePath = ({
             ? styles.horizontalLine
             : styles.verticalLine
         }
+        style={lineStyle}
       />
       <h1 className={styles.text}>{text}</h1>
     </div>

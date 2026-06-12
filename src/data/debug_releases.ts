@@ -14,6 +14,8 @@ export type AnimationType = {
   action?:
   "up" |
   "down" |
+  "left" |
+  "right" |
   "zoom" |
   "hide" |
   "translateY" |
@@ -26,6 +28,8 @@ export interface connectionI {
   id: string;
   show: boolean;
   position?: { left: string | number; top: string | number; };
+  orientation?: "horizontal" | "vertical";
+  length?: number | string;
 }
 
 export interface eraI {
@@ -42,7 +46,9 @@ type ClipPathAnimation = {
 
 export const clipPathAnimation: ClipPathAnimation = {
   down: ['polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'],
-  up: ['polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)']
+  up: ['polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'],
+  right: ['polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'],
+  left: ['polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)']
 };
 
 const centerPercentageX = `calc(50% - ${(parseInt(styles.eraWidth, 10) + 12) / 2}px)`;

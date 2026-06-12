@@ -68,7 +68,7 @@ function App() {
           const query = selector.startsWith('#') || selector.startsWith('.') ? selector : `#${selector}`;
           const el = document.querySelector(query) as HTMLElement;
           if (el) {
-            if (["up", "down"].includes(anim.action)) {
+            if (["up", "down", "left", "right"].includes(anim.action)) {
               el.style.opacity = '1';
             }
             if (clipPathAnimation[anim.action]) {
@@ -103,7 +103,7 @@ function App() {
    * Anima un elemento individual usando clip-path con anime.js.
    *
    * @param element - Elemento DOM a animar. Debe tener un `id` y una propiedad `action`.
-   * @param clipPathDirection - Dirección de la animación (`"up"` o `"down"`).
+   * @param clipPathDirection - Dirección de la animación (`"up"`, `"down"`, `"left"`, o `"right"`).
    * @param onComplete - Callback que se ejecuta al completar la animación
    *   (solo si no fue cancelada por un cambio de paso).
    */
@@ -114,7 +114,7 @@ function App() {
       onComplete: () => void
     ) => {
       let props: any = {};
-      if (["up", "down"].includes((element as any).action)) {
+      if (["up", "down", "left", "right"].includes((element as any).action)) {
         props = {
           opacity: [0, 1],
           // begin: () => {

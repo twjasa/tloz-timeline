@@ -26,6 +26,8 @@ export interface releasesI {
     action:
     "up" |
     "down" |
+    "left" |
+    "right" |
     "zoom" |
     "hide" |
     "translateY" |
@@ -51,6 +53,7 @@ export interface connectionI {
   show: boolean;
   position?: { left: string | number; top: string | number; };
   orientation?: "horizontal" | "vertical";
+  length?: number | string;
 }
 
 /**
@@ -88,7 +91,9 @@ type ClipPathAnimation = {
  */
 export const clipPathAnimation: ClipPathAnimation = {
   down: ['polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'],
-  up: ['polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)']
+  up: ['polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'],
+  right: ['polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'],
+  left: ['polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)']
 };
 
 /**
@@ -216,8 +221,13 @@ export const releases: releasesI[] = [
     }],
     eras: get2000(),
     animations: [
-      { id: "#oot-adult-lwzog", action: 'down' },
+      { id: "#oot-adult-lwzog-1", action: 'left' },
+      { id: "#oot-adult-lwzog-2", action: 'up' },
+      { id: "#oot-adult-lwzog-3", action: 'left' },
+      { id: "#oot-adult-lwzog-4", action: 'down' },
       { id: "#linkWarnsZeldaOfGanondorf", action: 'down' },
+      { id: "#lwzog-mm", action: 'down' },
+      { id: '#majorasMask', action: 'down' }
     ]
   } // "The Legend of Zelda: Majora's Mask" 
 ];
