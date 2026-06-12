@@ -1,4 +1,14 @@
-// Helper function to parse CSS transform matrix
+/**
+ * Parsea una cadena de transformación CSS y extrae los valores de traslación y escala.
+ *
+ * Soporta dos formatos:
+ * - `matrix(a, b, c, d, tx, ty)` — extrae translateX (tx), translateY (ty) y
+ *   calcula la escala a partir de los componentes a y b.
+ * - Funciones individuales (`translate()`, `translateX()`, `translateY()`, `scale()`)
+ *
+ * @param transform - Cadena CSS de la propiedad `transform` (ej. `"matrix(1, 0, 0, 1, 100, 200)"`)
+ * @returns Objeto con `translateX`, `translateY` y `scale`. Devuelve `{0, 0, 1}` si la cadena es vacía o `"none"`.
+ */
 export const parseTransformMatrix = (transform: string): { translateX: number; translateY: number; scale: number; } => {
   if (!transform || transform === 'none') {
     return { translateX: 0, translateY: 0, scale: 1 };

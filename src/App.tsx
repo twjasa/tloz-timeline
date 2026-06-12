@@ -17,6 +17,16 @@ import createPanZoom from "./panzoom/index.js";
 import { centerWindow } from "./utils/centerWindow";
 import { ZOOM_DURATION } from "./constants/variables.js";
 
+/**
+ * Componente principal de la aplicación TLoZ Timeline.
+ *
+ * Orquesta toda la experiencia interactiva:
+ * - Renderiza las eras y conexiones del paso actual.
+ * - Controla la navegación entre pasos (botones ← →).
+ * - Ejecuta animaciones secuenciales de clip-path al avanzar.
+ * - Gestiona el pan/zoom del canvas mediante la librería panzoom.
+ * - Re-centra y ajusta la vista automáticamente cuando un paso lo requiere.
+ */
 function App() {
   const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
   const prevStep = useRef(step);
@@ -27,6 +37,14 @@ function App() {
     `${releases[step].name} - year ${releases[step].year}`
   );
 
+  /**
+   * Anima un elemento individual usando clip-path con anime.js.
+   *
+   * @param element - Elemento DOM a animar. Debe tener un `id` y una propiedad `action`.
+   * @param clipPathDirection - Dirección de la animación (`"up"` o `"down"`).
+   * @param onComplete - Callback que se ejecuta al completar la animación
+   *   (solo si no fue cancelada por un cambio de paso).
+   */
   const animateElement = useCallback(
     (
       element: HTMLElement,
@@ -60,6 +78,15 @@ function App() {
     []
   );
 
+  /**
+   * Ejecuta animaciones de revelado de forma secuencial (una tras otra).
+   *
+   * Procesa el array de elementos de animación recursivamente: al completar
+   * la animación de un elemento, inicia la del siguiente.
+   *
+   * @param elements - Array de elementos del DOM a animar secuencialmente.
+   * @param index - Índice del elemento actual en la secuencia.
+   */
   const runSequentialAnimations = useMemo(() => {
     return (elements: any[], index: number) => {
       if (index < elements.length) {
@@ -111,6 +138,16 @@ function App() {
     prevStep.current = step;
   }, [step, runSequentialAnimations]);
 
+  /**
+   * Mueve un conjunto de elementos a una nueva posición con animación.
+   *
+   * Se usa antes de revelar nuevas eras para "hacer espacio" en el canvas,
+   * desplazando los elementos existentes.
+   *
+   * @param elements - Array de selectores CSS de los elementos a mover.
+   * @param moves - Objeto con los valores de desplazamiento: `x`, `y`, y opcionalmente `height`.
+   * @returns Promesa que se resuelve al completar la animación.
+   */
   const moveElements = async (
     elements: string[],
     moves: { x: number; y: number; height?: number | string }
@@ -128,6 +165,16 @@ function App() {
     });
   };
 
+  /**
+   * Prepara la escena para el siguiente paso y avanza la timeline.
+   *
+   * Flujo:
+   * 1. Verifica si el siguiente paso requiere `makeSpace` o `centerWindow`.
+   * 2. Si requiere `makeSpace`, mueve los elementos existentes para hacer espacio.
+   * 3. Si requiere `centerWindow`, re-centra y ajusta el zoom del canvas.
+   * 4. Incrementa el paso (lo que dispara las animaciones de revelado en el `useEffect`).
+   * 5. Actualiza el título con el nombre y año del juego.
+   */
   const setScene = async () => {
     const nextStep = releases[step + 1];
     const zoom = nextStep.centerWindow;

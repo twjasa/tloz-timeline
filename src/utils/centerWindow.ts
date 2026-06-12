@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { parseTransformMatrix } from './transformUtils';
 
+/**
+ * Funciones de easing disponibles para las animaciones de centrado.
+ * El parámetro `t` va de 0 a 1 y devuelve un valor interpolado.
+ */
 const easings = {
   linear: (t: number) => t,
   easeInQuad: (t: number) => t * t,
@@ -14,6 +18,21 @@ const easings = {
 type EasingName = keyof typeof easings;
 type PaddingValue = number | `${number}%`;
 
+/**
+ * Centra y ajusta el zoom del canvas `<main>` para que todo su contenido sea visible.
+ *
+ * Calcula el bounding box de todos los hijos del contenedor (incluyendo
+ * sus transformaciones CSS), determina la escala y posición óptimas para
+ * enmarcar el contenido en la ventana, y anima suavemente la transición
+ * usando `requestAnimationFrame` con easing personalizado.
+ *
+ * @param panzoomRef - Ref al objeto panzoom que controla el canvas.
+ * @param duration - Duración de la animación en milisegundos. Por defecto `500`.
+ * @param easingName - Nombre de la función de easing a usar. Por defecto `"easeInOutQuad"`.
+ * @param paddingBottom - Padding inferior en píxeles o porcentaje (ej. `100` o `"10%"`).
+ * @param paddingTop - Padding superior en píxeles o porcentaje.
+ * @returns Promesa que se resuelve cuando la animación termina.
+ */
 export const centerWindow = async (
   panzoomRef: any,
   duration: number = 500,
