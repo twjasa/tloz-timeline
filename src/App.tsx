@@ -199,13 +199,13 @@ function App() {
       }
       const contentWidth = maxRight - minLeft;
       const contentHeight = maxBottom - minTop;
-      const padding = CENTER_PADDING;
+      const p = CENTER_PADDING;
       const scale = Math.min(
-        (main.clientWidth - padding * 2) / contentWidth,
-        (main.clientHeight - padding * 2) / contentHeight
+        (main.clientWidth - p.left - p.right) / contentWidth,
+        (main.clientHeight - p.top - p.bottom) / contentHeight
       );
-      const targetX = main.clientWidth / 2 - (minLeft + contentWidth / 2) * scale;
-      const targetY = main.clientHeight / 2 - (minTop + contentHeight / 2) * scale;
+      const targetX = p.left + (main.clientWidth - p.left - p.right) / 2 - (minLeft + contentWidth / 2) * scale;
+      const targetY = p.top + (main.clientHeight - p.top - p.bottom) / 2 - (minTop + contentHeight / 2) * scale;
       pz.zoomAbs(0, 0, scale);
       pz.moveTo(targetX, targetY);
     }
@@ -309,13 +309,13 @@ function App() {
       transitionAbortRef.current = abortController;
 
       await incrementStep();
+      if (zoom) {
+        await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, makeSpace);
+      }
       if (makeSpace) {
         for (const space of makeSpace) {
           await moveElements(space.ids, { ...space });
         }
-      }
-      if (zoom) {
-        await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, CENTER_PADDING, abortController.signal);
       }
 
       isTransitioningRef.current = false;

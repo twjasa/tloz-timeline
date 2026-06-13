@@ -16,7 +16,6 @@ const easings = {
 };
 
 type EasingName = keyof typeof easings;
-type PaddingValue = number | `${number}%`;
 
 /**
  * Centra y ajusta el zoom del canvas `<main>` para que todo su contenido sea visible.
@@ -29,17 +28,18 @@ type PaddingValue = number | `${number}%`;
  * @param panzoomRef - Ref al objeto panzoom que controla el canvas.
  * @param duration - Duración de la animación en milisegundos. Por defecto `500`.
  * @param easingName - Nombre de la función de easing a usar. Por defecto `"easeInOutQuad"`.
- * @param paddingBottom - Padding inferior en píxeles o porcentaje (ej. `100` o `"10%"`).
- * @param paddingTop - Padding superior en píxeles o porcentaje.
+ * @param padding - Padding en píxeles para cada borde `{ top, right, bottom, left }`.
+ * @param signal - AbortSignal para cancelar la animación.
+ * @param pendingMakeSpace - Datos de makeSpace pendiente para pre-calcular posiciones finales.
  * @returns Promesa que se resuelve cuando la animación termina.
  */
 export const centerWindow = async (
   panzoomRef: any,
   duration: number = 500,
   easingName: EasingName = "easeInOutQuad",
-  paddingBottom: PaddingValue = 0,
-  paddingTop: PaddingValue = 0,
-  signal?: AbortSignal
+  padding: { top: number; right: number; bottom: number; left: number } = { top: 0, right: 0, bottom: 0, left: 0 },
+  signal?: AbortSignal,
+  pendingMakeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[]
 ) => {
   const panzoomWindow = document.querySelector("main");
   if (!panzoomWindow || !panzoomRef.current) return;
@@ -47,21 +47,16 @@ export const centerWindow = async (
   const children = Array.from(panzoomWindow.children) as HTMLElement[];
   if (children.length === 0) return;
 
-  // Calcular padding en píxeles (sea número o porcentaje)
-  let paddingBottomPx = 0;
-  if (typeof paddingBottom === "string" && paddingBottom.endsWith("%")) {
-    const percent = parseFloat(paddingBottom);
-    paddingBottomPx = (panzoomWindow.clientHeight * percent) / 100;
-  } else if (typeof paddingBottom === "number") {
-    paddingBottomPx = paddingBottom;
-  }
-
-  let paddingTopPx = 0;
-  if (typeof paddingTop === "string" && paddingTop.endsWith("%")) {
-    const percent = parseFloat(paddingTop);
-    paddingTopPx = (panzoomWindow.clientHeight * percent) / 100;
-  } else if (typeof paddingTop === "number") {
-    paddingTopPx = paddingTop;
+  // Pre-calcular los offsets de makeSpace por ID para O(1) lookup
+  const makeSpaceOffsets = new Map<string, { x: number; y: number }>();
+  if (pendingMakeSpace) {
+    for (const space of pendingMakeSpace) {
+      for (const id of space.ids) {
+        // Normalizar: quitar '#' si existe para comparar con el id del DOM
+        const cleanId = id.startsWith('#') ? id.slice(1) : id;
+        makeSpaceOffsets.set(cleanId, { x: space.x, y: space.y });
+      }
+    }
   }
 
   let minLeft = Infinity,
@@ -79,9 +74,15 @@ export const centerWindow = async (
     const transform = computedStyle.transform;
     const { translateX, translateY, scale } = parseTransformMatrix(transform);
 
+    // Si hay un offset de makeSpace pendiente, anime.js REEMPLAZARÁ el transform actual
+    // con este nuevo valor (no se suman).
+    const msOffset = makeSpaceOffsets.get(child.id);
+    const finalTranslateX = msOffset ? msOffset.x : translateX;
+    const finalTranslateY = msOffset ? msOffset.y : translateY;
+
     // Apply transform to the base position
-    const left = baseLeft + translateX;
-    const top = baseTop + translateY;
+    const left = baseLeft + finalTranslateX;
+    const top = baseTop + finalTranslateY;
     const right = left + (child.offsetWidth * scale);
     const bottom = top + (child.offsetHeight * scale);
 
@@ -98,15 +99,15 @@ export const centerWindow = async (
   const containerHeight = panzoomWindow.clientHeight;
 
   const targetScale = Math.min(
-    containerWidth / contentWidth,
-    (containerHeight - paddingBottomPx - paddingTopPx) / contentHeight
+    (containerWidth - padding.left - padding.right) / contentWidth,
+    (containerHeight - padding.top - padding.bottom) / contentHeight
   );
 
   const contentCenterX = minLeft + contentWidth / 2;
   const contentCenterY = minTop + contentHeight / 2;
 
-  const viewportCenterX = containerWidth / 2;
-  const viewportCenterY = paddingTopPx + (containerHeight - paddingBottomPx - paddingTopPx) / 2;
+  const viewportCenterX = padding.left + (containerWidth - padding.left - padding.right) / 2;
+  const viewportCenterY = padding.top + (containerHeight - padding.top - padding.bottom) / 2;
 
   const targetX = viewportCenterX - contentCenterX * targetScale;
   const targetY = viewportCenterY - contentCenterY * targetScale;

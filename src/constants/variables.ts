@@ -20,8 +20,13 @@ export const REFERENCE_VIEWPORT_WIDTH = 2560;
 export const REFERENCE_VIEWPORT_HEIGHT = 1271;
 
 // ─── Centrado: Padding al centrar la vista ──────────────────────────────────
-/** Padding uniforme (px) que se aplica en los 4 bordes al centrar la vista con centerWindow. */
-export const CENTER_PADDING = 100;
+/** Padding (px) que se aplica en cada borde al centrar la vista con centerWindow. */
+export const CENTER_PADDING = {
+  top: 20,
+  right: 100,
+  bottom: 100,
+  left: 100,
+};
 
 // ─── Animaciones ────────────────────────────────────────────────────────────
 /** Duración (ms) de la animación de zoom/centrado al cambiar de paso. */
