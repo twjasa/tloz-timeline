@@ -210,7 +210,7 @@ export const releases: releasesI[] = [
     name: "The Legend of Zelda: Majora's Mask",
     centerWindow: true,
     makeSpace: [{
-      x: 1203, y: 0, ids: [
+      x: 300, y: 0, ids: [
         '#creation2',
         '#cotms2-creation2',
         '#creationOfTheMasterSword2',

@@ -22,7 +22,7 @@ export const REFERENCE_VIEWPORT_HEIGHT = 1271;
 // ─── Centrado: Padding al centrar la vista ──────────────────────────────────
 /** Padding (px) que se aplica en cada borde al centrar la vista con centerWindow. */
 export const CENTER_PADDING = {
-  top: 20,
+  top: 50,
   right: 100,
   bottom: 100,
   left: 100,

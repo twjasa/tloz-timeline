@@ -8,15 +8,15 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: "oot-adult-lwzog-1",
-    position: { left: 3300, top: 1578 },
-    length: 207,
+    position: { left: 2489, top: 1578 },
+    length: 135,
     orientation: "horizontal"
   },
   {
     title: "",
     show,
     id: "oot-adult-lwzog-2",
-    position: { left: 3300, top: 1200 },
+    position: { left: 2348, top: 1200 },
     length: 378,
     orientation: "vertical"
   },
@@ -24,15 +24,15 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: "oot-adult-lwzog-3",
-    position: { left: 2431, top: 1200 },
-    length: 869,
+    position: { left: 2104, top: 1200 },
+    length: 410,
     orientation: "horizontal"
   },
   {
     title: "",
     show,
     id: "oot-adult-lwzog-4",
-    position: { left: 2431, top: 1200 },
+    position: { left: 1963, top: 1200 },
     length: 94,
     orientation: "vertical"
   },
@@ -41,13 +41,13 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: "linkWarnsZeldaOfGanondorf",
-    position: { left: 2304, top: 1294 },
+    position: { left: 1838, top: 1294 },
   },
   {
     title: "Several Months",
     show,
     id: "lwzog-mm",
-    position: { left: 2483, top: 1463 },
+    position: { left: 1982, top: 1463 },
     length: 81,
     orientation: "vertical"
   },
@@ -56,6 +56,6 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "golden",
     backgroundImage: "majorasMask",
-    position: { left: 2304, top: 1538 },
+    position: { left: 1838, top: 1538 },
   },
-]
+];

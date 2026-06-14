@@ -14,8 +14,20 @@ export const parseTransformMatrix = (transform: string): { translateX: number; t
     return { translateX: 0, translateY: 0, scale: 1 };
   }
 
-  // Handle matrix transform
-  if (transform.includes('matrix')) {
+  // Handle matrix3d transform
+  if (transform.includes('matrix3d')) {
+    const matrix3d = transform.match(/matrix3d\(([^)]+)\)/);
+    if (matrix3d) {
+      const values = matrix3d[1].split(',').map(v => parseFloat(v.trim()));
+      if (values.length >= 16) {
+        return {
+          translateX: values[12],
+          translateY: values[13],
+          scale: Math.sqrt(values[0] * values[0] + values[1] * values[1])
+        };
+      }
+    }
+  } else if (transform.includes('matrix')) {
     const matrix = transform.match(/matrix\(([^)]+)\)/);
     if (matrix) {
       const values = matrix[1].split(',').map(v => parseFloat(v.trim()));
