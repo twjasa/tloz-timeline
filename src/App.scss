@@ -23,6 +23,7 @@ main {
   position: absolute;
   right: 0;
   width: 10%;
+  min-width: 60px; /* Ensure container is wider than the 50px button */
   height: 100%;
   align-items: center;
   justify-content: center;

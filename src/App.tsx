@@ -330,7 +330,14 @@ function App() {
     <>
       <section className="leftButtonContainer">
         {step !== 0 && (
-          <button className="leftButton" onClick={decrementStep} />
+          <button 
+            className="leftButton" 
+            onClick={decrementStep} 
+            onTouchStart={(e) => {
+              e.preventDefault(); // Prevents double firing with onClick
+              decrementStep();
+            }}
+          />
         )}
       </section>
       {/* <div
@@ -402,7 +409,14 @@ function App() {
         })}
       </main>
       <section className="rightButtonContainer">
-        <button className="rightButton" onClick={setScene} />
+        <button 
+          className="rightButton" 
+          onClick={setScene} 
+          onTouchStart={(e) => {
+            e.preventDefault(); // Prevents double firing with onClick
+            setScene();
+          }}
+        />
       </section>
       <section className="releaseTitle">
         <span style={{ marginTop: 10 }}>{title}</span>
