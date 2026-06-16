@@ -310,7 +310,7 @@ function App() {
 
       await incrementStep();
       if (zoom) {
-        await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, makeSpace);
+        await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, makeSpace, zoom);
       }
       if (makeSpace) {
         for (const space of makeSpace) {

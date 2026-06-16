@@ -31,6 +31,7 @@ type EasingName = keyof typeof easings;
  * @param padding - Padding en píxeles para cada borde `{ top, right, bottom, left }`.
  * @param signal - AbortSignal para cancelar la animación.
  * @param pendingMakeSpace - Datos de makeSpace pendiente para pre-calcular posiciones finales.
+ * @param targetIds - IDs específicos de elementos a los que centrar, o boolean.
  * @returns Promesa que se resuelve cuando la animación termina.
  */
 export const centerWindow = async (
@@ -39,13 +40,24 @@ export const centerWindow = async (
   easingName: EasingName = "easeInOutQuad",
   padding: { top: number; right: number; bottom: number; left: number } = { top: 0, right: 0, bottom: 0, left: 0 },
   signal?: AbortSignal,
-  pendingMakeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[]
+  pendingMakeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[],
+  targetIds?: boolean | string[]
 ) => {
   const panzoomWindow = document.querySelector("main");
   if (!panzoomWindow || !panzoomRef.current) return;
 
   const children = Array.from(panzoomWindow.children) as HTMLElement[];
   if (children.length === 0) return;
+
+  // Filtrar elementos a centrar si se provee un grupo de IDs
+  let childrenToCenter = children;
+  if (Array.isArray(targetIds)) {
+    const targetSet = new Set(targetIds.map(id => id.startsWith('#') ? id.slice(1) : id));
+    const filtered = children.filter(child => targetSet.has(child.id));
+    if (filtered.length > 0) {
+      childrenToCenter = filtered;
+    }
+  }
 
   // Pre-calcular los offsets de makeSpace por ID para O(1) lookup
   const makeSpaceOffsets = new Map<string, { x: number; y: number }>();
@@ -64,7 +76,7 @@ export const centerWindow = async (
     maxRight = -Infinity,
     maxBottom = -Infinity;
 
-  for (const child of children) {
+  for (const child of childrenToCenter) {
     // Get the base position using offsetLeft/offsetTop
     const baseLeft = child.offsetLeft + panzoomWindow.scrollLeft;
     const baseTop = child.offsetTop + panzoomWindow.scrollTop;

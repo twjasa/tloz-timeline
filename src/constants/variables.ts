@@ -22,10 +22,10 @@ export const REFERENCE_VIEWPORT_HEIGHT = 1271;
 // ─── Centrado: Padding al centrar la vista ──────────────────────────────────
 /** Padding (px) que se aplica en cada borde al centrar la vista con centerWindow. */
 export const CENTER_PADDING = {
-  top: 50,
-  right: 100,
-  bottom: 100,
-  left: 100,
+  get top() { return Math.max(50, window.innerHeight * 0.05); },
+  get right() { return Math.max(50, window.innerWidth * 0.1); },
+  get bottom() { return Math.max(50, window.innerHeight * 0.1); },
+  get left() { return Math.max(50, window.innerWidth * 0.1); },
 };
 
 // ─── Animaciones ────────────────────────────────────────────────────────────

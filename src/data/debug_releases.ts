@@ -5,7 +5,7 @@ export interface releasesI {
   name: string;
   eras: Array<eraI | connectionI>;
   animations: AnimationType[];
-  centerWindow?: boolean;
+  centerWindow?: boolean | string[];
   makeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[];
 }
 

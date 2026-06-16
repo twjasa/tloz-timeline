@@ -14,7 +14,7 @@ import { get2001 } from './eras/2001-tlozoos';
  * @property eras - Array de eras (tarjetas) y conexiones (líneas temporales) visibles en este paso.
  * @property animations - Secuencia de animaciones de clip-path que se ejecutan al llegar a este paso.
  *   Cada animación tiene un `id` (selector CSS) y una `action` que indica la dirección.
- * @property centerWindow - Si `true`, la vista se re-centra y ajusta el zoom para enmarcar todo el contenido.
+ * @property centerWindow - Si `true` o un array de IDs, la vista se re-centra y ajusta el zoom para enmarcar el contenido (si es un array, se centra en los elementos indicados).
  * @property makeSpace - Movimientos previos de elementos existentes para hacer espacio a los nuevos.
  *   Cada entrada define los IDs de los elementos a mover y el desplazamiento en `x`, `y` (y opcionalmente `height`).
  */
@@ -35,7 +35,7 @@ export interface releasesI {
     "translateX" |
     "translateXY";
   }[];
-  centerWindow?: boolean;
+  centerWindow?: boolean | string[];
   makeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[];
 }
 
@@ -155,7 +155,7 @@ export const releases: releasesI[] = [
   {
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
-    centerWindow: true,
+    centerWindow: ['creation1', 'creation1-cotms', 'creationOfTheMasterSword', 'cotms-ggtct', 'ganondorfGetsTheCompleteTriforce', 'ggtct-tsw', 'theSealingWar', 'tsw-alttp', 'aLinkToThePast', 'alttp-ttopzI'],
     makeSpace: [{
       x: 0, y: -244.06, ids: [
         '#alttp-la',
