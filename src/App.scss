@@ -30,7 +30,7 @@ main {
 
 .leftButtonContainer{
   @extend .rightButtonContainer;
-  right: 100%;
+  right: auto;
   left: 0;
 }
 
@@ -44,10 +44,13 @@ main {
   outline: none;
   cursor: pointer;
   transition: 0.3s;
-  &:hover{
-    background-color: rgba(0, 0, 0, 0.3);
+  touch-action: manipulation; /* Fix click delay and double tap to zoom on mobile */
+  
+  @media (hover: hover) {
+    &:hover{
+      background-color: rgba(0, 0, 0, 0.3);
+    }
   }
-
 }
 
 .leftButton {
