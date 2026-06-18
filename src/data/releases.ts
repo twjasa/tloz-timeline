@@ -184,9 +184,9 @@ export const releases: releasesI[] = [
   {
     year: 2000,
     name: "The Legend of Zelda: Majora's Mask",
-    centerWindow: true,
+    centerWindow: [creation1, ocarinaOfTimeAdult],
     makeSpace: [{
-      x: 500, y: 0, ids: [
+      x: 600, y: 0, ids: [
         creation2,
         creationOfTheMasterSword2_creation2,
         creationOfTheMasterSword2,
@@ -212,7 +212,7 @@ export const releases: releasesI[] = [
   {
     year: 2001,
     name: "The Legend of Zelda: Oracle of Ages/Seasons",
-    centerWindow: true,
+    centerWindow: [theSealingWar, tragedyOfPrincessZeldaI],
     makeSpace: [{
       x: 0, y: 485, ids: [
         linksAwakening,

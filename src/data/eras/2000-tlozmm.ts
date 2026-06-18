@@ -9,23 +9,23 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1,
-    position: { left: 2489, top: 1578 },
-    length: 135,
+    position: { left: 2294, top: 1615 },
+    length: 80,
     orientation: "horizontal"
   },
   {
     title: "",
     show,
     id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2,
-    position: { left: 2348, top: 1200 },
-    length: 378,
+    position: { left: 2153, top: 1200 },
+    length: 415,
     orientation: "vertical"
   },
   {
     title: "",
     show,
     id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3,
-    position: { left: 2104, top: 1200 },
+    position: { left: 1910, top: 1200 },
     length: 410,
     orientation: "horizontal"
   },
@@ -33,7 +33,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4,
-    position: { left: 1963, top: 1200 },
+    position: { left: 1755, top: 1200 },
     length: 94,
     orientation: "vertical"
   },
@@ -42,13 +42,13 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: ID.linkWarnsZeldaOfGanondorf,
-    position: { left: 1838, top: 1294 },
+    position: { left: 1691, top: 1294 },
   },
   {
     title: "Several Months",
     show,
     id: ID.linkWarnsZeldaOfGanondorf_majorasMask,
-    position: { left: 1982, top: 1463 },
+    position: { left: 1797, top: 1463 },
     length: 81,
     orientation: "vertical"
   },
@@ -57,6 +57,6 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "golden",
     backgroundImage: ID.majorasMask,
-    position: { left: 1838, top: 1538 },
+    position: { left: 1691, top: 1538 },
   },
 ];

@@ -439,6 +439,11 @@ function App() {
     const prevStepIdx = currentStepRef.current - 1;
     currentStepRef.current = prevStepIdx; // Actualizar de inmediato para evitar race conditions
 
+    // Actualizar el título de inmediato
+    setTitle(
+      `${releases[prevStepIdx].name} - year ${releases[prevStepIdx].year}`
+    );
+
     const prevRelease = releases[prevStepIdx];
     const zoom = prevRelease.centerWindow;
 
@@ -471,10 +476,6 @@ function App() {
     transitionAbortRef.current = null;
 
     syncElementsState(prevStepIdx);
-
-    setTitle(
-      `${releases[prevStepIdx].name} - year ${releases[prevStepIdx].year}`
-    );
   };
 
 
@@ -536,6 +537,9 @@ function App() {
     const nextStep = releases[nextStepIdx];
     currentStepRef.current = nextStepIdx; // Update instantly to prevent race conditions on rapid clicks
 
+    // Actualizar el título de inmediato
+    setTitle(`${nextStep.name} - year ${nextStep.year}`);
+
     const zoom = nextStep.centerWindow;
     const makeSpace = nextStep.makeSpace;
 
@@ -573,8 +577,6 @@ function App() {
     if (nextStep.animations.length > 0) {
       runSequentialAnimations(nextStep.animations, 0);
     }
-
-    setTitle(`${nextStep.name} - year ${nextStep.year}`);
   };
 
   return (
