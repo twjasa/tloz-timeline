@@ -211,43 +211,13 @@ function App() {
     }
   }, []);
 
+  // Ejecuta las animaciones iniciales para el paso 0 en el montaje del componente
   useEffect(() => {
-    const nextRelease = releases[step];
-    if (prevStep.current !== step) {
-      canceledAnimation.current = true;
-      animationRef.current.forEach((animation) => {
-        if (animation) {
-          animation.pause();
-          animation.seek(animation.duration);
-        }
-      });
-      canceledAnimation.current = false;
-      animationRef.current = [];
+    const initialRelease = releases[0];
+    if (initialRelease.animations.length > 0) {
+      runSequentialAnimations(initialRelease.animations, 0);
     }
-    
-    // Clear any existing timeout from previous renders
-    if (animationTimeoutRef.current) {
-      clearTimeout(animationTimeoutRef.current);
-      animationTimeoutRef.current = null;
-    }
-
-    if (nextRelease.animations.length > 0) {
-      const delay = nextRelease.centerWindow ? ZOOM_DURATION : 0;
-      animationTimeoutRef.current = setTimeout(
-        () => {
-          runSequentialAnimations(nextRelease.animations, 0);
-        },
-        delay
-      );
-    }
-    prevStep.current = step;
-
-    return () => {
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-    };
-  }, [step, runSequentialAnimations]);
+  }, [runSequentialAnimations]);
 
   /**
    * Mueve un conjunto de elementos a una nueva posición con animación.
@@ -279,14 +249,49 @@ function App() {
   };
 
   /**
+   * Retrocede la timeline al paso anterior de forma síncrona.
+   */
+  const handlePrevStep = async () => {
+    if (currentStepRef.current <= 0) return;
+
+    finishAllAnimations();
+
+    const prevStepIdx = currentStepRef.current - 1;
+    const prevStep = releases[prevStepIdx];
+    currentStepRef.current = prevStepIdx;
+
+    const zoom = prevStep.centerWindow;
+
+    isTransitioningRef.current = true;
+    const abortController = new AbortController();
+    transitionAbortRef.current = abortController;
+
+    decrementStep();
+
+    if (zoom) {
+      await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, undefined, zoom);
+    }
+    if (abortController.signal.aborted) return;
+
+    isTransitioningRef.current = false;
+    transitionAbortRef.current = null;
+
+    if (prevStep.animations.length > 0) {
+      runSequentialAnimations(prevStep.animations, 0);
+    }
+
+    setTitle(`${prevStep.name} - year ${prevStep.year}`);
+  };
+
+  /**
    * Prepara la escena para el siguiente paso y avanza la timeline.
    *
    * Flujo:
    * 1. Completa instantáneamente todas las animaciones activas del paso anterior.
-   * 2. Verifica si el siguiente paso requiere `makeSpace` o `centerWindow`.
-   * 3. Si requiere `makeSpace`, mueve los elementos existentes para hacer espacio.
-   * 4. Si requiere `centerWindow`, re-centra y ajusta el zoom del canvas.
-   * 5. Incrementa el paso (lo que dispara las animaciones de revelado en el `useEffect`).
+   * 2. Incrementa el paso para renderizar los elementos en el DOM.
+   * 3. Si requiere `centerWindow`, re-centra y ajusta el zoom del canvas.
+   * 4. Si requiere `makeSpace`, mueve los elementos existentes para hacer espacio.
+   * 5. Ejecuta las animaciones secuenciales de revelado.
    * 6. Actualiza el título con el nombre y año del juego.
    */
   const setScene = async () => {
@@ -303,27 +308,33 @@ function App() {
     const zoom = nextStep.centerWindow;
     const makeSpace = nextStep.makeSpace;
     
-    if (zoom || makeSpace) {
-      isTransitioningRef.current = true;
-      const abortController = new AbortController();
-      transitionAbortRef.current = abortController;
+    isTransitioningRef.current = true;
+    const abortController = new AbortController();
+    transitionAbortRef.current = abortController;
 
-      await incrementStep();
-      if (zoom) {
-        await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, makeSpace, zoom);
-      }
-      if (makeSpace) {
-        for (const space of makeSpace) {
-          await moveElements(space.ids, { ...space });
-        }
-      }
+    await incrementStep();
+    if (abortController.signal.aborted) return;
 
-      isTransitioningRef.current = false;
-      transitionAbortRef.current = null;
-    } else {
-      incrementStep();
+    if (zoom) {
+      await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, makeSpace, zoom);
     }
-    setTitle(`${releases[nextStepIdx].name} - year ${releases[nextStepIdx].year}`);
+    if (abortController.signal.aborted) return;
+
+    if (makeSpace) {
+      for (const space of makeSpace) {
+        await moveElements(space.ids, { ...space });
+        if (abortController.signal.aborted) return;
+      }
+    }
+
+    isTransitioningRef.current = false;
+    transitionAbortRef.current = null;
+
+    if (nextStep.animations.length > 0) {
+      runSequentialAnimations(nextStep.animations, 0);
+    }
+
+    setTitle(`${nextStep.name} - year ${nextStep.year}`);
   };
 
   return (
@@ -332,10 +343,10 @@ function App() {
         {step !== 0 && (
           <button 
             className="leftButton" 
-            onClick={decrementStep} 
+            onClick={handlePrevStep} 
             onTouchStart={(e) => {
               e.preventDefault(); // Prevents double firing with onClick
-              decrementStep();
+              handlePrevStep();
             }}
           />
         )}
