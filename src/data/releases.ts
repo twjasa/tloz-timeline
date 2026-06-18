@@ -110,7 +110,7 @@ export const releases: releasesI[] = [
   {
     year: 1991,
     name: "The Legend of Zelda: A Link to the Past",
-    centerWindow: true,
+    centerWindow: [creation1, tragedyOfPrincessZeldaI],
     eras: get1991(),
     animations: [
       { id: creation1, action: 'down' },
@@ -129,16 +129,8 @@ export const releases: releasesI[] = [
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
     centerWindow: [
-      creation1,
-      creation1_creationOfTheMasterSword,
-      creationOfTheMasterSword,
-      creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
-      ganondorfGetsTheCompleteTriforce,
-      ganondorfGetsTheCompleteTriforce_theSealingWar,
       theSealingWar,
-      theSealingWar_aLinkToThePast,
-      aLinkToThePast,
-      aLinkToThePast_tragedyOfPrincessZeldaI,
+      ganonInvadesHyrule
     ],
     makeSpace: [{
       x: 0, y: -244.06, ids: [
@@ -163,7 +155,7 @@ export const releases: releasesI[] = [
   {
     year: 1998,
     name: "The Legend of Zelda: Ocarina of Time",
-    centerWindow: true,
+    centerWindow: [creation1, ocarinaOfTimeAdult],
     makeSpace: [{
       x: 0, y: -481.06, ids: [
         creation1,
@@ -194,7 +186,7 @@ export const releases: releasesI[] = [
     name: "The Legend of Zelda: Majora's Mask",
     centerWindow: true,
     makeSpace: [{
-      x: 300, y: 0, ids: [
+      x: 500, y: 0, ids: [
         creation2,
         creationOfTheMasterSword2_creation2,
         creationOfTheMasterSword2,

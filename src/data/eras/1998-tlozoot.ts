@@ -17,14 +17,14 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "7 years",
     show,
     id: ID.ocarinaOfTimeAdult_ocarinaOfTimeChild,
-    position: { left: 1865, top: 1453 },
+    position: { left: 1865, top: 1460 },
   },
   {
     title: "Ocarina of Time (Child)",
     show,
     color: "golden",
     backgroundImage: ID.ocarinaOfTimeChild,
-    position: { left: 1754, top: 1298 },
+    position: { left: 1754, top: 1294 },
     backgroundPosition: { left: 0, top: -192 },
   },
   {
@@ -51,7 +51,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: ID.creationOfTheMasterSword2,
-    position: { left: 1754, top: 819 },
+    position: { left: 1754, top: 811 },
   },
   {
     title: "??? (A long time)",
