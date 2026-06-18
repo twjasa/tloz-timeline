@@ -236,6 +236,8 @@ function App() {
       runSequentialAnimations(initialRelease.animations, 0);
     }
   }, [runSequentialAnimations]);
+
+
   /**
    * Obtiene el estado esperado (x, y, height) de todos los elementos que alguna vez
    * han sido modificados por un makeSpace, calculando su estado acumulado en un paso específico.
@@ -368,11 +370,12 @@ function App() {
   );
 
   /**
-   * Asegura que todos los elementos animados de los pasos anteriores
-   * queden completamente visibles, revirtiendo cualquier acción "hide" si es necesario.
+   * Sincroniza el estado visual (opacidad, clip-path, posición y altura de makeSpace)
+   * de todos los elementos anteriores al paso objetivo.
    */
-  const revealStepElements = useCallback((targetStepIdx: number) => {
-    for (let i = 0; i <= targetStepIdx; i++) {
+  const syncElementsState = useCallback((targetStepIdx: number) => {
+    // 1. Forzar opacidades y clip-paths de todos los pasos estrictamente anteriores al actual
+    for (let i = 0; i < targetStepIdx; i++) {
       const release = releases[i];
       if (release.animations) {
         release.animations.forEach((anim) => {
@@ -397,7 +400,31 @@ function App() {
         });
       }
     }
-  }, []);
+
+    // 2. Forzar posiciones y alturas de makeSpace acumuladas (excluyendo el paso actual si está transicionando)
+    const maxMakeSpaceStep = isTransitioningRef.current ? targetStepIdx - 1 : targetStepIdx;
+    const targetStates = getElementsStateAtStep(maxMakeSpaceStep);
+    targetStates.forEach((targetState, selector) => {
+      const query =
+        selector.startsWith("#") || selector.startsWith(".")
+          ? selector
+          : `#${selector}`;
+      const el = document.querySelector(query) as HTMLElement;
+      if (el) {
+        el.style.transform = `translateX(${targetState.x}px) translateY(${targetState.y}px)`;
+        if (targetState.height !== "") {
+          el.style.height = typeof targetState.height === "number" ? `${targetState.height}px` : targetState.height;
+        } else {
+          el.style.height = "";
+        }
+      }
+    });
+  }, [getElementsStateAtStep]);
+
+  // Sincroniza el estado de los elementos cuando cambia el paso (para re-establecer layouts abortados/completos)
+  useEffect(() => {
+    syncElementsState(step);
+  }, [step, syncElementsState]);
 
   /**
    * Prepara la escena para el paso anterior y retrocede la timeline.
@@ -439,11 +466,11 @@ function App() {
     await Promise.all([zoomPromise, movePromise]);
     if (abortController.signal.aborted) return;
 
-    // Asegurar opacidades y clip-paths correctos para el paso destino
-    revealStepElements(prevStepIdx);
-
     isTransitioningRef.current = false;
     transitionAbortRef.current = null;
+
+    syncElementsState(prevStepIdx);
+
     setTitle(
       `${releases[prevStepIdx].name} - year ${releases[prevStepIdx].year}`
     );
@@ -539,6 +566,7 @@ function App() {
 
     isTransitioningRef.current = false;
     transitionAbortRef.current = null;
+    syncElementsState(nextStepIdx);
 
     if (nextStep.animations.length > 0) {
       runSequentialAnimations(nextStep.animations, 0);
