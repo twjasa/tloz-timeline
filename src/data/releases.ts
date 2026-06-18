@@ -2,7 +2,7 @@ import styles from '../components/Era/era.module.scss';
 import { get1986, get1987, get1991, get1993, get1998 } from './eras';
 import { get2000 } from './eras/2000-tlozmm';
 import { get2001 } from './eras/2001-tlozoos';
-import { ID } from '../constants/ids';
+
 
 /**
  * Representa un paso (release/juego) en la secuencia de la timeline.
@@ -90,9 +90,9 @@ export const releases: releasesI[] = [
     eras: get1986(),
     centerWindow: true,
     animations: [
-      { id: ID.ganonInvadesHyrule, action: 'down' },
-      { id: ID.ganonInvadesHyrule_theLegendOfZelda, action: 'down' },
-      { id: ID.theLegendOfZelda, action: 'down' },
+      { id: ganonInvadesHyrule, action: 'down' },
+      { id: ganonInvadesHyrule_theLegendOfZelda, action: 'down' },
+      { id: theLegendOfZelda, action: 'down' },
     ]
   }, // "The Legend of Zelda" 
   {
@@ -101,10 +101,10 @@ export const releases: releasesI[] = [
     eras: get1987(),
     centerWindow: true,
     animations: [
-      { id: ID.tragedyOfPrincessZeldaI, action: 'down' },
-      { id: ID.tragedyOfPrincessZeldaI_ganonInvadesHyrule, action: 'down' },
-      { id: ID.theLegendOfZelda_zeldaIITAoL, action: 'down' },
-      { id: ID.zeldaIITAoL, action: 'down' },
+      { id: tragedyOfPrincessZeldaI, action: 'down' },
+      { id: tragedyOfPrincessZeldaI_ganonInvadesHyrule, action: 'down' },
+      { id: theLegendOfZelda_zeldaIITAoL, action: 'down' },
+      { id: zeldaIITAoL, action: 'down' },
     ]
   }, // "Zelda II: The Adventure of Link" 
   {
@@ -113,51 +113,51 @@ export const releases: releasesI[] = [
     centerWindow: true,
     eras: get1991(),
     animations: [
-      { id: ID.creation1, action: 'down' },
-      { id: ID.creation1_creationOfTheMasterSword, action: 'down' },
-      { id: ID.creationOfTheMasterSword, action: 'down' },
-      { id: ID.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce, action: 'down' },
-      { id: ID.ganondorfGetsTheCompleteTriforce, action: 'down' },
-      { id: ID.ganondorfGetsTheCompleteTriforce_theSealingWar, action: 'down' },
-      { id: ID.theSealingWar, action: 'down' },
-      { id: ID.theSealingWar_aLinkToThePast, action: 'down' },
-      { id: ID.aLinkToThePast, action: 'down' },
-      { id: ID.aLinkToThePast_tragedyOfPrincessZeldaI, action: 'down' },
+      { id: creation1, action: 'down' },
+      { id: creation1_creationOfTheMasterSword, action: 'down' },
+      { id: creationOfTheMasterSword, action: 'down' },
+      { id: creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce, action: 'down' },
+      { id: ganondorfGetsTheCompleteTriforce, action: 'down' },
+      { id: ganondorfGetsTheCompleteTriforce_theSealingWar, action: 'down' },
+      { id: theSealingWar, action: 'down' },
+      { id: theSealingWar_aLinkToThePast, action: 'down' },
+      { id: aLinkToThePast, action: 'down' },
+      { id: aLinkToThePast_tragedyOfPrincessZeldaI, action: 'down' },
     ]
   }, // "The Legend of Zelda: A Link to the Past" 
   {
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
     centerWindow: [
-      ID.creation1,
-      ID.creation1_creationOfTheMasterSword,
-      ID.creationOfTheMasterSword,
-      ID.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
-      ID.ganondorfGetsTheCompleteTriforce,
-      ID.ganondorfGetsTheCompleteTriforce_theSealingWar,
-      ID.theSealingWar,
-      ID.theSealingWar_aLinkToThePast,
-      ID.aLinkToThePast,
-      ID.aLinkToThePast_tragedyOfPrincessZeldaI,
+      creation1,
+      creation1_creationOfTheMasterSword,
+      creationOfTheMasterSword,
+      creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
+      ganondorfGetsTheCompleteTriforce,
+      ganondorfGetsTheCompleteTriforce_theSealingWar,
+      theSealingWar,
+      theSealingWar_aLinkToThePast,
+      aLinkToThePast,
+      aLinkToThePast_tragedyOfPrincessZeldaI,
     ],
     makeSpace: [{
       x: 0, y: -244.06, ids: [
-        ID.aLinkToThePast_linksAwakening,
-        ID.aLinkToThePast,
-        ID.theSealingWar_aLinkToThePast,
-        ID.theSealingWar,
-        ID.ganondorfGetsTheCompleteTriforce_theSealingWar,
-        ID.ganondorfGetsTheCompleteTriforce,
-        ID.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
-        ID.creationOfTheMasterSword,
-        ID.creation1_creationOfTheMasterSword,
-        ID.creation1,
+        aLinkToThePast_linksAwakening,
+        aLinkToThePast,
+        theSealingWar_aLinkToThePast,
+        theSealingWar,
+        ganondorfGetsTheCompleteTriforce_theSealingWar,
+        ganondorfGetsTheCompleteTriforce,
+        creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
+        creationOfTheMasterSword,
+        creation1_creationOfTheMasterSword,
+        creation1,
       ]
     }],
     eras: get1993(),
     animations: [
-      { id: ID.aLinkToThePast_linksAwakening, action: 'down' },
-      { id: ID.linksAwakening, action: 'down' },
+      { id: aLinkToThePast_linksAwakening, action: 'down' },
+      { id: linksAwakening, action: 'down' },
     ]
   }, // "The Legend of Zelda: Link's Awakening"   
   {
@@ -166,27 +166,27 @@ export const releases: releasesI[] = [
     centerWindow: true,
     makeSpace: [{
       x: 0, y: -481.06, ids: [
-        ID.creation1,
-        ID.creation1_creationOfTheMasterSword,
-        ID.creationOfTheMasterSword,
+        creation1,
+        creation1_creationOfTheMasterSword,
+        creationOfTheMasterSword,
       ]
     },
     {
       x: 0, y: -481.06, height: "316px", ids: [
-        ID.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
+        creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
       ]
     }],
     eras: get1998(),
     animations: [
-      { id: ID.creation2, action: 'down' },
-      { id: ID.creationOfTheMasterSword2_creation2, action: 'down' },
-      { id: ID.creationOfTheMasterSword2, action: 'down' },
-      { id: ID.creationOfTheMasterSword2_theFierceWar, action: 'down' },
-      { id: ID.theFierceWar, action: 'down' },
-      { id: ID.ocarinaOfTimeChild_theFierceWar, action: 'down' },
-      { id: ID.ocarinaOfTimeChild, action: 'down' },
-      { id: ID.ocarinaOfTimeAdult_ocarinaOfTimeChild, action: 'down' },
-      { id: ID.ocarinaOfTimeAdult, action: 'down' },
+      { id: creation2, action: 'down' },
+      { id: creationOfTheMasterSword2_creation2, action: 'down' },
+      { id: creationOfTheMasterSword2, action: 'down' },
+      { id: creationOfTheMasterSword2_theFierceWar, action: 'down' },
+      { id: theFierceWar, action: 'down' },
+      { id: ocarinaOfTimeChild_theFierceWar, action: 'down' },
+      { id: ocarinaOfTimeChild, action: 'down' },
+      { id: ocarinaOfTimeAdult_ocarinaOfTimeChild, action: 'down' },
+      { id: ocarinaOfTimeAdult, action: 'down' },
     ]
   }, // "The Legend of Zelda: Ocarina of Time" 
   {
@@ -195,26 +195,26 @@ export const releases: releasesI[] = [
     centerWindow: true,
     makeSpace: [{
       x: 300, y: 0, ids: [
-        ID.creation2,
-        ID.creationOfTheMasterSword2_creation2,
-        ID.creationOfTheMasterSword2,
-        ID.creationOfTheMasterSword2_theFierceWar,
-        ID.theFierceWar,
-        ID.ocarinaOfTimeChild_theFierceWar,
-        ID.ocarinaOfTimeChild,
-        ID.ocarinaOfTimeAdult_ocarinaOfTimeChild,
-        ID.ocarinaOfTimeAdult,
+        creation2,
+        creationOfTheMasterSword2_creation2,
+        creationOfTheMasterSword2,
+        creationOfTheMasterSword2_theFierceWar,
+        theFierceWar,
+        ocarinaOfTimeChild_theFierceWar,
+        ocarinaOfTimeChild,
+        ocarinaOfTimeAdult_ocarinaOfTimeChild,
+        ocarinaOfTimeAdult,
       ]
     }],
     eras: get2000(),
     animations: [
-      { id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
-      { id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2, action: 'up' },
-      { id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3, action: 'left' },
-      { id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4, action: 'down' },
-      { id: ID.linkWarnsZeldaOfGanondorf, action: 'down' },
-      { id: ID.linkWarnsZeldaOfGanondorf_majorasMask, action: 'down' },
-      { id: ID.majorasMask, action: 'down' }
+      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
+      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2, action: 'up' },
+      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3, action: 'left' },
+      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4, action: 'down' },
+      { id: linkWarnsZeldaOfGanondorf, action: 'down' },
+      { id: linkWarnsZeldaOfGanondorf_majorasMask, action: 'down' },
+      { id: majorasMask, action: 'down' }
     ]
   }, // "The Legend of Zelda: Majora's Mask" 
   {
@@ -223,25 +223,25 @@ export const releases: releasesI[] = [
     centerWindow: true,
     makeSpace: [{
       x: 0, y: 485, ids: [
-        ID.linksAwakening,
-        ID.aLinkToThePast_tragedyOfPrincessZeldaI,
-        ID.tragedyOfPrincessZeldaI,
-        ID.tragedyOfPrincessZeldaI_ganonInvadesHyrule,
-        ID.ganonInvadesHyrule,
-        ID.theLegendOfZelda,
-        ID.ganonInvadesHyrule_theLegendOfZelda,
-        ID.zeldaIITAoL,
-        ID.theLegendOfZelda_zeldaIITAoL,
+        linksAwakening,
+        aLinkToThePast_tragedyOfPrincessZeldaI,
+        tragedyOfPrincessZeldaI,
+        tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+        ganonInvadesHyrule,
+        theLegendOfZelda,
+        ganonInvadesHyrule_theLegendOfZelda,
+        zeldaIITAoL,
+        theLegendOfZelda_zeldaIITAoL,
       ]
     }],
     eras: get2001(),
     animations: [
-      { id: ID.aLinkToThePast_linksAwakening, action: 'hide' },
-      { id: ID.aLinkToThePast_oracleOfAges, action: 'down' },
-      { id: ID.oracleOfAges, action: 'down' },
-      { id: ID.oracleOfAges_oracleOfSeasons, action: 'down' },
-      { id: ID.oracleOfSeasons, action: 'down' },
-      { id: ID.oracleOfSeasons_linksAwakening, action: "down" }
+      { id: aLinkToThePast_linksAwakening, action: 'hide' },
+      { id: aLinkToThePast_oracleOfAges, action: 'down' },
+      { id: oracleOfAges, action: 'down' },
+      { id: oracleOfAges_oracleOfSeasons, action: 'down' },
+      { id: oracleOfSeasons, action: 'down' },
+      { id: oracleOfSeasons_linksAwakening, action: "down" }
     ]
   }, // "The Legend of Zelda: Oracle of Ages" 
 ];
