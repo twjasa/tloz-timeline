@@ -1,4 +1,4 @@
-import { connectionI } from "../debug_releases";
+import { connectionI } from "../releases";
 import { eraI } from "../releases";
 import { get1993 } from "./1993-tlozla";
 import { ALL_IDS } from "../../constants/ids";
