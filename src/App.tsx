@@ -140,7 +140,10 @@ function App() {
       }
 
       const clipPathValue = clipPathAnimation[clipPathDirection];
-      const targets = element.id.startsWith('#') || element.id.startsWith('.') ? element.id : `#${element.id}`;
+      const targets =
+        element.id.startsWith("#") || element.id.startsWith(".")
+          ? element.id
+          : `#${element.id}`;
 
       animationRef.current.push(
         anime({
@@ -237,7 +240,6 @@ function App() {
       runSequentialAnimations(initialRelease.animations, 0);
     }
   }, [runSequentialAnimations]);
-
 
   /**
    * Obtiene el estado esperado (x, y, height) de todos los elementos que alguna vez
@@ -374,53 +376,61 @@ function App() {
    * Sincroniza el estado visual (opacidad, clip-path, posición y altura de makeSpace)
    * de todos los elementos anteriores al paso objetivo.
    */
-  const syncElementsState = useCallback((targetStepIdx: number) => {
-    // 1. Forzar opacidades y clip-paths de todos los pasos estrictamente anteriores al actual
-    for (let i = 0; i < targetStepIdx; i++) {
-      const release = releases[i];
-      if (release.animations) {
-        release.animations.forEach((anim) => {
-          const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-          selectors.forEach((selector) => {
-            const query =
-              selector.startsWith("#") || selector.startsWith(".")
-                ? selector
-                : `#${selector}`;
-            const el = document.querySelector(query) as HTMLElement;
-            if (el) {
-              if (anim.action === "hide") {
-                el.style.opacity = "0";
-              } else {
-                el.style.opacity = "1";
-                if (clipPathAnimation[anim.action]) {
-                  el.style.clipPath = clipPathAnimation[anim.action][1];
+  const syncElementsState = useCallback(
+    (targetStepIdx: number) => {
+      // 1. Forzar opacidades y clip-paths de todos los pasos estrictamente anteriores al actual
+      for (let i = 0; i < targetStepIdx; i++) {
+        const release = releases[i];
+        if (release.animations) {
+          release.animations.forEach((anim) => {
+            const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+            selectors.forEach((selector) => {
+              const query =
+                selector.startsWith("#") || selector.startsWith(".")
+                  ? selector
+                  : `#${selector}`;
+              const el = document.querySelector(query) as HTMLElement;
+              if (el) {
+                if (anim.action === "hide") {
+                  el.style.opacity = "0";
+                } else {
+                  el.style.opacity = "1";
+                  if (clipPathAnimation[anim.action]) {
+                    el.style.clipPath = clipPathAnimation[anim.action][1];
+                  }
                 }
               }
-            }
+            });
           });
-        });
-      }
-    }
-
-    // 2. Forzar posiciones y alturas de makeSpace acumuladas (excluyendo el paso actual si está transicionando)
-    const maxMakeSpaceStep = isTransitioningRef.current ? targetStepIdx - 1 : targetStepIdx;
-    const targetStates = getElementsStateAtStep(maxMakeSpaceStep);
-    targetStates.forEach((targetState, selector) => {
-      const query =
-        selector.startsWith("#") || selector.startsWith(".")
-          ? selector
-          : `#${selector}`;
-      const el = document.querySelector(query) as HTMLElement;
-      if (el) {
-        el.style.transform = `translateX(${targetState.x}px) translateY(${targetState.y}px)`;
-        if (targetState.height !== "") {
-          el.style.height = typeof targetState.height === "number" ? `${targetState.height}px` : targetState.height;
-        } else {
-          el.style.height = "";
         }
       }
-    });
-  }, [getElementsStateAtStep]);
+
+      // 2. Forzar posiciones y alturas de makeSpace acumuladas (excluyendo el paso actual si está transicionando)
+      const maxMakeSpaceStep = isTransitioningRef.current
+        ? targetStepIdx - 1
+        : targetStepIdx;
+      const targetStates = getElementsStateAtStep(maxMakeSpaceStep);
+      targetStates.forEach((targetState, selector) => {
+        const query =
+          selector.startsWith("#") || selector.startsWith(".")
+            ? selector
+            : `#${selector}`;
+        const el = document.querySelector(query) as HTMLElement;
+        if (el) {
+          el.style.transform = `translateX(${targetState.x}px) translateY(${targetState.y}px)`;
+          if (targetState.height !== "") {
+            el.style.height =
+              typeof targetState.height === "number"
+                ? `${targetState.height}px`
+                : targetState.height;
+          } else {
+            el.style.height = "";
+          }
+        }
+      });
+    },
+    [getElementsStateAtStep]
+  );
 
   // Sincroniza el estado de los elementos cuando cambia el paso (para re-establecer layouts abortados/completos)
   useEffect(() => {
@@ -478,8 +488,6 @@ function App() {
     syncElementsState(prevStepIdx);
   };
 
-
-
   /**
    * Mueve un conjunto de elementos a una nueva posición con animación.
    *
@@ -495,7 +503,9 @@ function App() {
     moves: { x: number; y: number; height?: number | string }
   ) => {
     return new Promise<void>((resolve) => {
-      const targets = elements.map(id => id.startsWith('#') || id.startsWith('.') ? id : `#${id}`);
+      const targets = elements.map((id) =>
+        id.startsWith("#") || id.startsWith(".") ? id : `#${id}`
+      );
       const animeParams: any = {
         targets,
         translateX: moves.x,
@@ -512,8 +522,6 @@ function App() {
       animationRef.current.push(instance);
     });
   };
-
-
 
   /**
    * Prepara la escena para el siguiente paso y avanza la timeline.
@@ -593,61 +601,40 @@ function App() {
           />
         )}
       </section>
-      {/* <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: 0,
-          bottom: 0,
-          width: "1px",
-          backgroundColor: "blue",
-          transform: "translateX(-50%)",
-          zIndex: 1000,
-        }}
-      /> */}
-      {/* <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: 0,
-          right: 0,
-          height: "2px",
-          backgroundColor: "blue",
-          transform: "translateY(-50%)",
-          zIndex: 1000,
-        }}
-      /> */}
+      {window.DEBUG_MODE && (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: 0,
+              bottom: 0,
+              width: "1px",
+              backgroundColor: "blue",
+              transform: "translateX(-50%)",
+              zIndex: 1000,
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: 0,
+              right: 0,
+              height: "2px",
+              backgroundColor: "blue",
+              transform: "translateY(-50%)",
+              zIndex: 1000,
+            }}
+          />
+        </>
+      )}
       <main
         style={{
-          // backgroundColor: "brown",
           position: "relative",
         }}
         id="main"
       >
-        {/* <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: 0,
-            bottom: 0,
-            width: "2px",
-            backgroundColor: "white",
-            transform: "translateX(-50%)",
-            zIndex: 1000,
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: 0,
-            right: 0,
-            height: "2px",
-            backgroundColor: "white",
-            transform: "translateY(-50%)",
-            zIndex: 1000,
-          }}
-        /> */}
         {releases[step].eras.map((release) => {
           if ("id" in release) {
             return (
