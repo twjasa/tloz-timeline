@@ -2,21 +2,13 @@ import styles from '../components/Era/era.module.scss';
 import { get1986, get1987, get1991, get1993, get1998 } from './eras';
 import { get2000 } from './eras/2000-tlozmm';
 import { get2001 } from './eras/2001-tlozoos';
+import { ALL_IDS } from '../constants/ids';
 
 /**
  * Representa un paso (release/juego) en la secuencia de la timeline.
  *
  * Cada release corresponde a un juego de Zelda y define qué eras y conexiones
  * se muestran, qué animaciones se ejecutan, y si la vista debe re-centrarse.
- *
- * @property year - Año de lanzamiento del juego.
- * @property name - Nombre completo del juego.
- * @property eras - Array de eras (tarjetas) y conexiones (líneas temporales) visibles en este paso.
- * @property animations - Secuencia de animaciones de clip-path que se ejecutan al llegar a este paso.
- *   Cada animación tiene un `id` (selector CSS) y una `action` que indica la dirección.
- * @property centerWindow - Si `true` o un array de IDs, la vista se re-centra y ajusta el zoom para enmarcar el contenido (si es un array, se centra en los elementos indicados).
- * @property makeSpace - Movimientos previos de elementos existentes para hacer espacio a los nuevos.
- *   Cada entrada define los IDs de los elementos a mover y el desplazamiento en `x`, `y` (y opcionalmente `height`).
  */
 export interface releasesI {
   year: number;
@@ -41,12 +33,6 @@ export interface releasesI {
 
 /**
  * Representa una conexión temporal (línea) entre dos eras en la timeline.
- *
- * @property title - Etiqueta de la conexión (ej. "7 years", "Centuries later", "Immediately after").
- * @property id - Identificador único del elemento DOM, usado como selector para animaciones.
- * @property show - Visibilidad inicial de la conexión.
- * @property position - Posición absoluta dentro del canvas.
- * @property orientation - Dirección de la línea: `"vertical"` (por defecto) u `"horizontal"`.
  */
 export interface connectionI {
   title: string;
@@ -59,15 +45,6 @@ export interface connectionI {
 
 /**
  * Representa una era (evento histórico o juego) en la timeline.
- *
- * @property title - Nombre de la era o evento.
- * @property color - Esquema de color: `"golden"` para juegos jugables,
- *   `"silver"` para eventos históricos de fondo, `"zeldaColor"` para variantes especiales.
- * @property backgroundImage - Nombre base del archivo PNG en `/public/` (sin extensión).
- *   También sirve como `id` del elemento DOM para animaciones.
- * @property backgroundPosition - Desplazamiento opcional de la imagen de fondo dentro de la tarjeta.
- * @property show - Visibilidad inicial de la era.
- * @property position - Posición absoluta dentro del canvas (`left`, `top`).
  */
 export interface eraI {
   title: string;
@@ -77,6 +54,7 @@ export interface eraI {
   show: boolean;
   position?: { left: string | number; top: string | number; };
 }
+
 /** Mapa de dirección a par de valores clip-path [inicio, fin] para las animaciones. */
 type ClipPathAnimation = {
   [key: string]: string[];
@@ -84,11 +62,6 @@ type ClipPathAnimation = {
 
 /**
  * Valores de clip-path para las animaciones de revelado.
- *
- * - `down`: Revela de arriba hacia abajo (el rectángulo crece hacia abajo).
- * - `up`: Revela de abajo hacia arriba (el rectángulo crece hacia arriba).
- *
- * Cada entrada es un par `[clipPath_inicial, clipPath_final]` que anime.js interpola.
  */
 export const clipPathAnimation: ClipPathAnimation = {
   down: ['polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)', 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'],
@@ -117,9 +90,9 @@ export const releases: releasesI[] = [
     eras: get1986(true),
     centerWindow: true,
     animations: [
-      { id: 'ganonInvadesHyrule', action: 'down' },
-      { id: 'gih-tloz', action: 'down' },
-      { id: 'theLegendOfZelda', action: 'down' },
+      { id: ALL_IDS.ganonInvadesHyrule, action: 'down' },
+      { id: ALL_IDS.ganonInvadesHyrule_theLegendOfZelda, action: 'down' },
+      { id: ALL_IDS.theLegendOfZelda, action: 'down' },
     ]
   }, // "The Legend of Zelda" 
   {
@@ -128,10 +101,10 @@ export const releases: releasesI[] = [
     eras: get1987(),
     centerWindow: true,
     animations: [
-      { id: '#tragedyOfPrincessZeldaI', action: 'down' },
-      { id: "#ttopzI-gih", action: 'down' },
-      { id: '#tloz-zeldaIItaol', action: 'down' },
-      { id: '#zeldaIITAoL', action: 'down' },
+      { id: ALL_IDS.tragedyOfPrincessZeldaI, action: 'down' },
+      { id: ALL_IDS.tragedyOfPrincessZeldaI_ganonInvadesHyrule, action: 'down' },
+      { id: ALL_IDS.theLegendOfZelda_zeldaIITAoL, action: 'down' },
+      { id: ALL_IDS.zeldaIITAoL, action: 'down' },
     ]
   }, // "Zelda II: The Adventure of Link" 
   {
@@ -140,40 +113,51 @@ export const releases: releasesI[] = [
     centerWindow: true,
     eras: get1991(),
     animations: [
-      { id: '#creation1', action: 'down' },
-      { id: '#creation1-cotms', action: 'down' },
-      { id: '#creationOfTheMasterSword', action: 'down' },
-      { id: '#cotms-ggtct', action: 'down' },
-      { id: '#ganondorfGetsTheCompleteTriforce', action: 'down' },
-      { id: '#ggtct-tsw', action: 'down' },
-      { id: '#theSealingWar', action: 'down' },
-      { id: '#tsw-alttp', action: 'down' },
-      { id: '#aLinkToThePast', action: 'down' },
-      { id: '#alttp-ttopzI', action: 'down' },
+      { id: ALL_IDS.creation1, action: 'down' },
+      { id: ALL_IDS.creation1_creationOfTheMasterSword, action: 'down' },
+      { id: ALL_IDS.creationOfTheMasterSword, action: 'down' },
+      { id: ALL_IDS.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce, action: 'down' },
+      { id: ALL_IDS.ganondorfGetsTheCompleteTriforce, action: 'down' },
+      { id: ALL_IDS.ganondorfGetsTheCompleteTriforce_theSealingWar, action: 'down' },
+      { id: ALL_IDS.theSealingWar, action: 'down' },
+      { id: ALL_IDS.theSealingWar_aLinkToThePast, action: 'down' },
+      { id: ALL_IDS.aLinkToThePast, action: 'down' },
+      { id: ALL_IDS.aLinkToThePast_tragedyOfPrincessZeldaI, action: 'down' },
     ]
   }, // "The Legend of Zelda: A Link to the Past" 
   {
     year: 1993,
     name: "The Legend of Zelda: Link's Awakening",
-    centerWindow: ['creation1', 'creation1-cotms', 'creationOfTheMasterSword', 'cotms-ggtct', 'ganondorfGetsTheCompleteTriforce', 'ggtct-tsw', 'theSealingWar', 'tsw-alttp', 'aLinkToThePast', 'alttp-ttopzI'],
+    centerWindow: [
+      ALL_IDS.creation1,
+      ALL_IDS.creation1_creationOfTheMasterSword,
+      ALL_IDS.creationOfTheMasterSword,
+      ALL_IDS.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
+      ALL_IDS.ganondorfGetsTheCompleteTriforce,
+      ALL_IDS.ganondorfGetsTheCompleteTriforce_theSealingWar,
+      ALL_IDS.theSealingWar,
+      ALL_IDS.theSealingWar_aLinkToThePast,
+      ALL_IDS.aLinkToThePast,
+      ALL_IDS.aLinkToThePast_tragedyOfPrincessZeldaI,
+    ],
     makeSpace: [{
       x: 0, y: -244.06, ids: [
-        '#alttp-la',
-        '#aLinkToThePast',
-        '#tsw-alttp',
-        '#theSealingWar',
-        '#ggtct-tsw',
-        '#ganondorfGetsTheCompleteTriforce',
-        '#cotms-ggtct',
-        '#creationOfTheMasterSword',
-        '#creation1-cotms',
-        '#creation1',
+        ALL_IDS.aLinkToThePast_linksAwakening,
+        ALL_IDS.aLinkToThePast,
+        ALL_IDS.theSealingWar_aLinkToThePast,
+        ALL_IDS.theSealingWar,
+        ALL_IDS.ganondorfGetsTheCompleteTriforce_theSealingWar,
+        ALL_IDS.ganondorfGetsTheCompleteTriforce,
+        ALL_IDS.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
+        ALL_IDS.creationOfTheMasterSword,
+        ALL_IDS.creation1_creationOfTheMasterSword,
+        ALL_IDS.creation1,
       ]
     }],
     eras: get1993(),
     animations: [
-      { id: "#alttp-la", action: 'down' },
-      { id: "#linksAwakening", action: 'down' },
+      { id: ALL_IDS.aLinkToThePast_linksAwakening, action: 'down' },
+      { id: ALL_IDS.linksAwakening, action: 'down' },
     ]
   }, // "The Legend of Zelda: Link's Awakening"   
   {
@@ -182,27 +166,27 @@ export const releases: releasesI[] = [
     centerWindow: true,
     makeSpace: [{
       x: 0, y: -481.06, ids: [
-        '#creation1',
-        '#creation1-cotms',
-        '#creationOfTheMasterSword',
+        ALL_IDS.creation1,
+        ALL_IDS.creation1_creationOfTheMasterSword,
+        ALL_IDS.creationOfTheMasterSword,
       ]
     },
     {
       x: 0, y: -481.06, height: "316px", ids: [
-        '#cotms-ggtct',
+        ALL_IDS.creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
       ]
     }],
     eras: get1998(),
     animations: [
-      { id: "#creation2", action: 'down' },
-      { id: "#cotms2-creation2", action: 'down' },
-      { id: "#creationOfTheMasterSword2", action: 'down' },
-      { id: "#cotms2-tfw", action: 'down' },
-      { id: "#theFierceWar", action: 'down' },
-      { id: "#oot-child-tfw", action: 'down' },
-      { id: "#ocarinaOfTimeChild", action: 'down' },
-      { id: "#oot-adult-oot-child", action: 'down' },
-      { id: "#ocarinaOfTimeAdult", action: 'down' },
+      { id: ALL_IDS.creation2, action: 'down' },
+      { id: ALL_IDS.creationOfTheMasterSword2_creation2, action: 'down' },
+      { id: ALL_IDS.creationOfTheMasterSword2, action: 'down' },
+      { id: ALL_IDS.creationOfTheMasterSword2_theFierceWar, action: 'down' },
+      { id: ALL_IDS.theFierceWar, action: 'down' },
+      { id: ALL_IDS.ocarinaOfTimeChild_theFierceWar, action: 'down' },
+      { id: ALL_IDS.ocarinaOfTimeChild, action: 'down' },
+      { id: ALL_IDS.ocarinaOfTimeAdult_ocarinaOfTimeChild, action: 'down' },
+      { id: ALL_IDS.ocarinaOfTimeAdult, action: 'down' },
     ]
   }, // "The Legend of Zelda: Ocarina of Time" 
   {
@@ -211,26 +195,26 @@ export const releases: releasesI[] = [
     centerWindow: true,
     makeSpace: [{
       x: 300, y: 0, ids: [
-        '#creation2',
-        '#cotms2-creation2',
-        '#creationOfTheMasterSword2',
-        '#cotms2-tfw',
-        '#theFierceWar',
-        '#oot-child-tfw',
-        '#ocarinaOfTimeChild',
-        '#oot-adult-oot-child',
-        '#ocarinaOfTimeAdult',
+        ALL_IDS.creation2,
+        ALL_IDS.creationOfTheMasterSword2_creation2,
+        ALL_IDS.creationOfTheMasterSword2,
+        ALL_IDS.creationOfTheMasterSword2_theFierceWar,
+        ALL_IDS.theFierceWar,
+        ALL_IDS.ocarinaOfTimeChild_theFierceWar,
+        ALL_IDS.ocarinaOfTimeChild,
+        ALL_IDS.ocarinaOfTimeAdult_ocarinaOfTimeChild,
+        ALL_IDS.ocarinaOfTimeAdult,
       ]
     }],
     eras: get2000(),
     animations: [
-      { id: "#oot-adult-lwzog-1", action: 'left' },
-      { id: "#oot-adult-lwzog-2", action: 'up' },
-      { id: "#oot-adult-lwzog-3", action: 'left' },
-      { id: "#oot-adult-lwzog-4", action: 'down' },
-      { id: "#linkWarnsZeldaOfGanondorf", action: 'down' },
-      { id: "#lwzog-mm", action: 'down' },
-      { id: '#majorasMask', action: 'down' }
+      { id: ALL_IDS.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
+      { id: ALL_IDS.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2, action: 'up' },
+      { id: ALL_IDS.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3, action: 'left' },
+      { id: ALL_IDS.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4, action: 'down' },
+      { id: ALL_IDS.linkWarnsZeldaOfGanondorf, action: 'down' },
+      { id: ALL_IDS.linkWarnsZeldaOfGanondorf_majorasMask, action: 'down' },
+      { id: ALL_IDS.majorasMask, action: 'down' }
     ]
   }, // "The Legend of Zelda: Majora's Mask" 
   {
@@ -239,25 +223,25 @@ export const releases: releasesI[] = [
     centerWindow: true,
     makeSpace: [{
       x: 0, y: 485, ids: [
-        "#linksAwakening",
-        "#alttp-ttopzI",
-        "#tragedyOfPrincessZeldaI",
-        "#ttopzI-gih",
-        "#ganonInvadesHyrule",
-        "#theLegendOfZelda",
-        "#gih-tloz",
-        "#zeldaIITAoL",
-        "#tloz-zeldaIItaol"
+        ALL_IDS.linksAwakening,
+        ALL_IDS.aLinkToThePast_tragedyOfPrincessZeldaI,
+        ALL_IDS.tragedyOfPrincessZeldaI,
+        ALL_IDS.tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+        ALL_IDS.ganonInvadesHyrule,
+        ALL_IDS.theLegendOfZelda,
+        ALL_IDS.ganonInvadesHyrule_theLegendOfZelda,
+        ALL_IDS.zeldaIITAoL,
+        ALL_IDS.theLegendOfZelda_zeldaIITAoL,
       ]
     }],
     eras: get2001(),
     animations: [
-      { id: "#alttp-la", action: 'hide' },
-      { id: "#alttp-ooa", action: 'down' },
-      { id: "#oracleOfAges", action: 'down' },
-      { id: "#ooa-oos", action: 'down' },
-      { id: "#oracleOfSeasons", action: 'down' },
-      { id: "#oos-la", action: "down" }
+      { id: ALL_IDS.aLinkToThePast_linksAwakening, action: 'hide' },
+      { id: ALL_IDS.aLinkToThePast_oracleOfAges, action: 'down' },
+      { id: ALL_IDS.oracleOfAges, action: 'down' },
+      { id: ALL_IDS.oracleOfAges_oracleOfSeasons, action: 'down' },
+      { id: ALL_IDS.oracleOfSeasons, action: 'down' },
+      { id: ALL_IDS.oracleOfSeasons_linksAwakening, action: "down" }
     ]
   }, // "The Legend of Zelda: Oracle of Ages" 
 ];

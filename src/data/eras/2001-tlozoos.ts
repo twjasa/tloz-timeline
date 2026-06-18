@@ -1,5 +1,6 @@
 import { eraI, connectionI, centerX } from "../releases";
 import { get2000 } from "./2000-tlozmm";
+import { ALL_IDS } from "../../constants/ids";
 
 // THE LEGEND OF ZELDA: ORACLE OF SEASONS/AGES
 export const get2001 = (show = false): Array<eraI | connectionI> => [
@@ -7,7 +8,7 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
     {
         title: "A few months later?",
         show,
-        id: "alttp-ooa",
+        id: ALL_IDS.aLinkToThePast_oracleOfAges,
         position: { left: 1101, top: 1959 },
         // length: 146,
         orientation: "vertical"
@@ -16,13 +17,13 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "Oracle of Ages",
         show,
         color: "golden",
-        backgroundImage: "oracleOfAges",
+        backgroundImage: ALL_IDS.oracleOfAges,
         position: { left: centerX, top: 2034 },
     },
     {
         title: "Immediately after",
         show,
-        id: "ooa-oos",
+        id: ALL_IDS.oracleOfAges_oracleOfSeasons,
         position: { left: 1101, top: 2200 },
         orientation: "vertical"
     },
@@ -30,14 +31,14 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "Oracle of Season",
         show,
         color: "golden",
-        backgroundImage: "oracleOfSeasons",
+        backgroundImage: ALL_IDS.oracleOfSeasons,
         position: { left: centerX, top: 2275 },
     },
     {
         title: "A few months later?",
         show,
-        id: "oos-la",
+        id: ALL_IDS.oracleOfSeasons_linksAwakening,
         position: { left: 1101, top: 2442 },
         orientation: "vertical"
     },
-]
+];

@@ -1,6 +1,7 @@
 import { connectionI } from "../debug_releases";
 import { eraI } from "../releases";
 import { get1993 } from "./1993-tlozla";
+import { ALL_IDS } from "../../constants/ids";
 
 // THE LEGEND OF ZELDA: Ocarina of Time
 export const get1998 = (show = false): Array<eraI | connectionI> => [
@@ -9,60 +10,60 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "Ocarina of Time (Adult)",
     show,
     color: "golden",
-    backgroundImage: "ocarinaOfTimeAdult",
-    position: { left: 2304, top: 1538 },
+    backgroundImage: ALL_IDS.ocarinaOfTimeAdult,
+    position: { left: 1754, top: 1538 },
   },
   {
     title: "7 years",
     show,
-    id: "oot-adult-oot-child",
-    position: { left: 2458, top: 1453 },
+    id: ALL_IDS.ocarinaOfTimeAdult_ocarinaOfTimeChild,
+    position: { left: 1865, top: 1453 },
   },
   {
     title: "Ocarina of Time (Child)",
     show,
     color: "golden",
-    backgroundImage: "ocarinaOfTimeChild",
-    position: { left: 2304, top: 1298 },
+    backgroundImage: ALL_IDS.ocarinaOfTimeChild,
+    position: { left: 1754, top: 1298 },
     backgroundPosition: { left: 0, top: -192 },
   },
   {
     title: "9 years",
     show,
-    id: "oot-child-tfw",
-    position: { left: 2458, top: 1214 },
+    id: ALL_IDS.ocarinaOfTimeChild_theFierceWar,
+    position: { left: 1865, top: 1214 },
   },
   {
     title: "The Fierce War",
     color: "silver",
-    backgroundImage: "theFierceWar",
+    backgroundImage: ALL_IDS.theFierceWar,
     show,
-    position: { left: 2304, top: 1048 },
+    position: { left: 1754, top: 1048 },
   },
   {
     title: "??? (A long time)",
     show,
-    id: "cotms2-tfw",
-    position: { left: 2458, top: 970 },
+    id: ALL_IDS.creationOfTheMasterSword2_theFierceWar,
+    position: { left: 1865, top: 970 },
   },
   {
     title: "Creation of the master sword",
     show,
     color: "silver",
-    backgroundImage: "creationOfTheMasterSword2",
-    position: { left: 2304, top: 819 },
+    backgroundImage: ALL_IDS.creationOfTheMasterSword2,
+    position: { left: 1754, top: 819 },
   },
   {
     title: "??? (A long time)",
     show,
-    id: "cotms2-creation2",
-    position: { left: 2458, top: 732 },
+    id: ALL_IDS.creationOfTheMasterSword2_creation2,
+    position: { left: 1865, top: 732 },
   },
   {
     title: "Creation",
     show,
     color: "silver",
-    backgroundImage: "creation2",
-    position: { left: 2304, top: 574 },
+    backgroundImage: ALL_IDS.creation2,
+    position: { left: 1754, top: 564 },
   },
-]
+];

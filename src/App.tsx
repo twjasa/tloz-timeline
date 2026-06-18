@@ -140,10 +140,11 @@ function App() {
       }
 
       const clipPathValue = clipPathAnimation[clipPathDirection];
+      const targets = element.id.startsWith('#') || element.id.startsWith('.') ? element.id : `#${element.id}`;
 
       animationRef.current.push(
         anime({
-          targets: element.id,
+          targets,
           ...(clipPathValue ? { clipPath: clipPathValue } : {}),
           easing: "easeOutSine",
           duration: 1000,
@@ -493,8 +494,9 @@ function App() {
     moves: { x: number; y: number; height?: number | string }
   ) => {
     return new Promise<void>((resolve) => {
+      const targets = elements.map(id => id.startsWith('#') || id.startsWith('.') ? id : `#${id}`);
       const animeParams: any = {
-        targets: elements,
+        targets,
         translateX: moves.x,
         translateY: moves.y,
         easing: "easeOutSine",
