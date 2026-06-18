@@ -5,7 +5,7 @@
  * proveer tipado fuerte en toda la aplicación. Las claves representan nombres
  * autodescriptivos en lenguaje humano, y los valores son los IDs planos reales del DOM.
  */
-export const ALL_IDS = {
+export const ID = {
   // ─── 1986: The Legend of Zelda ──────────────────────────────────────────────
   ganonInvadesHyrule: "ganonInvadesHyrule",
   ganonInvadesHyrule_theLegendOfZelda: "gih-tloz",
@@ -61,4 +61,4 @@ export const ALL_IDS = {
   oracleOfSeasons_linksAwakening: "oos-la",
 } as const;
 
-export type TimelineId = typeof ALL_IDS[keyof typeof ALL_IDS];
+export type TimelineId = typeof ID[keyof typeof ID];
