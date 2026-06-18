@@ -15,7 +15,12 @@ import { AnimeInstance } from "animejs";
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
 import { centerWindow } from "./utils/centerWindow";
-import { ZOOM_DURATION, CENTER_PADDING, CENTER_EASING } from "./constants/variables.js";
+import { parseTransformMatrix } from "./utils/transformUtils";
+import {
+  ZOOM_DURATION,
+  CENTER_PADDING,
+  CENTER_EASING,
+} from "./constants/variables.js";
 
 /**
  * Componente principal de la aplicación TLoZ Timeline.
@@ -34,7 +39,9 @@ function App() {
   const canceledAnimation = useRef(false);
   const panzoomRef = useRef<any>();
   const transitionAbortRef = useRef<AbortController | null>(null);
-  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
   const isTransitioningRef = useRef(false);
   const currentStepRef = useRef(step);
   const [title, setTitle] = useState(
@@ -61,18 +68,21 @@ function App() {
     if (currentStepData && currentStepData.animations) {
       currentStepData.animations.forEach((anim) => {
         const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-        selectors.forEach(selector => {
+        selectors.forEach((selector) => {
           // El ID puede ser un selector directo (si no tiene '#') o puede que necesite '#'.
           // En los datos veo cosas como '#aLinkToThePast' y 'ganonInvadesHyrule'.
           // Si no tiene '#' o '.' asumimos que es un ID.
-          const query = selector.startsWith('#') || selector.startsWith('.') ? selector : `#${selector}`;
+          const query =
+            selector.startsWith("#") || selector.startsWith(".")
+              ? selector
+              : `#${selector}`;
           const el = document.querySelector(query) as HTMLElement;
           if (el) {
             if (anim.action === "hide") {
-              el.style.opacity = '0';
+              el.style.opacity = "0";
             } else {
               if (["up", "down", "left", "right"].includes(anim.action)) {
-                el.style.opacity = '1';
+                el.style.opacity = "1";
               }
               if (clipPathAnimation[anim.action]) {
                 el.style.clipPath = clipPathAnimation[anim.action][1];
@@ -119,7 +129,7 @@ function App() {
     ) => {
       let props: any = {};
       const action = (element as any).action;
-      
+
       if (["up", "down", "left", "right"].includes(action)) {
         props = {
           opacity: [0, 1],
@@ -131,7 +141,7 @@ function App() {
       }
 
       const clipPathValue = clipPathAnimation[clipPathDirection];
-      
+
       animationRef.current.push(
         anime({
           targets: element.id,
@@ -188,7 +198,10 @@ function App() {
     const main = document.querySelector("main")!;
     const children = Array.from(main.children) as HTMLElement[];
     if (children.length > 0) {
-      let minLeft = Infinity, minTop = Infinity, maxRight = -Infinity, maxBottom = -Infinity;
+      let minLeft = Infinity,
+        minTop = Infinity,
+        maxRight = -Infinity,
+        maxBottom = -Infinity;
       for (const child of children) {
         const left = child.offsetLeft;
         const top = child.offsetTop;
@@ -204,8 +217,14 @@ function App() {
         (main.clientWidth - p.left - p.right) / contentWidth,
         (main.clientHeight - p.top - p.bottom) / contentHeight
       );
-      const targetX = p.left + (main.clientWidth - p.left - p.right) / 2 - (minLeft + contentWidth / 2) * scale;
-      const targetY = p.top + (main.clientHeight - p.top - p.bottom) / 2 - (minTop + contentHeight / 2) * scale;
+      const targetX =
+        p.left +
+        (main.clientWidth - p.left - p.right) / 2 -
+        (minLeft + contentWidth / 2) * scale;
+      const targetY =
+        p.top +
+        (main.clientHeight - p.top - p.bottom) / 2 -
+        (minTop + contentHeight / 2) * scale;
       pz.zoomAbs(0, 0, scale);
       pz.moveTo(targetX, targetY);
     }
@@ -218,6 +237,250 @@ function App() {
       runSequentialAnimations(initialRelease.animations, 0);
     }
   }, [runSequentialAnimations]);
+  /**
+   * Obtiene el estado esperado (x, y, height) de todos los elementos que alguna vez
+   * han sido modificados por un makeSpace, calculando su estado acumulado en un paso específico.
+   */
+  const getElementsStateAtStep = useCallback((targetStepIdx: number) => {
+    const stateMap = new Map<
+      string,
+      { x: number; y: number; height: string | number }
+    >();
+
+    // Inicializar todos los IDs de makeSpace a su valor por defecto (0, 0, "")
+    releases.forEach((r) => {
+      if (r.makeSpace) {
+        r.makeSpace.forEach((space) => {
+          space.ids.forEach((id) => {
+            stateMap.set(id, { x: 0, y: 0, height: "" });
+          });
+        });
+      }
+    });
+
+    // Aplicar makeSpace secuencialmente hasta el paso objetivo
+    for (let i = 0; i <= targetStepIdx; i++) {
+      const r = releases[i];
+      if (r.makeSpace) {
+        r.makeSpace.forEach((space) => {
+          space.ids.forEach((id) => {
+            stateMap.set(id, {
+              x: space.x,
+              y: space.y,
+              height: space.height !== undefined ? space.height : "",
+            });
+          });
+        });
+      }
+    }
+
+    return stateMap;
+  }, []);
+
+  /**
+   * Convierte el mapa de estados calculados en la estructura esperada por centerWindow (pendingMakeSpace).
+   */
+  const getPendingMakeSpaceForStep = useCallback(
+    (targetStepIdx: number) => {
+      const targetStates = getElementsStateAtStep(targetStepIdx);
+      return Array.from(targetStates.entries()).map(([id, state]) => ({
+        ids: [id],
+        x: state.x,
+        y: state.y,
+        height: state.height,
+      }));
+    },
+    [getElementsStateAtStep]
+  );
+
+  /**
+   * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
+   */
+  const getNaturalHeight = useCallback((el: HTMLElement): number => {
+    const prevHeight = el.style.height;
+    el.style.height = "";
+    const naturalHeight = el.offsetHeight;
+    el.style.height = prevHeight;
+    return naturalHeight;
+  }, []);
+
+  /**
+   * Anima todos los elementos modificados por makeSpace hacia sus posiciones y alturas
+   * correspondientes en el paso objetivo.
+   */
+  const moveElementsToStep = useCallback(
+    async (targetStepIdx: number) => {
+      const targetStates = getElementsStateAtStep(targetStepIdx);
+      const promises: Promise<void>[] = [];
+
+      targetStates.forEach((targetState, selector) => {
+        const query =
+          selector.startsWith("#") || selector.startsWith(".")
+            ? selector
+            : `#${selector}`;
+        const el = document.querySelector(query) as HTMLElement;
+        if (!el) return;
+
+        const computedStyle = window.getComputedStyle(el);
+        const transform = computedStyle.transform;
+        const { translateX, translateY } = parseTransformMatrix(transform);
+
+        const currentHeight = el.style.height;
+        const targetHeight = targetState.height;
+
+        const diffX = Math.abs(translateX - targetState.x) > 0.1;
+        const diffY = Math.abs(translateY - targetState.y) > 0.1;
+        const diffHeight = currentHeight !== targetHeight;
+
+        if (diffX || diffY || diffHeight) {
+          let animHeight: any = targetHeight;
+          if (targetHeight === "") {
+            animHeight = getNaturalHeight(el);
+          }
+
+          const promise = new Promise<void>((resolve) => {
+            const instance = anime({
+              targets: query,
+              translateX: targetState.x,
+              translateY: targetState.y,
+              ...(animHeight !== undefined ? { height: animHeight } : {}),
+              easing: "easeOutSine",
+              duration: ZOOM_DURATION,
+              complete: () => {
+                if (targetHeight === "") {
+                  el.style.height = "";
+                }
+                resolve();
+              },
+            });
+            animationRef.current.push(instance);
+          });
+          promises.push(promise);
+        }
+      });
+
+      await Promise.all(promises);
+    },
+    [getElementsStateAtStep, getNaturalHeight]
+  );
+
+  /**
+   * Asegura que todos los elementos animados de los pasos anteriores
+   * queden completamente visibles, revirtiendo cualquier acción "hide" si es necesario.
+   */
+  const revealStepElements = useCallback((targetStepIdx: number) => {
+    for (let i = 0; i <= targetStepIdx; i++) {
+      const release = releases[i];
+      if (release.animations) {
+        release.animations.forEach((anim) => {
+          const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+          selectors.forEach((selector) => {
+            const query =
+              selector.startsWith("#") || selector.startsWith(".")
+                ? selector
+                : `#${selector}`;
+            const el = document.querySelector(query) as HTMLElement;
+            if (el) {
+              if (anim.action === "hide") {
+                el.style.opacity = "0";
+              } else {
+                el.style.opacity = "1";
+                if (clipPathAnimation[anim.action]) {
+                  el.style.clipPath = clipPathAnimation[anim.action][1];
+                }
+              }
+            }
+          });
+        });
+      }
+    }
+  }, []);
+
+  /**
+   * Prepara la escena para el paso anterior y retrocede la timeline.
+   */
+  const prevScene = async () => {
+    if (currentStepRef.current <= 0) return;
+
+    // Completar/cancelar todas las animaciones activas del paso actual
+    finishAllAnimations();
+
+    const prevStepIdx = currentStepRef.current - 1;
+    currentStepRef.current = prevStepIdx; // Actualizar de inmediato para evitar race conditions
+
+    const prevRelease = releases[prevStepIdx];
+    const zoom = prevRelease.centerWindow;
+
+    isTransitioningRef.current = true;
+    const abortController = new AbortController();
+    transitionAbortRef.current = abortController;
+
+    // Ejecutar decrementStep para actualizar la UI
+    await decrementStep();
+
+    // Re-centrar el canvas y mover los elementos en paralelo
+    const zoomPromise = zoom
+      ? centerWindow(
+          panzoomRef,
+          ZOOM_DURATION,
+          CENTER_EASING,
+          CENTER_PADDING,
+          abortController.signal,
+          getPendingMakeSpaceForStep(prevStepIdx),
+          zoom
+        )
+      : Promise.resolve();
+
+    const movePromise = moveElementsToStep(prevStepIdx);
+
+    await Promise.all([zoomPromise, movePromise]);
+
+    // Asegurar opacidades y clip-paths correctos para el paso destino
+    revealStepElements(prevStepIdx);
+
+    isTransitioningRef.current = false;
+    transitionAbortRef.current = null;
+    setTitle(
+      `${releases[prevStepIdx].name} - year ${releases[prevStepIdx].year}`
+    );
+  };
+
+  useEffect(() => {
+    const nextRelease = releases[step];
+    const isForward = prevStep.current === undefined || step > prevStep.current;
+
+    if (prevStep.current !== step) {
+      canceledAnimation.current = true;
+      animationRef.current.forEach((animation) => {
+        if (animation) {
+          animation.pause();
+          animation.seek(animation.duration);
+        }
+      });
+      canceledAnimation.current = false;
+      animationRef.current = [];
+    }
+
+    // Clear any existing timeout from previous renders
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
+    if (isForward && nextRelease.animations.length > 0) {
+      const delay = nextRelease.centerWindow ? ZOOM_DURATION : 0;
+      animationTimeoutRef.current = setTimeout(() => {
+        runSequentialAnimations(nextRelease.animations, 0);
+      }, delay);
+    }
+    prevStep.current = step;
+
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
+  }, [step, runSequentialAnimations]);
 
   /**
    * Mueve un conjunto de elementos a una nueva posición con animación.
@@ -269,7 +532,15 @@ function App() {
     decrementStep();
 
     if (zoom) {
-      await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, undefined, zoom);
+      await centerWindow(
+        panzoomRef,
+        ZOOM_DURATION,
+        CENTER_EASING,
+        CENTER_PADDING,
+        abortController.signal,
+        undefined,
+        zoom
+      );
     }
     if (abortController.signal.aborted) return;
 
@@ -307,7 +578,7 @@ function App() {
 
     const zoom = nextStep.centerWindow;
     const makeSpace = nextStep.makeSpace;
-    
+
     isTransitioningRef.current = true;
     const abortController = new AbortController();
     transitionAbortRef.current = abortController;
@@ -316,7 +587,15 @@ function App() {
     if (abortController.signal.aborted) return;
 
     if (zoom) {
-      await centerWindow(panzoomRef, ZOOM_DURATION, CENTER_EASING, CENTER_PADDING, abortController.signal, makeSpace, zoom);
+      await centerWindow(
+        panzoomRef,
+        ZOOM_DURATION,
+        CENTER_EASING,
+        CENTER_PADDING,
+        abortController.signal,
+        makeSpace,
+        zoom
+      );
     }
     if (abortController.signal.aborted) return;
 
@@ -341,12 +620,12 @@ function App() {
     <>
       <section className="leftButtonContainer">
         {step !== 0 && (
-          <button 
-            className="leftButton" 
-            onClick={handlePrevStep} 
+          <button
+            className="leftButton"
+            onClick={prevScene}
             onTouchStart={(e) => {
               e.preventDefault(); // Prevents double firing with onClick
-              handlePrevStep();
+              prevScene();
             }}
           />
         )}
@@ -420,9 +699,9 @@ function App() {
         })}
       </main>
       <section className="rightButtonContainer">
-        <button 
-          className="rightButton" 
-          onClick={setScene} 
+        <button
+          className="rightButton"
+          onClick={setScene}
           onTouchStart={(e) => {
             e.preventDefault(); // Prevents double firing with onClick
             setScene();

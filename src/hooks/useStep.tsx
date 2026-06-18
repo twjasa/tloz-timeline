@@ -20,8 +20,8 @@ function useStep(maxStep = 0, minStep = 0) {
     await setStep((prevStep) => Math.min(prevStep + 1, maxStep));
   };
 
-  const decrementStep = () => {
-    setStep((prevStep) => Math.max(prevStep - 1, minStep));
+  const decrementStep = async () => {
+    await setStep((prevStep) => Math.max(prevStep - 1, minStep));
   };
 
   return { step, incrementStep, decrementStep };
