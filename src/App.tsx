@@ -34,7 +34,6 @@ import {
  */
 function App() {
   const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
-  const prevStep = useRef(step);
   const animationRef = useRef<AnimeInstance[]>([]);
   const canceledAnimation = useRef(false);
   const panzoomRef = useRef<any>();
@@ -179,12 +178,12 @@ function App() {
     };
   }, [animateElement]);
 
-  useEffect(() => {
-    if (panzoomRef.current)
-      panzoomRef.current.on("pan", () => {
-        // console.log(panzoomRef.current.getClientRect());
-      });
-  });
+  // useEffect(() => {
+  //   if (panzoomRef.current)
+  //     panzoomRef.current.on("pan", () => {
+  //       // console.log(panzoomRef.current.getClientRect());
+  //     });
+  // });
 
   useEffect(() => {
     const pz = createPanZoom(document.querySelector("main")!, {
@@ -333,17 +332,11 @@ function App() {
         const diffHeight = currentHeight !== targetHeight;
 
         if (diffX || diffY || diffHeight) {
-          let animHeight: any = targetHeight;
-          if (targetHeight === "") {
-            animHeight = getNaturalHeight(el);
-          }
-
           const promise = new Promise<void>((resolve) => {
-            const instance = anime({
+            const animeParams: any = {
               targets: query,
               translateX: targetState.x,
               translateY: targetState.y,
-              ...(animHeight !== undefined ? { height: animHeight } : {}),
               easing: "easeOutSine",
               duration: ZOOM_DURATION,
               complete: () => {
@@ -352,7 +345,17 @@ function App() {
                 }
                 resolve();
               },
-            });
+            };
+
+            if (diffHeight) {
+              let animHeight: any = targetHeight;
+              if (targetHeight === "") {
+                animHeight = getNaturalHeight(el);
+              }
+              animeParams.height = animHeight;
+            }
+
+            const instance = anime(animeParams);
             animationRef.current.push(instance);
           });
           promises.push(promise);
@@ -434,6 +437,7 @@ function App() {
     const movePromise = moveElementsToStep(prevStepIdx);
 
     await Promise.all([zoomPromise, movePromise]);
+    if (abortController.signal.aborted) return;
 
     // Asegurar opacidades y clip-paths correctos para el paso destino
     revealStepElements(prevStepIdx);
@@ -445,42 +449,7 @@ function App() {
     );
   };
 
-  useEffect(() => {
-    const nextRelease = releases[step];
-    const isForward = prevStep.current === undefined || step > prevStep.current;
 
-    if (prevStep.current !== step) {
-      canceledAnimation.current = true;
-      animationRef.current.forEach((animation) => {
-        if (animation) {
-          animation.pause();
-          animation.seek(animation.duration);
-        }
-      });
-      canceledAnimation.current = false;
-      animationRef.current = [];
-    }
-
-    // Clear any existing timeout from previous renders
-    if (animationTimeoutRef.current) {
-      clearTimeout(animationTimeoutRef.current);
-      animationTimeoutRef.current = null;
-    }
-
-    if (isForward && nextRelease.animations.length > 0) {
-      const delay = nextRelease.centerWindow ? ZOOM_DURATION : 0;
-      animationTimeoutRef.current = setTimeout(() => {
-        runSequentialAnimations(nextRelease.animations, 0);
-      }, delay);
-    }
-    prevStep.current = step;
-
-    return () => {
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-    };
-  }, [step, runSequentialAnimations]);
 
   /**
    * Mueve un conjunto de elementos a una nueva posición con animación.
@@ -497,62 +466,24 @@ function App() {
     moves: { x: number; y: number; height?: number | string }
   ) => {
     return new Promise<void>((resolve) => {
-      const instance = anime({
+      const animeParams: any = {
         targets: elements,
         translateX: moves.x,
         translateY: moves.y,
-        height: moves.height,
         easing: "easeOutSine",
         duration: ZOOM_DURATION,
         complete: () => resolve(),
-      });
+      };
+      if (moves.height !== undefined) {
+        animeParams.height = moves.height;
+      }
+      const instance = anime(animeParams);
       // Track it so finishAllAnimations can complete it instantly
       animationRef.current.push(instance);
     });
   };
 
-  /**
-   * Retrocede la timeline al paso anterior de forma síncrona.
-   */
-  const handlePrevStep = async () => {
-    if (currentStepRef.current <= 0) return;
 
-    finishAllAnimations();
-
-    const prevStepIdx = currentStepRef.current - 1;
-    const prevStep = releases[prevStepIdx];
-    currentStepRef.current = prevStepIdx;
-
-    const zoom = prevStep.centerWindow;
-
-    isTransitioningRef.current = true;
-    const abortController = new AbortController();
-    transitionAbortRef.current = abortController;
-
-    decrementStep();
-
-    if (zoom) {
-      await centerWindow(
-        panzoomRef,
-        ZOOM_DURATION,
-        CENTER_EASING,
-        CENTER_PADDING,
-        abortController.signal,
-        undefined,
-        zoom
-      );
-    }
-    if (abortController.signal.aborted) return;
-
-    isTransitioningRef.current = false;
-    transitionAbortRef.current = null;
-
-    if (prevStep.animations.length > 0) {
-      runSequentialAnimations(prevStep.animations, 0);
-    }
-
-    setTitle(`${prevStep.name} - year ${prevStep.year}`);
-  };
 
   /**
    * Prepara la escena para el siguiente paso y avanza la timeline.
