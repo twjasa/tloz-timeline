@@ -17,7 +17,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2,
-    position: { left: 2153, top: 1200 },
+    position: { left: 2114, top: 1200 },
     length: 415,
     orientation: "vertical"
   },
@@ -25,8 +25,8 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3,
-    position: { left: 1910, top: 1200 },
-    length: 410,
+    position: { left: 1935, top: 1200 },
+    length: 397,
     orientation: "horizontal"
   },
   {
@@ -57,6 +57,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "golden",
     backgroundImage: ID.majorasMask,
+    backgroundPosition: { left: 0, top: -167 },
     position: { left: 1691, top: 1538 },
   },
 ];
