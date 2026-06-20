@@ -54,9 +54,9 @@ export const ID = {
   // ─── 2001: Oracle of Ages/Seasons ───────────────────────────────────────────
   aLinkToThePast_oracleOfAges: "alttp-ooa",
   oracleOfAges: "oracleOfAges",
-  oracleOfAges_oracleOfSeasons: "ooa-oos",
-  oracleOfSeasons: "oracleOfSeasons",
-  oracleOfSeasons_linksAwakening: "oos-la",
+  oracleOfAges_oracleOfSeason: "ooa-oos",
+  oracleOfSeason: "oracleOfSeason",
+  oracleOfSeason_linksAwakening: "oos-la",
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -150,11 +150,11 @@ declare global {
   /** Era: Oracle of Ages (2001) */
   const oracleOfAges: "oracleOfAges";
   /** Connection: Oracle of Ages ➔ Oracle of Seasons */
-  const oracleOfAges_oracleOfSeasons: "ooa-oos";
+  const oracleOfAges_oracleOfSeason: "ooa-oos";
   /** Era: Oracle of Seasons (2001) */
-  const oracleOfSeasons: "oracleOfSeasons";
+  const oracleOfSeason: "oracleOfSeason";
   /** Connection: Oracle of Seasons ➔ Link's Awakening */
-  const oracleOfSeasons_linksAwakening: "oos-la";
+  const oracleOfSeason_linksAwakening: "oos-la";
 }
 
 // Assign variables to globalThis at runtime

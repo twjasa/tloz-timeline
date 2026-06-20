@@ -231,9 +231,9 @@ export const releases: releasesI[] = [
       { id: aLinkToThePast_linksAwakening, action: 'hide' },
       { id: aLinkToThePast_oracleOfAges, action: 'down' },
       { id: oracleOfAges, action: 'down' },
-      { id: oracleOfAges_oracleOfSeasons, action: 'down' },
-      { id: oracleOfSeasons, action: 'down' },
-      { id: oracleOfSeasons_linksAwakening, action: "down" }
+      { id: oracleOfAges_oracleOfSeason, action: 'down' },
+      { id: oracleOfSeason, action: 'down' },
+      { id: oracleOfSeason_linksAwakening, action: "down" }
     ]
   }, // "The Legend of Zelda: Oracle of Ages" 
 ];

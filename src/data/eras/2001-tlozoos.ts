@@ -18,12 +18,13 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         show,
         color: "golden",
         backgroundImage: ID.oracleOfAges,
+        backgroundPosition: { left: -1, top: -56 },
         position: { left: centerX, top: 2034 },
     },
     {
         title: "Immediately after",
         show,
-        id: ID.oracleOfAges_oracleOfSeasons,
+        id: ID.oracleOfAges_oracleOfSeason,
         position: { left: 1101, top: 2200 },
         orientation: "vertical"
     },
@@ -31,13 +32,14 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "Oracle of Season",
         show,
         color: "golden",
-        backgroundImage: ID.oracleOfSeasons,
+        backgroundImage: ID.oracleOfSeason,
+        backgroundPosition: { left: 2, top: -54 },
         position: { left: centerX, top: 2275 },
     },
     {
         title: "A few months later?",
         show,
-        id: ID.oracleOfSeasons_linksAwakening,
+        id: ID.oracleOfSeason_linksAwakening,
         position: { left: 1101, top: 2442 },
         orientation: "vertical"
     },
