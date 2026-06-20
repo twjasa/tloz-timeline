@@ -258,7 +258,9 @@ export const releases: releasesI[] = [
     eras: get2002(),
     animations: [
       { id: creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce, action: "hide" },
-      { id: creationOfTheMasterSword_fourSwords, action: "down" },
+      { id: creationOfTheMasterSword_vaatiIsSealed, action: "down" },
+      { id: vaatiIsSealed, action: "down" },
+      { id: vaatiIsSealed_fourSwords, action: "down" },
       { id: fourSwords, action: "down" },
       { id: fourSwords_ganondorfGetsTheCompleteTriforce, action: "down" },
     ]

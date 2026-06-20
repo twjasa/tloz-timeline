@@ -59,7 +59,9 @@ export const ID = {
   oracleOfSeason_linksAwakening: "oos-la",
 
   // ─── 2002: The Legend of Zelda: Four Swords ────────────────────────────────
-  creationOfTheMasterSword_fourSwords: "cotms-fs",
+  creationOfTheMasterSword_vaatiIsSealed: "cotms-vis",
+  vaatiIsSealed: "vaatiIsSealed",
+  vaatiIsSealed_fourSwords: "vis-fs",
   fourSwords: "fourSwords",
   fourSwords_ganondorfGetsTheCompleteTriforce: "fs-ggtct",
 
@@ -168,8 +170,12 @@ declare global {
   const oracleOfSeason_linksAwakening: "oos-la";
 
   // ─── 2002: The Legend of Zelda: Four Swords ────────────────────────────────
-  /** Connection: Creation of the Master Sword ➔ Four Swords */
-  const creationOfTheMasterSword_fourSwords: "cotms-fs";
+  /** Connection: Creation of the Master Sword ➔ Vaati is Sealed */
+  const creationOfTheMasterSword_vaatiIsSealed: "cotms-vis";
+  /** Era: Vaati is Sealed */
+  const vaatiIsSealed: "vaatiIsSealed";
+  /** Connection: Vaati is Sealed ➔ Four Swords */
+  const vaatiIsSealed_fourSwords: "vis-fs";
   /** Era: Four Swords (2002) */
   const fourSwords: "fourSwords";
   /** Connection: Four Swords ➔ Ganondorf Gets the Complete Triforce */
