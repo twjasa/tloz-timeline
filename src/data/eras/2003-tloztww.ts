@@ -1,5 +1,4 @@
 import { eraI, connectionI, centerX } from "../releases";
-import { ID } from "../../constants/ids";
 import { get2002 } from "./2002-tlozfs";
 
 // THE LEGEND OF ZELDA: THE WIND WAKER
