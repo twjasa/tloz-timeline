@@ -15,7 +15,6 @@ import { AnimeInstance } from "animejs";
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
 import { centerWindow } from "./utils/centerWindow";
-import { parseTransformMatrix } from "./utils/transformUtils";
 import {
   ZOOM_DURATION,
   CENTER_PADDING,
@@ -268,10 +267,11 @@ function App() {
       if (r.makeSpace) {
         r.makeSpace.forEach((space) => {
           space.ids.forEach((id) => {
+            const current = stateMap.get(id) || { x: 0, y: 0, height: "" };
             stateMap.set(id, {
-              x: space.x,
-              y: space.y,
-              height: space.height !== undefined ? space.height : "",
+              x: current.x + space.x,
+              y: current.y + space.y,
+              height: space.height !== undefined ? space.height : current.height,
             });
           });
         });
@@ -313,30 +313,28 @@ function App() {
    * correspondientes en el paso objetivo.
    */
   const moveElementsToStep = useCallback(
-    async (targetStepIdx: number) => {
-      const targetStates = getElementsStateAtStep(targetStepIdx);
+    async (fromStepIdx: number, toStepIdx: number) => {
+      const startStates = getElementsStateAtStep(fromStepIdx);
+      const targetStates = getElementsStateAtStep(toStepIdx);
       const promises: Promise<void>[] = [];
 
       targetStates.forEach((targetState, selector) => {
-        const query =
-          selector.startsWith("#") || selector.startsWith(".")
-            ? selector
-            : `#${selector}`;
-        const el = document.querySelector(query) as HTMLElement;
-        if (!el) return;
+        const startState = startStates.get(selector) || { x: 0, y: 0, height: "" };
 
-        const computedStyle = window.getComputedStyle(el);
-        const transform = computedStyle.transform;
-        const { translateX, translateY } = parseTransformMatrix(transform);
-
-        const currentHeight = el.style.height;
-        const targetHeight = targetState.height;
-
-        const diffX = Math.abs(translateX - targetState.x) > 0.1;
-        const diffY = Math.abs(translateY - targetState.y) > 0.1;
-        const diffHeight = currentHeight !== targetHeight;
+        const diffX = Math.abs(startState.x - targetState.x) > 0.1;
+        const diffY = Math.abs(startState.y - targetState.y) > 0.1;
+        const diffHeight = startState.height !== targetState.height;
 
         if (diffX || diffY || diffHeight) {
+          const query =
+            selector.startsWith("#") || selector.startsWith(".")
+              ? selector
+              : `#${selector}`;
+          const el = document.querySelector(query) as HTMLElement;
+          if (!el) return;
+
+          const targetHeight = targetState.height;
+
           const promise = new Promise<void>((resolve) => {
             const animeParams: any = {
               targets: query,
@@ -477,7 +475,7 @@ function App() {
         )
       : Promise.resolve();
 
-    const movePromise = moveElementsToStep(prevStepIdx);
+    const movePromise = moveElementsToStep(prevStepIdx + 1, prevStepIdx);
 
     await Promise.all([zoomPromise, movePromise]);
     if (abortController.signal.aborted) return;
@@ -486,41 +484,6 @@ function App() {
     transitionAbortRef.current = null;
 
     syncElementsState(prevStepIdx);
-  };
-
-  /**
-   * Mueve un conjunto de elementos a una nueva posición con animación.
-   *
-   * Se usa antes de revelar nuevas eras para "hacer espacio" en el canvas,
-   * desplazando los elementos existentes.
-   *
-   * @param elements - Array de selectores CSS de los elementos a mover.
-   * @param moves - Objeto con los valores de desplazamiento: `x`, `y`, y opcionalmente `height`.
-   * @returns Promesa que se resuelve al completar la animación.
-   */
-  const moveElements = async (
-    elements: string[],
-    moves: { x: number; y: number; height?: number | string }
-  ) => {
-    return new Promise<void>((resolve) => {
-      const targets = elements.map((id) =>
-        id.startsWith("#") || id.startsWith(".") ? id : `#${id}`
-      );
-      const animeParams: any = {
-        targets,
-        translateX: moves.x,
-        translateY: moves.y,
-        easing: "easeOutSine",
-        duration: ZOOM_DURATION,
-        complete: () => resolve(),
-      };
-      if (moves.height !== undefined) {
-        animeParams.height = moves.height;
-      }
-      const instance = anime(animeParams);
-      // Track it so finishAllAnimations can complete it instantly
-      animationRef.current.push(instance);
-    });
   };
 
   /**
@@ -549,7 +512,6 @@ function App() {
     setTitle(`${nextStep.name} - year ${nextStep.year}`);
 
     const zoom = nextStep.centerWindow;
-    const makeSpace = nextStep.makeSpace;
 
     isTransitioningRef.current = true;
     const abortController = new AbortController();
@@ -565,18 +527,14 @@ function App() {
         CENTER_EASING,
         CENTER_PADDING,
         abortController.signal,
-        makeSpace,
+        getPendingMakeSpaceForStep(nextStepIdx),
         zoom
       );
     }
     if (abortController.signal.aborted) return;
 
-    if (makeSpace) {
-      for (const space of makeSpace) {
-        await moveElements(space.ids, { ...space });
-        if (abortController.signal.aborted) return;
-      }
-    }
+    await moveElementsToStep(nextStepIdx - 1, nextStepIdx);
+    if (abortController.signal.aborted) return;
 
     isTransitioningRef.current = false;
     transitionAbortRef.current = null;
@@ -636,7 +594,7 @@ function App() {
         id="main"
       >
         {releases[step].eras.map((release) => {
-          if ("id" in release) {
+          if (!("backgroundImage" in release)) {
             return (
               <TimelinePath
                 text={release.title}

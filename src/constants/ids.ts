@@ -57,6 +57,17 @@ export const ID = {
   oracleOfAges_oracleOfSeason: "ooa-oos",
   oracleOfSeason: "oracleOfSeason",
   oracleOfSeason_linksAwakening: "oos-la",
+
+  // ─── 2002: The Legend of Zelda: Four Swords ────────────────────────────────
+  creationOfTheMasterSword_fourSwords: "cotms-fs",
+  fourSwords: "fourSwords",
+  fourSwords_ganondorfGetsTheCompleteTriforce: "fs-ggtct",
+
+  // ─── 2003: The Legend of Zelda: The Wind Waker ──────────────────────────────
+  ocarinaOfTimeAdult_theGreatFlood: "oot-adult-tgf",
+  theGreatFlood: "theGreatFlood",
+  theGreatFlood_theWindWaker: "tgf-ww",
+  theWindWaker: "theWindWaker",
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -155,6 +166,24 @@ declare global {
   const oracleOfSeason: "oracleOfSeason";
   /** Connection: Oracle of Seasons ➔ Link's Awakening */
   const oracleOfSeason_linksAwakening: "oos-la";
+
+  // ─── 2002: The Legend of Zelda: Four Swords ────────────────────────────────
+  /** Connection: Creation of the Master Sword ➔ Four Swords */
+  const creationOfTheMasterSword_fourSwords: "cotms-fs";
+  /** Era: Four Swords (2002) */
+  const fourSwords: "fourSwords";
+  /** Connection: Four Swords ➔ Ganondorf Gets the Complete Triforce */
+  const fourSwords_ganondorfGetsTheCompleteTriforce: "fs-ggtct";
+
+  // ─── 2003: The Legend of Zelda: The Wind Waker ──────────────────────────────
+  /** Connection: Ocarina of Time (Adult) ➔ The Great Flood */
+  const ocarinaOfTimeAdult_theGreatFlood: "oot-adult-tgf";
+  /** Era: The Great Flood */
+  const theGreatFlood: "theGreatFlood";
+  /** Connection: The Great Flood ➔ The Wind Waker */
+  const theGreatFlood_theWindWaker: "tgf-ww";
+  /** Era: The Wind Waker (2003) */
+  const theWindWaker: "theWindWaker";
 }
 
 // Assign variables to globalThis at runtime

@@ -2,6 +2,8 @@ import styles from '../components/Era/era.module.scss';
 import { get1986, get1987, get1991, get1993, get1998 } from './eras';
 import { get2000 } from './eras/2000-tlozmm';
 import { get2001 } from './eras/2001-tlozoos';
+import { get2002 } from './eras/2002-tlozfs';
+import { get2003 } from './eras/2003-tloztww';
 
 
 /**
@@ -157,14 +159,14 @@ export const releases: releasesI[] = [
     name: "The Legend of Zelda: Ocarina of Time",
     centerWindow: [creation1, ocarinaOfTimeAdult],
     makeSpace: [{
-      x: 0, y: -481.06, ids: [
+      x: 0, y: -236.9, ids: [
         creation1,
         creation1_creationOfTheMasterSword,
         creationOfTheMasterSword,
       ]
     },
     {
-      x: 0, y: -481.06, height: "316px", ids: [
+      x: 0, y: -236.96, height: "316px", ids: [
         creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
       ]
     }],
@@ -236,4 +238,42 @@ export const releases: releasesI[] = [
       { id: oracleOfSeason_linksAwakening, action: "down" }
     ]
   }, // "The Legend of Zelda: Oracle of Ages" 
+  {
+    year: 2002,
+    name: "The Legend of Zelda: Four Swords",
+    centerWindow: [creation1, ocarinaOfTimeAdult],
+    makeSpace: [{
+      x: 0, y: -400, ids: [
+        creation1,
+        creationOfTheMasterSword,
+        creation2,
+        creationOfTheMasterSword2,
+        creation1_creationOfTheMasterSword,
+        creationOfTheMasterSword2_creation2,
+        creationOfTheMasterSword2_theFierceWar
+      ]
+    }, {
+      x: 0, y: 0, height: "478px", ids: [creationOfTheMasterSword2_theFierceWar]
+    }],
+    eras: get2002(),
+    animations: [
+      { id: creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce, action: "hide" },
+      { id: creationOfTheMasterSword_fourSwords, action: "down" },
+      { id: fourSwords, action: "down" },
+      { id: fourSwords_ganondorfGetsTheCompleteTriforce, action: "down" },
+    ]
+  }, // "The Legend of Zelda: Four Swords" 
+  {
+    year: 2003,
+    name: "The Legend of Zelda: The Wind Waker",
+    centerWindow: [ocarinaOfTimeAdult, theWindWaker],
+    makeSpace: [],
+    eras: get2003(),
+    animations: [
+      { id: ocarinaOfTimeAdult_theGreatFlood, action: "down" },
+      { id: theGreatFlood, action: "down" },
+      { id: theGreatFlood_theWindWaker, action: "down" },
+      { id: theWindWaker, action: "down" },
+    ]
+  }, // "The Legend of Zelda: The Wind Waker" 
 ];
