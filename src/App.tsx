@@ -231,6 +231,12 @@ function App() {
       pz.zoomAbs(0, 0, scale);
       pz.moveTo(targetX, targetY);
       pz.setMinZoom(scale * 0.95);
+
+      const eraEl = main.querySelector(".externalBorder1") as HTMLElement;
+      const eraWidth = eraEl ? eraEl.offsetWidth : 530;
+      const eraHeight = eraEl ? eraEl.offsetHeight : 130;
+      const initialMaxZoom = Math.min(main.clientWidth / eraWidth, main.clientHeight / eraHeight) * 0.95;
+      pz.setMaxZoom(initialMaxZoom);
     }
   }, []);
 
@@ -365,6 +371,28 @@ function App() {
     },
     [getPendingMakeSpaceForStep]
   );
+
+  /**
+   * Calcula el zoom-in máximo (maxZoom) para evitar que una Era sea más grande que la pantalla.
+   */
+  const calculateMaxZoom = useCallback(() => {
+    const main = document.querySelector("main");
+    if (!main) return Number.POSITIVE_INFINITY;
+
+    const eraEl = main.querySelector(".externalBorder1") as HTMLElement;
+    const eraWidth = eraEl ? eraEl.offsetWidth : 530;
+    const eraHeight = eraEl ? eraEl.offsetHeight : 130;
+
+    const containerWidth = main.clientWidth;
+    const containerHeight = main.clientHeight;
+
+    const fitScale = Math.min(
+      containerWidth / eraWidth,
+      containerHeight / eraHeight
+    );
+
+    return fitScale * 0.95;
+  }, []);
 
   /**
    * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
@@ -504,12 +532,15 @@ function App() {
     syncElementsState(step);
   }, [step, syncElementsState]);
 
-  // Actualiza minZoom dinámicamente cuando cambia el paso o se redimensiona la ventana
+  // Actualiza minZoom y maxZoom dinámicamente cuando cambia el paso o se redimensiona la ventana
   useEffect(() => {
     const handleResize = () => {
       if (panzoomRef.current) {
         const minZoomVal = calculateMinZoomForStep(step);
         panzoomRef.current.setMinZoom(minZoomVal);
+
+        const maxZoomVal = calculateMaxZoom();
+        panzoomRef.current.setMaxZoom(maxZoomVal);
       }
     };
 
@@ -519,7 +550,7 @@ function App() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [step, calculateMinZoomForStep]);
+  }, [step, calculateMinZoomForStep, calculateMaxZoom]);
 
   /**
    * Prepara la escena para el paso anterior y retrocede la timeline.
