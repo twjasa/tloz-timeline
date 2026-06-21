@@ -7,6 +7,7 @@ import { get2003 } from './eras/2003-tloztww';
 import { get2005 } from './eras/2005-tloztmc';
 import { get2006 } from './eras/2006-tloztp';
 import { get2007 } from './eras/2007-tlozph';
+import { get2009 } from './eras/2009-tlozst';
 
 
 /**
@@ -389,5 +390,16 @@ export const releases: releasesI[] = [
       { id: theWindWaker_phantomHourglass, action: "down" },
       { id: phantomHourglass, action: "down" },
     ]
-  } // "The Legend of Zelda: Phantom Hourglass" 
+  }, // "The Legend of Zelda: Phantom Hourglass" 
+  {
+    year: 2009,
+    name: "The Legend of Zelda: Spirit Tracks",
+    centerWindow: [theGreatFlood, spiritTracks],
+    makeSpace: [],
+    eras: get2009(),
+    animations: [
+      { id: phantomHourglass_spiritTracks, action: "down" },
+      { id: spiritTracks, action: "down" },
+    ]
+  } // "The Legend of Zelda: Spirit Tracks" 
 ];

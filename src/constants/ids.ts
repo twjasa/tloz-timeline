@@ -93,6 +93,10 @@ export const ID = {
   theWindWaker_phantomHourglass: "ww-ph",
   phantomHourglass: "phantomHourglass",
 
+  // ─── 2009: The Legend of Zelda: Spirit Tracks ──────────────────────────────
+  phantomHourglass_spiritTracks: "ph-st",
+  spiritTracks: "spiritTracks",
+
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -251,6 +255,12 @@ declare global {
   const theWindWaker_phantomHourglass: "ww-ph";
   /** Era: Phantom Hourglass (2007) */
   const phantomHourglass: "phantomHourglass";
+
+  // ─── 2009: The Legend of Zelda: Spirit Tracks ──────────────────────────────
+  /** Connection: Phantom Hourglass ➔ Spirit Tracks */
+  const phantomHourglass_spiritTracks: "ph-st";
+  /** Era: Spirit Tracks (2009) */
+  const spiritTracks: "spiritTracks";
 
 }
 
