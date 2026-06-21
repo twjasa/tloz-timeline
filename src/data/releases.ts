@@ -5,6 +5,7 @@ import { get2001 } from './eras/2001-tlozoos';
 import { get2002 } from './eras/2002-tlozfs';
 import { get2003 } from './eras/2003-tloztww';
 import { get2005 } from './eras/2005-tloztmc';
+import { get2006 } from './eras/2006-tloztp';
 
 
 /**
@@ -200,7 +201,32 @@ export const releases: releasesI[] = [
         ocarinaOfTimeAdult_ocarinaOfTimeChild,
         ocarinaOfTimeAdult,
       ]
-    }],
+    },
+    {
+      x: 0, y: 247, ids: [
+        theSealingWar,
+        theSealingWar_aLinkToThePast,
+        aLinkToThePast,
+        aLinkToThePast_linksAwakening,
+        linksAwakening,
+        aLinkToThePast_tragedyOfPrincessZeldaI,
+        tragedyOfPrincessZeldaI,
+        tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+        ganonInvadesHyrule,
+        ganonInvadesHyrule_theLegendOfZelda,
+        theLegendOfZelda,
+        theLegendOfZelda_zeldaIITAoL,
+        zeldaIITAoL,
+        ocarinaOfTimeAdult
+      ]
+    },
+    {
+      x: 0, y: 0, height: "325px", ids: [
+        ocarinaOfTimeAdult_ocarinaOfTimeChild,
+        ganondorfGetsTheCompleteTriforce_theSealingWar,
+      ]
+    }
+    ],
     eras: get2000(),
     animations: [
       { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
@@ -269,8 +295,36 @@ export const releases: releasesI[] = [
   {
     year: 2003,
     name: "The Legend of Zelda: The Wind Waker",
-    centerWindow: [ocarinaOfTimeAdult, theWindWaker],
-    makeSpace: [],
+    centerWindow: [aLinkToThePast, ocarinaOfTimeAdult],
+    makeSpace: [{
+      x: 0,
+      y: 1100,
+      ids: [
+        aLinkToThePast,
+        aLinkToThePast_oracleOfAges,
+        oracleOfSeason,
+        oracleOfAges,
+        oracleOfAges_oracleOfSeason,
+        oracleOfSeason_linksAwakening,
+        linksAwakening,
+        aLinkToThePast_tragedyOfPrincessZeldaI,
+        tragedyOfPrincessZeldaI,
+        tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+        ganonInvadesHyrule,
+        ganonInvadesHyrule_theLegendOfZelda,
+        theLegendOfZelda,
+        theLegendOfZelda_zeldaIITAoL,
+        zeldaIITAoL,
+      ]
+    },
+    {
+      x: 0,
+      y: 0,
+      height: "1181px",
+      ids: [
+        theSealingWar_aLinkToThePast
+      ]
+    }],
     eras: get2003(),
     animations: [
       { id: ocarinaOfTimeAdult_theGreatFlood, action: "down" },
@@ -310,5 +364,18 @@ export const releases: releasesI[] = [
       { id: hyruleKingdomIsEstablished2, action: "down" },
       { id: hyruleKingdomIsEstablished2_theFierceWar, action: "down" },
     ]
-  } // "The Legend of Zelda: The Minish Cap" 
+  }, // "The Legend of Zelda: The Minish Cap" 
+  {
+    year: 2006,
+    name: "The Legend of Zelda: Twilight Princess",
+    centerWindow: [ganondorfGetsTheCompleteTriforce, theWindWaker],
+    makeSpace: [],
+    eras: get2006(),
+    animations: [
+      { id: majorasMask_ganondorfExecution, action: "down" },
+      { id: ganondorfExecution, action: "down" },
+      { id: ganondorfExecution_twilightPrincess, action: "down" },
+      { id: twilightPrincess, action: "down" },
+    ]
+  } // "The Legend of Zelda: Twilight Princess" 
 ];

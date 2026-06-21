@@ -5,10 +5,11 @@ import { get2002 } from "./2002-tlozfs";
 export const get2003 = (show = false): Array<eraI | connectionI> => [
   ...get2002(show),
   {
-    title: "??? (A Century?)",
+    title: "About 100 years",
     show,
     id: ocarinaOfTimeAdult_theGreatFlood,
-    position: { left: 2455, top: 1704 },
+    position: { left: 2455, top: 1704 + 247 },
+    length: 85,
     orientation: "vertical"
   },
   {
@@ -17,13 +18,13 @@ export const get2003 = (show = false): Array<eraI | connectionI> => [
     id: theGreatFlood,
     color: "silver",
     backgroundImage: theGreatFlood,
-    position: { left: 2354, top: 1782 },
+    position: { left: 2354, top: 2037 },
   },
   {
     title: "About 300 years later...",
     show,
     id: theGreatFlood_theWindWaker,
-    position: { left: 2456, top: 1948 },
+    position: { left: 2456, top: 2203 },
     orientation: "vertical"
   },
   {
@@ -33,7 +34,7 @@ export const get2003 = (show = false): Array<eraI | connectionI> => [
     color: "golden",
     backgroundImage: theWindWaker,
     backgroundPosition: { left: 0, top: -93 },
-    position: { left: 2354, top: 2026 },
+    position: { left: 2354, top: 2281 },
   },
 
 ];

@@ -82,6 +82,13 @@ export const ID = {
   theWarOfTheBoundChest_theMinishCap: "wobc-tmc",
   theMinishCap: "theMinishCap",
   theMinishCap_vaatiIsSealed: "tmc-vis",
+
+  // ─── 2006: The Legend of Zelda: Twilight Princess ───────────────────────────
+  majorasMask_ganondorfExecution: "mm-ge",
+  ganondorfExecution: "ganondorfExecution",
+  ganondorfExecution_twilightPrincess: "ge-tp",
+  twilightPrincess: "twilightPrincess",
+
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -224,6 +231,17 @@ declare global {
   const theMinishCap: "theMinishCap";
   /** Connection: The Minish Cap ➔ Vaati is Sealed */
   const theMinishCap_vaatiIsSealed: "tmc-vis";
+
+  // ─── 2006: The Legend of Zelda: Twilight Princess ───────────────────────────
+  /** Connection: Majora's Mask ➔ Ganondorf Execution */
+  const majorasMask_ganondorfExecution: "mm-ge";
+  /** Era: Ganondorf Execution */
+  const ganondorfExecution: "ganondorfExecution";
+  /** Connection: Ganondorf Execution ➔ Twilight Princess */
+  const ganondorfExecution_twilightPrincess: "ge-tp";
+  /** Era: Twilight Princess (2006) */
+  const twilightPrincess: "twilightPrincess";
+
 }
 
 // Assign variables to globalThis at runtime
