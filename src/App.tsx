@@ -15,6 +15,7 @@ import { AnimeInstance } from "animejs";
 // @ts-ignore
 import createPanZoom from "./panzoom/index.js";
 import { centerWindow } from "./utils/centerWindow";
+import { parseTransformMatrix } from "./utils/transformUtils";
 import {
   ZOOM_DURATION,
   CENTER_PADDING,
@@ -229,6 +230,7 @@ function App() {
         (minTop + contentHeight / 2) * scale;
       pz.zoomAbs(0, 0, scale);
       pz.moveTo(targetX, targetY);
+      pz.setMinZoom(scale * 0.95);
     }
   }, []);
 
@@ -295,6 +297,73 @@ function App() {
       }));
     },
     [getElementsStateAtStep]
+  );
+
+  /**
+   * Calcula el zoom-out máximo (minZoom) para el paso actual basándose en los elementos en pantalla.
+   */
+  const calculateMinZoomForStep = useCallback(
+    (stepIdx: number) => {
+      const main = document.querySelector("main");
+      if (!main) return 0;
+
+      const children = Array.from(main.children) as HTMLElement[];
+      if (children.length === 0) return 0;
+
+      const pendingMakeSpace = getPendingMakeSpaceForStep(stepIdx);
+      const makeSpaceOffsets = new Map<string, { x: number; y: number }>();
+      if (pendingMakeSpace) {
+        for (const space of pendingMakeSpace) {
+          for (const id of space.ids) {
+            const cleanId = id.startsWith("#") ? id.slice(1) : id;
+            makeSpaceOffsets.set(cleanId, { x: space.x, y: space.y });
+          }
+        }
+      }
+
+      let minLeft = Infinity,
+        minTop = Infinity,
+        maxRight = -Infinity,
+        maxBottom = -Infinity;
+
+      for (const child of children) {
+        const baseLeft = child.offsetLeft + main.scrollLeft;
+        const baseTop = child.offsetTop + main.scrollTop;
+
+        const computedStyle = window.getComputedStyle(child);
+        const transform = computedStyle.transform;
+        const { translateX, translateY, scale } = parseTransformMatrix(transform);
+
+        const msOffset = makeSpaceOffsets.get(child.id);
+        const finalTranslateX = msOffset ? msOffset.x : translateX;
+        const finalTranslateY = msOffset ? msOffset.y : translateY;
+
+        const left = baseLeft + finalTranslateX;
+        const top = baseTop + finalTranslateY;
+        const right = left + child.offsetWidth * scale;
+        const bottom = top + child.offsetHeight * scale;
+
+        minLeft = Math.min(minLeft, left);
+        minTop = Math.min(minTop, top);
+        maxRight = Math.max(maxRight, right);
+        maxBottom = Math.max(maxBottom, bottom);
+      }
+
+      const contentWidth = maxRight - minLeft;
+      const contentHeight = maxBottom - minTop;
+
+      const containerWidth = main.clientWidth;
+      const containerHeight = main.clientHeight;
+
+      const p = CENTER_PADDING;
+      const fitScale = Math.min(
+        (containerWidth - p.left - p.right) / contentWidth,
+        (containerHeight - p.top - p.bottom) / contentHeight
+      );
+
+      return fitScale * 0.95;
+    },
+    [getPendingMakeSpaceForStep]
   );
 
   /**
@@ -434,6 +503,23 @@ function App() {
   useEffect(() => {
     syncElementsState(step);
   }, [step, syncElementsState]);
+
+  // Actualiza minZoom dinámicamente cuando cambia el paso o se redimensiona la ventana
+  useEffect(() => {
+    const handleResize = () => {
+      if (panzoomRef.current) {
+        const minZoomVal = calculateMinZoomForStep(step);
+        panzoomRef.current.setMinZoom(minZoomVal);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [step, calculateMinZoomForStep]);
 
   /**
    * Prepara la escena para el paso anterior y retrocede la timeline.
