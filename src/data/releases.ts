@@ -6,6 +6,7 @@ import { get2002 } from './eras/2002-tlozfs';
 import { get2003 } from './eras/2003-tloztww';
 import { get2005 } from './eras/2005-tloztmc';
 import { get2006 } from './eras/2006-tloztp';
+import { get2007 } from './eras/2007-tlozph';
 
 
 /**
@@ -377,5 +378,16 @@ export const releases: releasesI[] = [
       { id: ganondorfExecution_twilightPrincess, action: "down" },
       { id: twilightPrincess, action: "down" },
     ]
-  } // "The Legend of Zelda: Twilight Princess" 
+  }, // "The Legend of Zelda: Twilight Princess" 
+  {
+    year: 2007,
+    name: "The Legend of Zelda: Phantom Hourglass",
+    centerWindow: [theGreatFlood, phantomHourglass],
+    makeSpace: [],
+    eras: get2007(),
+    animations: [
+      { id: theWindWaker_phantomHourglass, action: "down" },
+      { id: phantomHourglass, action: "down" },
+    ]
+  } // "The Legend of Zelda: Phantom Hourglass" 
 ];

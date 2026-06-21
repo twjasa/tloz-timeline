@@ -89,6 +89,10 @@ export const ID = {
   ganondorfExecution_twilightPrincess: "ge-tp",
   twilightPrincess: "twilightPrincess",
 
+  // ─── 2007: The Legend of Zelda: Phantom Hourglass ───────────────────────────
+  theWindWaker_phantomHourglass: "ww-ph",
+  phantomHourglass: "phantomHourglass",
+
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -241,6 +245,12 @@ declare global {
   const ganondorfExecution_twilightPrincess: "ge-tp";
   /** Era: Twilight Princess (2006) */
   const twilightPrincess: "twilightPrincess";
+
+  // ─── 2007: The Legend of Zelda: Phantom Hourglass ───────────────────────────
+  /** Connection: The Wind Waker ➔ Phantom Hourglass */
+  const theWindWaker_phantomHourglass: "ww-ph";
+  /** Era: Phantom Hourglass (2007) */
+  const phantomHourglass: "phantomHourglass";
 
 }
 
