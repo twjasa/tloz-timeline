@@ -70,6 +70,18 @@ export const ID = {
   theGreatFlood: "theGreatFlood",
   theGreatFlood_theWindWaker: "tgf-ww",
   theWindWaker: "theWindWaker",
+
+  // ─── 2005: The Legend of Zelda: The Minish Cap ──────────────────────────────
+  creationOfTheMasterSword1_hyruleKingdomIsEstablished1: "cotms1-hkie1",
+  creationOfTheMasterSword2_hyruleKingdomIsEstablished2: "cotms2-hkie2",
+  hyruleKingdomIsEstablished1: "hyruleKingdomIsEstablished1",
+  hyruleKingdomIsEstablished2: "hyruleKingdomIsEstablished2",
+  hyruleKingdomIsEstablished2_theFierceWar: "hkie2-tfw",
+  hyruleKingdomIsEstablished1_theWarOfTheBoundChest: "hkie1-wobc",
+  theWarOfTheBoundChest: "theWarOfTheBoundChest",
+  theWarOfTheBoundChest_theMinishCap: "wobc-tmc",
+  theMinishCap: "theMinishCap",
+  theMinishCap_vaatiIsSealed: "tmc-vis",
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -190,6 +202,28 @@ declare global {
   const theGreatFlood_theWindWaker: "tgf-ww";
   /** Era: The Wind Waker (2003) */
   const theWindWaker: "theWindWaker";
+
+  // ─── 2005: The Legend of Zelda: The Minish Cap ──────────────────────────────
+  /** Connection: Creation of the Master Sword (Part 1) ➔ Hyrule Kingdom is Established */
+  const creationOfTheMasterSword1_hyruleKingdomIsEstablished1: "cotms1-hkie1";
+  /** Connection: Creation of the Master Sword (Part 2) ➔ Hyrule Kingdom is Established (Part 2) */
+  const creationOfTheMasterSword2_hyruleKingdomIsEstablished2: "cotms2-hkie2";
+  /** Era: Hyrule Kingdom is Established */
+  const hyruleKingdomIsEstablished1: "hyruleKingdomIsEstablished1";
+  /** Era: Hyrule Kingdom is Established */
+  const hyruleKingdomIsEstablished2: "hyruleKingdomIsEstablished2";
+  /** Connection: Hyrule Kingdom is Established 2 ➔ The Fierce War */
+  const hyruleKingdomIsEstablished2_theFierceWar: "hkie2-tfw";
+  /** Connection: Hyrule Kingdom is Established ➔ The War of the Bound Chest */
+  const hyruleKingdomIsEstablished1_theWarOfTheBoundChest: "hkie1-wobc";
+  /** Era: The War of the Bound Chest */
+  const theWarOfTheBoundChest: "theWarOfTheBoundChest";
+  /** Connection: The War of the Bound Chest ➔ The Minish Cap */
+  const theWarOfTheBoundChest_theMinishCap: "wobc-tmc";
+  /** Era: The Minish Cap (2005) */
+  const theMinishCap: "theMinishCap";
+  /** Connection: The Minish Cap ➔ Vaati is Sealed */
+  const theMinishCap_vaatiIsSealed: "tmc-vis";
 }
 
 // Assign variables to globalThis at runtime

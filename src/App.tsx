@@ -5,6 +5,7 @@ import { Era } from "./components/Era/Era";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
 import { clipPathAnimation } from "./data/releases";
 import { releases } from "./data/releases";
+import type { connectionI } from "./data/releases";
 // import {
 //   debug_majoras_mask as releases,
 // } from "./data/debug_releases";
@@ -21,6 +22,24 @@ import {
   CENTER_PADDING,
   CENTER_EASING,
 } from "./constants/variables.js";
+
+/**
+ * Obtiene la altura original de un elemento (si es una conexión vertical con un length definido).
+ */
+const getOriginalHeight = (id: string): string | number => {
+  for (const r of releases) {
+    const found = r.eras.find(
+      (e) => !("backgroundImage" in e) && e.id === id
+    );
+    if (found && !("backgroundImage" in found)) {
+      const conn = found as connectionI;
+      if (conn.orientation === "vertical" && conn.length !== undefined) {
+        return conn.length;
+      }
+    }
+  }
+  return "";
+};
 
 /**
  * Componente principal de la aplicación TLoZ Timeline.
@@ -258,12 +277,12 @@ function App() {
       { x: number; y: number; height: string | number }
     >();
 
-    // Inicializar todos los IDs de makeSpace a su valor por defecto (0, 0, "")
+    // Inicializar todos los IDs de makeSpace a su valor por defecto (0, 0, originalHeight)
     releases.forEach((r) => {
       if (r.makeSpace) {
         r.makeSpace.forEach((space) => {
           space.ids.forEach((id) => {
-            stateMap.set(id, { x: 0, y: 0, height: "" });
+            stateMap.set(id, { x: 0, y: 0, height: getOriginalHeight(id) });
           });
         });
       }
@@ -275,7 +294,8 @@ function App() {
       if (r.makeSpace) {
         r.makeSpace.forEach((space) => {
           space.ids.forEach((id) => {
-            const current = stateMap.get(id) || { x: 0, y: 0, height: "" };
+            const originalHeight = getOriginalHeight(id);
+            const current = stateMap.get(id) || { x: 0, y: 0, height: originalHeight };
             stateMap.set(id, {
               x: current.x + space.x,
               y: current.y + space.y,

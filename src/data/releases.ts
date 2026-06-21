@@ -4,6 +4,7 @@ import { get2000 } from './eras/2000-tlozmm';
 import { get2001 } from './eras/2001-tlozoos';
 import { get2002 } from './eras/2002-tlozfs';
 import { get2003 } from './eras/2003-tloztww';
+import { get2005 } from './eras/2005-tloztmc';
 
 
 /**
@@ -159,14 +160,14 @@ export const releases: releasesI[] = [
     name: "The Legend of Zelda: Ocarina of Time",
     centerWindow: [creation1, ocarinaOfTimeAdult],
     makeSpace: [{
-      x: 0, y: -236.9, ids: [
+      x: 0, y: -436.9, ids: [
         creation1,
         creation1_creationOfTheMasterSword,
         creationOfTheMasterSword,
       ]
     },
     {
-      x: 0, y: -236.96, height: "316px", ids: [
+      x: 0, y: -436.9, height: "517px", ids: [
         creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
       ]
     }],
@@ -253,7 +254,7 @@ export const releases: releasesI[] = [
         creationOfTheMasterSword2_theFierceWar
       ]
     }, {
-      x: 0, y: 0, height: "478px", ids: [creationOfTheMasterSword2_theFierceWar]
+      x: 0, y: 0, height: "670px", ids: [creationOfTheMasterSword2_theFierceWar]
     }],
     eras: get2002(),
     animations: [
@@ -278,4 +279,36 @@ export const releases: releasesI[] = [
       { id: theWindWaker, action: "down" },
     ]
   }, // "The Legend of Zelda: The Wind Waker" 
+  {
+    year: 2005,
+    name: "The Legend of Zelda: The Minish Cap",
+    centerWindow: [creation1, theFierceWar],
+    makeSpace: [
+      {
+        x: 0, y: -731, ids: [
+          creation1,
+          creation2,
+          creation1_creationOfTheMasterSword,
+          creationOfTheMasterSword,
+          creationOfTheMasterSword2,
+          creationOfTheMasterSword2_creation2
+        ]
+      }
+    ],
+    eras: get2005(),
+    animations: [
+      { id: creationOfTheMasterSword2_theFierceWar, action: "hide" },
+      { id: creationOfTheMasterSword_vaatiIsSealed, action: "hide" },
+      { id: creationOfTheMasterSword1_hyruleKingdomIsEstablished1, action: "down" },
+      { id: hyruleKingdomIsEstablished1, action: "down" },
+      { id: hyruleKingdomIsEstablished1_theWarOfTheBoundChest, action: "down" },
+      { id: theWarOfTheBoundChest, action: "down" },
+      { id: theWarOfTheBoundChest_theMinishCap, action: "down" },
+      { id: theMinishCap, action: "down" },
+      { id: theMinishCap_vaatiIsSealed, action: "down" },
+      { id: creationOfTheMasterSword2_hyruleKingdomIsEstablished2, action: "down" },
+      { id: hyruleKingdomIsEstablished2, action: "down" },
+      { id: hyruleKingdomIsEstablished2_theFierceWar, action: "down" },
+    ]
+  } // "The Legend of Zelda: The Minish Cap" 
 ];

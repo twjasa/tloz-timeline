@@ -9,7 +9,7 @@ export const get2002 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: creationOfTheMasterSword_vaatiIsSealed,
-    position: { left: 1101, top: 577 },
+    position: { left: 1101, top: 377 },
     orientation: "vertical"
   },
   {
@@ -17,13 +17,13 @@ export const get2002 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: ID.vaatiIsSealed,
-    position: { left: centerX, top: 656 },
+    position: { left: centerX, top: 456 },
   },
   {
     title: "??? (A long time)",
     show,
     id: vaatiIsSealed_fourSwords,
-    position: { left: 1101, top: 822 },
+    position: { left: 1101, top: 622 },
     orientation: "vertical"
   },
   {
@@ -33,14 +33,14 @@ export const get2002 = (show = false): Array<eraI | connectionI> => [
     color: "golden",
     backgroundImage: ID.fourSwords,
     backgroundPosition: { left: 2, top: -54 },
-    position: { left: centerX, top: 900 },
+    position: { left: centerX, top: 700 },
   },
   {
     title: "???",
     show,
     id: fourSwords_ganondorfGetsTheCompleteTriforce,
-    position: { left: centerX, top: 1066 },
-    length: 227,
+    position: { left: centerX, top: 866 },
+    length: 428,
     orientation: "vertical"
   },
 ];
