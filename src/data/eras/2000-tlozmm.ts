@@ -42,6 +42,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: ID.linkWarnsZeldaOfGanondorf,
+    backgroundPosition: { left: 0, top: -46 },
     position: { left: 1691, top: 1294 },
   },
   {

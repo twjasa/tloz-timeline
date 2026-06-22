@@ -17,7 +17,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "7 years",
     show,
     id: ID.ocarinaOfTimeAdult_ocarinaOfTimeChild,
-    position: { left: 1865, top: 1460 },
+    position: { left: 1803, top: 1460 },
   },
   {
     title: "Ocarina of Time (Child)",
@@ -31,7 +31,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "9 years",
     show,
     id: ID.ocarinaOfTimeChild_theFierceWar,
-    position: { left: 1865, top: 1214 },
+    position: { left: 1803, top: 1214 },
   },
   {
     title: "The Fierce War",

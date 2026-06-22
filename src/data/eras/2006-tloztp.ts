@@ -37,5 +37,27 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     backgroundPosition: { left: 0, top: -93 },
     position: { left: 1691, top: 2037 },
   },
+  {
+    title: "??? (A long time)",
+    show,
+    id: hyruleKingdomIsEstablished2_theTriforceWar,
+    position: { left: 2456, top: -110 },
+    orientation: "vertical",
+    length: 751
+  },
+  {
+    title: "The Triforce War",
+    color: "silver",
+    backgroundImage: theTriforceWar,
+    show,
+    position: { left: 2354, top: 641 }
+  },
+  {
+    title: "??? (A long time)",
+    show,
+    id: theTriforceWar_theFierceWar,
+    position: { left: 2456, top: 807 },
+    orientation: "vertical",
+  }
 
 ];

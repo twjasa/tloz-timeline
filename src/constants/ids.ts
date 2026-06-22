@@ -88,6 +88,9 @@ export const ID = {
   ganondorfExecution: "ganondorfExecution",
   ganondorfExecution_twilightPrincess: "ge-tp",
   twilightPrincess: "twilightPrincess",
+  hyruleKingdomIsEstablished2_theTriforceWar: "hkie2-ttw",
+  theTriforceWar: "theTriforceWar",
+  theTriforceWar_theFierceWar: "ttw-tfw",
 
   // ─── 2007: The Legend of Zelda: Phantom Hourglass ───────────────────────────
   theWindWaker_phantomHourglass: "ww-ph",
@@ -96,6 +99,10 @@ export const ID = {
   // ─── 2009: The Legend of Zelda: Spirit Tracks ──────────────────────────────
   phantomHourglass_spiritTracks: "ph-st",
   spiritTracks: "spiritTracks",
+
+  // ─── 2011: The Legend of Zelda: Skyward Sword ──────────────────────────────
+  theDemonInvasion: "theDemonInvasion",
+  theDemonInvasion_skywardSword: "tdi-skywardSword",
 
 } as const;
 
@@ -249,6 +256,12 @@ declare global {
   const ganondorfExecution_twilightPrincess: "ge-tp";
   /** Era: Twilight Princess (2006) */
   const twilightPrincess: "twilightPrincess";
+  /** Connection: Hyrule Kingdom is Established (Part 2) ➔ The Triforce War */
+  const hyruleKingdomIsEstablished2_theTriforceWar: "hkie2-ttw";
+  /** Era: The Triforce War */
+  const theTriforceWar: "theTriforceWar";
+  /** Connection: The Triforce War ➔ The Fierce War */
+  const theTriforceWar_theFierceWar: "ttw-tfw";
 
   // ─── 2007: The Legend of Zelda: Phantom Hourglass ───────────────────────────
   /** Connection: The Wind Waker ➔ Phantom Hourglass */
