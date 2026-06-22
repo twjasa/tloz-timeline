@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.scss";
 import { Era } from "./components/Era/Era";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
@@ -42,6 +42,16 @@ const getOriginalHeight = (id: string): string | number => {
 };
 
 /**
+ * Obtiene un array plano de animaciones de un bloque del timeline (objeto, sub-array, o wrapper).
+ */
+const getAnimsFromBlock = (block: any): any[] => {
+  if (block && typeof block === "object" && "animations" in block) {
+    return block.animations;
+  }
+  return [block];
+};
+
+/**
  * Componente principal de la aplicación TLoZ Timeline.
  *
  * Orquesta toda la experiencia interactiva:
@@ -62,9 +72,124 @@ function App() {
   );
   const isTransitioningRef = useRef(false);
   const currentStepRef = useRef(step);
+  const stepAnimationsCompletedRef = useRef<Set<number>>(new Set());
   const [title, setTitle] = useState(
     `${releases[step].name} - year ${releases[step].year}`
   );
+
+  /**
+   * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
+   */
+  const getNaturalHeight = useCallback((el: HTMLElement): number => {
+    const prevHeight = el.style.height;
+    el.style.height = "";
+    const naturalHeight = el.offsetHeight;
+    el.style.height = prevHeight;
+    return naturalHeight;
+  }, []);
+
+  /**
+   * Obtiene el estado esperado (x, y, height) de todos los elementos que alguna vez
+   * han sido modificados por un desplazamiento en animations, calculando su estado acumulado en un paso específico.
+   */
+  const getElementsStateAtStep = useCallback((targetStepIdx: number) => {
+    const stateMap = new Map<
+      string,
+      { x: number; y: number; height: string | number }
+    >();
+
+    // Inicializar todos los IDs de desplazamientos a su valor por defecto (0, 0, originalHeight)
+    releases.forEach((r) => {
+      if (r.animations) {
+        r.animations.forEach((animOrArray) => {
+          const anims = getAnimsFromBlock(animOrArray);
+          anims.forEach((anim) => {
+            if (!("action" in anim) && "id" in anim) {
+              const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+              selectors.forEach((id: string) => {
+                stateMap.set(id, { x: 0, y: 0, height: getOriginalHeight(id) });
+              });
+            }
+          });
+        });
+      }
+    });
+
+    // Aplicar desplazamientos secuencialmente hasta el paso objetivo
+    for (let i = 0; i <= targetStepIdx; i++) {
+      const r = releases[i];
+      if (r && r.animations) {
+        r.animations.forEach((animOrArray) => {
+          const anims = getAnimsFromBlock(animOrArray);
+          anims.forEach((anim) => {
+            if (!("action" in anim) && "id" in anim) {
+              const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+              selectors.forEach((id: string) => {
+                const originalHeight = getOriginalHeight(id);
+                const current = stateMap.get(id) || { x: 0, y: 0, height: originalHeight };
+                stateMap.set(id, {
+                  x: current.x + (anim.x !== undefined ? anim.x : 0),
+                  y: current.y + (anim.y !== undefined ? anim.y : 0),
+                  height: anim.height !== undefined ? anim.height : current.height,
+                });
+              });
+            }
+          });
+        });
+      }
+    }
+
+    return stateMap;
+  }, []);
+
+  /**
+   * Obtiene el estado esperado (x, y, height) antes de comenzar las animaciones secuenciales de un paso específico.
+   * Acumula todos los desplazamientos hasta el paso anterior (targetStepIdx - 1), más los desplazamientos iniciales
+   * que se encuentran al comienzo de la lista de animaciones de targetStepIdx.
+   */
+  const getElementsStateBeforeAnimations = useCallback((targetStepIdx: number) => {
+    // Comenzar con el estado al final del paso anterior
+    const stateMap = getElementsStateAtStep(targetStepIdx - 1);
+
+    const r = releases[targetStepIdx];
+    if (r && r.animations) {
+      for (const animOrArray of r.animations) {
+        const isParallelWrapper =
+          animOrArray &&
+          typeof animOrArray === "object" &&
+          "parallel" in animOrArray &&
+          "animations" in animOrArray &&
+          animOrArray.parallel;
+
+        const anims = getAnimsFromBlock(animOrArray);
+        
+        // Si el bloque es un wrapper paralelo, o si tiene acción, o si alguna animación tiene parallel, detenemos la acumulación
+        const hasAction = anims.some((anim: any) => "action" in anim && anim.action);
+        const hasParallel = anims.some((anim: any) => anim.parallel);
+        if (isParallelWrapper || hasAction || hasParallel) {
+          break;
+        }
+
+        // Si no, es un desplazamiento inicial, por lo que lo acumulamos
+        anims.forEach((anim) => {
+          if (!("action" in anim) && "id" in anim) {
+            const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+            selectors.forEach((id: string) => {
+              const originalHeight = getOriginalHeight(id);
+              const current = stateMap.get(id) || { x: 0, y: 0, height: originalHeight };
+              stateMap.set(id, {
+                x: current.x + (anim.x !== undefined ? anim.x : 0),
+                y: current.y + (anim.y !== undefined ? anim.y : 0),
+                height: anim.height !== undefined ? anim.height : current.height,
+              });
+            });
+          }
+        });
+      }
+    }
+
+    return stateMap;
+  }, [getElementsStateAtStep]);
 
   /**
    * Completa instantáneamente todas las animaciones activas:
@@ -80,32 +205,32 @@ function App() {
     }
 
     // Asegurar que TODOS los elementos de la animación del paso actual queden visibles
-    // Esto es crucial porque si se skipió antes de que las animaciones comenzaran,
-    // se quedarían invisibles para siempre.
     const currentStepData = releases[currentStepRef.current];
     if (currentStepData && currentStepData.animations) {
-      currentStepData.animations.forEach((anim) => {
-        const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-        selectors.forEach((selector) => {
-          // El ID puede ser un selector directo (si no tiene '#') o puede que necesite '#'.
-          // En los datos veo cosas como '#aLinkToThePast' y 'ganonInvadesHyrule'.
-          // Si no tiene '#' o '.' asumimos que es un ID.
-          const query =
-            selector.startsWith("#") || selector.startsWith(".")
-              ? selector
-              : `#${selector}`;
-          const el = document.querySelector(query) as HTMLElement;
-          if (el) {
-            if (anim.action === "hide") {
-              el.style.opacity = "0";
-            } else {
-              if (["up", "down", "left", "right"].includes(anim.action)) {
-                el.style.opacity = "1";
+      currentStepData.animations.forEach((animOrArray) => {
+        const anims = getAnimsFromBlock(animOrArray);
+        anims.forEach((anim) => {
+          if ("action" in anim && anim.action) {
+            const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+            selectors.forEach((selector: string) => {
+              const query =
+                selector.startsWith("#") || selector.startsWith(".")
+                  ? selector
+                  : `#${selector}`;
+              const el = document.querySelector(query) as HTMLElement;
+              if (el) {
+                if (anim.action === "hide") {
+                  el.style.opacity = "0";
+                } else {
+                  if (["up", "down", "left", "right"].includes(anim.action)) {
+                    el.style.opacity = "1";
+                  }
+                  if (clipPathAnimation[anim.action]) {
+                    el.style.clipPath = clipPathAnimation[anim.action][1];
+                  }
+                }
               }
-              if (clipPathAnimation[anim.action]) {
-                el.style.clipPath = clipPathAnimation[anim.action][1];
-              }
-            }
+            });
           }
         });
       });
@@ -128,6 +253,9 @@ function App() {
       transitionAbortRef.current = null;
     }
 
+    // Marcar el paso actual como completado
+    stepAnimationsCompletedRef.current.add(currentStepRef.current);
+
     isTransitioningRef.current = false;
   }, []);
 
@@ -141,12 +269,12 @@ function App() {
    */
   const animateElement = useCallback(
     (
-      element: HTMLElement,
+      anim: any,
       clipPathDirection: string,
       onComplete: () => void
     ) => {
       let props: any = {};
-      const action = (element as any).action;
+      const action = anim.action;
 
       if (["up", "down", "left", "right"].includes(action)) {
         props = {
@@ -159,10 +287,10 @@ function App() {
       }
 
       const clipPathValue = clipPathAnimation[clipPathDirection];
-      const targets =
-        element.id.startsWith("#") || element.id.startsWith(".")
-          ? element.id
-          : `#${element.id}`;
+      const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+      const targets = selectors.map((sel: string) => 
+        sel.startsWith("#") || sel.startsWith(".") ? sel : `#${sel}`
+      ).join(", ");
 
       animationRef.current.push(
         anime({
@@ -182,24 +310,140 @@ function App() {
   );
 
   /**
-   * Ejecuta animaciones de revelado de forma secuencial (una tras otra).
-   *
-   * Procesa el array de elementos de animación recursivamente: al completar
-   * la animación de un elemento, inicia la del siguiente.
-   *
-   * @param elements - Array de elementos del DOM a animar secuencialmente.
-   * @param index - Índice del elemento actual en la secuencia.
+   * Anima un desplazamiento de layout individual (x, y, height) usando anime.js.
    */
-  const runSequentialAnimations = useMemo(() => {
-    return (elements: any[], index: number) => {
-      if (index < elements.length) {
-        const clipPathDirection = elements[index].action;
-        animateElement(elements[index], clipPathDirection, () => {
-          runSequentialAnimations(elements, index + 1);
+  const animateLayoutShift = useCallback(
+    (
+      anim: any,
+      onComplete: () => void
+    ) => {
+      const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+      const promises = selectors.map((selector: string) => {
+        const query =
+          selector.startsWith("#") || selector.startsWith(".")
+            ? selector
+            : `#${selector}`;
+        const el = document.querySelector(query) as HTMLElement;
+        if (!el) return Promise.resolve();
+
+        // Obtener el estado objetivo acumulado al final del paso actual
+        const targetStates = getElementsStateAtStep(currentStepRef.current);
+        const targetState = targetStates.get(selector) || { x: 0, y: 0, height: "" };
+
+        // Obtener el estado inicial (antes de las animaciones del paso actual) de forma determinista
+        const beforeStates = getElementsStateBeforeAnimations(currentStepRef.current);
+        const startState = beforeStates.get(selector) || { x: 0, y: 0, height: getOriginalHeight(selector) };
+
+        const diffX = Math.abs(startState.x - targetState.x) > 0.1;
+        const diffY = Math.abs(startState.y - targetState.y) > 0.1;
+        const diffHeight = startState.height !== targetState.height;
+
+        if (!diffX && !diffY && !diffHeight) {
+          return Promise.resolve();
+        }
+
+        return new Promise<void>((resolve) => {
+          const animeParams: any = {
+            targets: query,
+            translateX: [startState.x, targetState.x],
+            translateY: [startState.y, targetState.y],
+            easing: "easeOutSine",
+            duration: ZOOM_DURATION,
+            complete: () => {
+              if (targetState.height === "") {
+                el.style.height = "";
+              }
+              resolve();
+            },
+          };
+
+          if (diffHeight) {
+            let animStartHeight: any = startState.height;
+            if (animStartHeight === "") {
+              animStartHeight = getNaturalHeight(el);
+            }
+            let animTargetHeight: any = targetState.height;
+            if (animTargetHeight === "") {
+              animTargetHeight = getNaturalHeight(el);
+            }
+            animeParams.height = [animStartHeight, animTargetHeight];
+          }
+
+          const instance = anime(animeParams);
+          animationRef.current.push(instance);
         });
+      });
+
+      Promise.all(promises).then(() => {
+        if (!canceledAnimation.current) onComplete();
+      });
+    },
+    [getElementsStateAtStep, getElementsStateBeforeAnimations, getNaturalHeight]
+  );
+
+  /**
+   * Ejecuta animaciones de forma secuencial y paralela recursivamente.
+   */
+  const runSequentialAnimations = useCallback(
+    (elements: any[], index: number) => {
+      if (index >= elements.length) {
+        // Al finalizar todas las animaciones del paso actual, lo marcamos como completado
+        stepAnimationsCompletedRef.current.add(currentStepRef.current);
+        return;
       }
-    };
-  }, [animateElement]);
+
+      const anim = elements[index];
+
+      const next = () => {
+        runSequentialAnimations(elements, index + 1);
+      };
+
+      if (anim && typeof anim === "object" && "parallel" in anim && "animations" in anim) {
+        // Ejecución de un lote (wrapper) en paralelo
+        const promises = anim.animations.map((item: any) => {
+          return new Promise<void>((resolve) => {
+            if ("action" in item && item.action) {
+              animateElement(item, item.action, resolve);
+            } else {
+              animateLayoutShift(item, resolve);
+            }
+          });
+        });
+
+        if (anim.parallel) {
+          next(); // Avanza inmediatamente
+        } else {
+          Promise.all(promises).then(next); // Espera a todos
+        }
+      } else if (anim && typeof anim === "object" && "pause" in anim) {
+        // Ejecución de una pausa/delay (frena las siguientes animaciones)
+        const ms = anim.pause * 1000;
+        animationTimeoutRef.current = setTimeout(() => {
+          animationTimeoutRef.current = null;
+          next();
+        }, ms);
+      } else {
+        // Ejecución de un objeto de animación individual
+        const isParallel = anim.parallel === true;
+        const onComplete = () => {
+          if (!isParallel) {
+            next();
+          }
+        };
+
+        if ("action" in anim && anim.action) {
+          animateElement(anim, anim.action, onComplete);
+        } else {
+          animateLayoutShift(anim, onComplete);
+        }
+
+        if (isParallel) {
+          next();
+        }
+      }
+    },
+    [animateElement, animateLayoutShift]
+  );
 
   // useEffect(() => {
   //   if (panzoomRef.current)
@@ -264,50 +508,12 @@ function App() {
     const initialRelease = releases[0];
     if (initialRelease.animations.length > 0) {
       runSequentialAnimations(initialRelease.animations, 0);
+    } else {
+      stepAnimationsCompletedRef.current.add(0);
     }
   }, [runSequentialAnimations]);
 
-  /**
-   * Obtiene el estado esperado (x, y, height) de todos los elementos que alguna vez
-   * han sido modificados por un makeSpace, calculando su estado acumulado en un paso específico.
-   */
-  const getElementsStateAtStep = useCallback((targetStepIdx: number) => {
-    const stateMap = new Map<
-      string,
-      { x: number; y: number; height: string | number }
-    >();
 
-    // Inicializar todos los IDs de makeSpace a su valor por defecto (0, 0, originalHeight)
-    releases.forEach((r) => {
-      if (r.makeSpace) {
-        r.makeSpace.forEach((space) => {
-          space.ids.forEach((id) => {
-            stateMap.set(id, { x: 0, y: 0, height: getOriginalHeight(id) });
-          });
-        });
-      }
-    });
-
-    // Aplicar makeSpace secuencialmente hasta el paso objetivo
-    for (let i = 0; i <= targetStepIdx; i++) {
-      const r = releases[i];
-      if (r.makeSpace) {
-        r.makeSpace.forEach((space) => {
-          space.ids.forEach((id) => {
-            const originalHeight = getOriginalHeight(id);
-            const current = stateMap.get(id) || { x: 0, y: 0, height: originalHeight };
-            stateMap.set(id, {
-              x: current.x + space.x,
-              y: current.y + space.y,
-              height: space.height !== undefined ? space.height : current.height,
-            });
-          });
-        });
-      }
-    }
-
-    return stateMap;
-  }, []);
 
   /**
    * Convierte el mapa de estados calculados en la estructura esperada por centerWindow (pendingMakeSpace).
@@ -414,16 +620,7 @@ function App() {
     return fitScale * 0.95;
   }, []);
 
-  /**
-   * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
-   */
-  const getNaturalHeight = useCallback((el: HTMLElement): number => {
-    const prevHeight = el.style.height;
-    el.style.height = "";
-    const naturalHeight = el.offsetHeight;
-    el.style.height = prevHeight;
-    return naturalHeight;
-  }, []);
+
 
   /**
    * Anima todos los elementos modificados por makeSpace hacia sus posiciones y alturas
@@ -432,7 +629,9 @@ function App() {
   const moveElementsToStep = useCallback(
     async (fromStepIdx: number, toStepIdx: number) => {
       const startStates = getElementsStateAtStep(fromStepIdx);
-      const targetStates = getElementsStateAtStep(toStepIdx);
+      const targetStates = toStepIdx > fromStepIdx
+        ? getElementsStateBeforeAnimations(toStepIdx)
+        : getElementsStateAtStep(toStepIdx);
       const promises: Promise<void>[] = [];
 
       targetStates.forEach((targetState, selector) => {
@@ -484,7 +683,7 @@ function App() {
 
       await Promise.all(promises);
     },
-    [getElementsStateAtStep, getNaturalHeight]
+    [getElementsStateAtStep, getElementsStateBeforeAnimations, getNaturalHeight]
   );
 
   /**
@@ -497,34 +696,41 @@ function App() {
       for (let i = 0; i < targetStepIdx; i++) {
         const release = releases[i];
         if (release.animations) {
-          release.animations.forEach((anim) => {
-            const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-            selectors.forEach((selector) => {
-              const query =
-                selector.startsWith("#") || selector.startsWith(".")
-                  ? selector
-                  : `#${selector}`;
-              const el = document.querySelector(query) as HTMLElement;
-              if (el) {
-                if (anim.action === "hide") {
-                  el.style.opacity = "0";
-                } else {
-                  el.style.opacity = "1";
-                  if (clipPathAnimation[anim.action]) {
-                    el.style.clipPath = clipPathAnimation[anim.action][1];
+          release.animations.forEach((animOrArray) => {
+            const anims = getAnimsFromBlock(animOrArray);
+            anims.forEach((anim) => {
+              if ("action" in anim && anim.action) {
+                const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+                selectors.forEach((selector: string) => {
+                  const query =
+                    selector.startsWith("#") || selector.startsWith(".")
+                      ? selector
+                      : `#${selector}`;
+                  const el = document.querySelector(query) as HTMLElement;
+                  if (el) {
+                    if (anim.action === "hide") {
+                      el.style.opacity = "0";
+                    } else {
+                      el.style.opacity = "1";
+                      if (clipPathAnimation[anim.action]) {
+                        el.style.clipPath = clipPathAnimation[anim.action][1];
+                      }
+                    }
                   }
-                }
+                });
               }
             });
           });
         }
       }
 
-      // 2. Forzar posiciones y alturas de makeSpace acumuladas (excluyendo el paso actual si está transicionando)
-      const maxMakeSpaceStep = isTransitioningRef.current
-        ? targetStepIdx - 1
-        : targetStepIdx;
-      const targetStates = getElementsStateAtStep(maxMakeSpaceStep);
+      // 2. Forzar posiciones y alturas de desplazamientos acumuladas
+      const targetStates = isTransitioningRef.current
+        ? getElementsStateAtStep(targetStepIdx - 1)
+        : (stepAnimationsCompletedRef.current.has(targetStepIdx)
+          ? getElementsStateAtStep(targetStepIdx)
+          : getElementsStateBeforeAnimations(targetStepIdx));
+
       targetStates.forEach((targetState, selector) => {
         const query =
           selector.startsWith("#") || selector.startsWith(".")
@@ -544,7 +750,7 @@ function App() {
         }
       });
     },
-    [getElementsStateAtStep]
+    [getElementsStateAtStep, getElementsStateBeforeAnimations]
   );
 
   // Sincroniza el estado de los elementos cuando cambia el paso (para re-establecer layouts abortados/completos)

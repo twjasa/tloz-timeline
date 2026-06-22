@@ -9,7 +9,7 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "A few months later?",
         show,
         id: ID.aLinkToThePast_oracleOfAges,
-        position: { left: 1101, top: 1959 + 247 },
+        position: { left: 1110, top: 2205 },
         // length: 146,
         orientation: "vertical"
     },

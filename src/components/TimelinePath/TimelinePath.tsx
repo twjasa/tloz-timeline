@@ -41,8 +41,8 @@ export const TimelinePath = ({
   };
 
   const lineStyle = {
-    ...(orientation === "horizontal" && length ? { width: "100%", height: 20 } : {}),
-    ...(orientation === "vertical" && length ? { height: "100%", width: 20 } : {}),
+    ...(orientation === "horizontal" && length ? { width: "100%", height: "var(--horizontal-line-thickness)" } : {}),
+    ...(orientation === "vertical" && length ? { height: "100%", width: "var(--vertical-line-thickness)" } : {}),
   };
 
   return (

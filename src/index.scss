@@ -9,6 +9,11 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: $whiteOld;
 
+  --horizontal-line-thickness: #{$horizontalLineThickness};
+  --horizontal-line-color: #{$horizontalLineColor};
+  --vertical-line-thickness: #{$verticalLineThickness};
+  --vertical-line-color: #{$verticalLineColor};
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

@@ -16,25 +16,36 @@ import { get2009 } from './eras/2009-tlozst';
  * Cada release corresponde a un juego de Zelda y define qué eras y conexiones
  * se muestran, qué animaciones se ejecutan, y si la vista debe re-centrarse.
  */
+export type animationI =
+  | {
+    id: string | string[];
+    action: "up" | "down" | "left" | "right" | "zoom" | "hide";
+    parallel?: boolean;
+  }
+  | {
+    id: string | string[];
+    x?: number;
+    y?: number;
+    height?: number | string;
+    parallel?: boolean;
+  }
+  | {
+    pause: number;
+  };
+
+export type animationBlock =
+  | animationI
+  | {
+    parallel: boolean;
+    animations: animationI[];
+  };
+
 export interface releasesI {
   year: number;
   name: string;
   eras: Array<eraI | connectionI>;
-  animations: {
-    id: string | string[];
-    action:
-    "up" |
-    "down" |
-    "left" |
-    "right" |
-    "zoom" |
-    "hide" |
-    "translateY" |
-    "translateX" |
-    "translateXY";
-  }[];
+  animations: Array<animationBlock>;
   centerWindow?: boolean | string[];
-  makeSpace?: { x: number; y: number; height?: number | string; ids: string[]; }[];
 }
 
 /**
@@ -138,22 +149,28 @@ export const releases: releasesI[] = [
       theSealingWar,
       ganonInvadesHyrule
     ],
-    makeSpace: [{
-      x: 0, y: -244.06, ids: [
-        aLinkToThePast_linksAwakening,
-        aLinkToThePast,
-        theSealingWar_aLinkToThePast,
-        theSealingWar,
-        ganondorfGetsTheCompleteTriforce_theSealingWar,
-        ganondorfGetsTheCompleteTriforce,
-        creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
-        creationOfTheMasterSword,
-        creation1_creationOfTheMasterSword,
-        creation1,
-      ]
-    }],
     eras: get1993(),
     animations: [
+      {
+        parallel: false,
+        animations: [
+          {
+            id: [
+              aLinkToThePast_linksAwakening,
+              aLinkToThePast,
+              theSealingWar_aLinkToThePast,
+              theSealingWar,
+              ganondorfGetsTheCompleteTriforce_theSealingWar,
+              ganondorfGetsTheCompleteTriforce,
+              creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
+              creationOfTheMasterSword,
+              creation1_creationOfTheMasterSword,
+              creation1,
+            ],
+            y: -244.06
+          }
+        ]
+      },
       { id: aLinkToThePast_linksAwakening, action: 'down' },
       { id: linksAwakening, action: 'down' },
     ]
@@ -162,20 +179,28 @@ export const releases: releasesI[] = [
     year: 1998,
     name: "The Legend of Zelda: Ocarina of Time",
     centerWindow: [creation1, ocarinaOfTimeAdult],
-    makeSpace: [{
-      x: 0, y: -436.9, ids: [
-        creation1,
-        creation1_creationOfTheMasterSword,
-        creationOfTheMasterSword,
-      ]
-    },
-    {
-      x: 0, y: -436.9, height: "517px", ids: [
-        creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
-      ]
-    }],
     eras: get1998(),
     animations: [
+      {
+        parallel: true,
+        animations: [
+          {
+            id: [
+              creation1,
+              creation1_creationOfTheMasterSword,
+              creationOfTheMasterSword,
+            ],
+            y: -436.9
+          },
+          {
+            id: [
+              creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
+            ],
+            y: -436.9,
+            height: "517px"
+          }
+        ]
+      },
       { id: creation2, action: 'down' },
       { id: creationOfTheMasterSword2_creation2, action: 'down' },
       { id: creationOfTheMasterSword2, action: 'down' },
@@ -191,46 +216,53 @@ export const releases: releasesI[] = [
     year: 2000,
     name: "The Legend of Zelda: Majora's Mask",
     centerWindow: [creation1, ocarinaOfTimeAdult],
-    makeSpace: [{
-      x: 600, y: 0, ids: [
-        creation2,
-        creationOfTheMasterSword2_creation2,
-        creationOfTheMasterSword2,
-        creationOfTheMasterSword2_theFierceWar,
-        theFierceWar,
-        ocarinaOfTimeChild_theFierceWar,
-        ocarinaOfTimeChild,
-        ocarinaOfTimeAdult_ocarinaOfTimeChild,
-        ocarinaOfTimeAdult,
-      ]
-    },
-    {
-      x: 0, y: 247, ids: [
-        theSealingWar,
-        theSealingWar_aLinkToThePast,
-        aLinkToThePast,
-        aLinkToThePast_linksAwakening,
-        linksAwakening,
-        aLinkToThePast_tragedyOfPrincessZeldaI,
-        tragedyOfPrincessZeldaI,
-        tragedyOfPrincessZeldaI_ganonInvadesHyrule,
-        ganonInvadesHyrule,
-        ganonInvadesHyrule_theLegendOfZelda,
-        theLegendOfZelda,
-        theLegendOfZelda_zeldaIITAoL,
-        zeldaIITAoL,
-        ocarinaOfTimeAdult
-      ]
-    },
-    {
-      x: 0, y: 0, height: "325px", ids: [
-        ocarinaOfTimeAdult_ocarinaOfTimeChild,
-        ganondorfGetsTheCompleteTriforce_theSealingWar,
-      ]
-    }
-    ],
     eras: get2000(),
     animations: [
+      {
+        parallel: false,
+        animations: [
+          {
+            id: [
+              creation2,
+              creationOfTheMasterSword2_creation2,
+              creationOfTheMasterSword2,
+              creationOfTheMasterSword2_theFierceWar,
+              theFierceWar,
+              ocarinaOfTimeChild_theFierceWar,
+              ocarinaOfTimeChild,
+              ocarinaOfTimeAdult_ocarinaOfTimeChild,
+              ocarinaOfTimeAdult,
+            ],
+            x: 600
+          },
+          {
+            id: [
+              theSealingWar,
+              theSealingWar_aLinkToThePast,
+              aLinkToThePast,
+              aLinkToThePast_linksAwakening,
+              linksAwakening,
+              aLinkToThePast_tragedyOfPrincessZeldaI,
+              tragedyOfPrincessZeldaI,
+              tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+              ganonInvadesHyrule,
+              ganonInvadesHyrule_theLegendOfZelda,
+              theLegendOfZelda,
+              theLegendOfZelda_zeldaIITAoL,
+              zeldaIITAoL,
+              ocarinaOfTimeAdult
+            ],
+            y: 247
+          },
+          {
+            id: [
+              ocarinaOfTimeAdult_ocarinaOfTimeChild,
+              ganondorfGetsTheCompleteTriforce_theSealingWar,
+            ],
+            height: "325px"
+          }
+        ]
+      },
       { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
       { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2, action: 'up' },
       { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3, action: 'left' },
@@ -244,22 +276,28 @@ export const releases: releasesI[] = [
     year: 2001,
     name: "The Legend of Zelda: Oracle of Ages/Seasons",
     centerWindow: [theSealingWar, tragedyOfPrincessZeldaI],
-    makeSpace: [{
-      x: 0, y: 485, ids: [
-        linksAwakening,
-        aLinkToThePast_tragedyOfPrincessZeldaI,
-        tragedyOfPrincessZeldaI,
-        tragedyOfPrincessZeldaI_ganonInvadesHyrule,
-        ganonInvadesHyrule,
-        theLegendOfZelda,
-        ganonInvadesHyrule_theLegendOfZelda,
-        zeldaIITAoL,
-        theLegendOfZelda_zeldaIITAoL,
-      ]
-    }],
     eras: get2001(),
     animations: [
-      { id: aLinkToThePast_linksAwakening, action: 'hide' },
+      {
+        parallel: true,
+        animations: [
+          {
+            id: [
+              linksAwakening,
+              aLinkToThePast_tragedyOfPrincessZeldaI,
+              tragedyOfPrincessZeldaI,
+              tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+              ganonInvadesHyrule,
+              theLegendOfZelda,
+              ganonInvadesHyrule_theLegendOfZelda,
+              zeldaIITAoL,
+              theLegendOfZelda_zeldaIITAoL,
+            ],
+            y: 485
+          }
+        ]
+      },
+      // { id: aLinkToThePast_linksAwakening, action: 'hide' },
       { id: aLinkToThePast_oracleOfAges, action: 'down' },
       { id: oracleOfAges, action: 'down' },
       { id: oracleOfAges_oracleOfSeason, action: 'down' },
@@ -271,21 +309,29 @@ export const releases: releasesI[] = [
     year: 2002,
     name: "The Legend of Zelda: Four Swords",
     centerWindow: [creation1, ocarinaOfTimeAdult],
-    makeSpace: [{
-      x: 0, y: -400, ids: [
-        creation1,
-        creationOfTheMasterSword,
-        creation2,
-        creationOfTheMasterSword2,
-        creation1_creationOfTheMasterSword,
-        creationOfTheMasterSword2_creation2,
-        creationOfTheMasterSword2_theFierceWar
-      ]
-    }, {
-      x: 0, y: 0, height: "670px", ids: [creationOfTheMasterSword2_theFierceWar]
-    }],
     eras: get2002(),
     animations: [
+      {
+        parallel: true,
+        animations: [
+          {
+            id: [
+              creation1,
+              creationOfTheMasterSword,
+              creation2,
+              creationOfTheMasterSword2,
+              creation1_creationOfTheMasterSword,
+              creationOfTheMasterSword2_creation2,
+              creationOfTheMasterSword2_theFierceWar
+            ],
+            y: -400
+          },
+          {
+            id: [creationOfTheMasterSword2_theFierceWar],
+            height: "670px"
+          }
+        ]
+      },
       { id: creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce, action: "hide" },
       { id: creationOfTheMasterSword_vaatiIsSealed, action: "down" },
       { id: vaatiIsSealed, action: "down" },
@@ -298,37 +344,39 @@ export const releases: releasesI[] = [
     year: 2003,
     name: "The Legend of Zelda: The Wind Waker",
     centerWindow: [aLinkToThePast, ocarinaOfTimeAdult],
-    makeSpace: [{
-      x: 0,
-      y: 1100,
-      ids: [
-        aLinkToThePast,
-        aLinkToThePast_oracleOfAges,
-        oracleOfSeason,
-        oracleOfAges,
-        oracleOfAges_oracleOfSeason,
-        oracleOfSeason_linksAwakening,
-        linksAwakening,
-        aLinkToThePast_tragedyOfPrincessZeldaI,
-        tragedyOfPrincessZeldaI,
-        tragedyOfPrincessZeldaI_ganonInvadesHyrule,
-        ganonInvadesHyrule,
-        ganonInvadesHyrule_theLegendOfZelda,
-        theLegendOfZelda,
-        theLegendOfZelda_zeldaIITAoL,
-        zeldaIITAoL,
-      ]
-    },
-    {
-      x: 0,
-      y: 0,
-      height: "1181px",
-      ids: [
-        theSealingWar_aLinkToThePast
-      ]
-    }],
     eras: get2003(),
     animations: [
+      {
+        parallel: true,
+        animations: [
+          {
+            id: [
+              aLinkToThePast,
+              aLinkToThePast_oracleOfAges,
+              oracleOfSeason,
+              oracleOfAges,
+              oracleOfAges_oracleOfSeason,
+              oracleOfSeason_linksAwakening,
+              linksAwakening,
+              aLinkToThePast_tragedyOfPrincessZeldaI,
+              tragedyOfPrincessZeldaI,
+              tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+              ganonInvadesHyrule,
+              ganonInvadesHyrule_theLegendOfZelda,
+              theLegendOfZelda,
+              theLegendOfZelda_zeldaIITAoL,
+              zeldaIITAoL,
+            ],
+            y: 1100
+          },
+          {
+            id: [
+              theSealingWar_aLinkToThePast
+            ],
+            height: "1181px"
+          }
+        ]
+      },
       { id: ocarinaOfTimeAdult_theGreatFlood, action: "down" },
       { id: theGreatFlood, action: "down" },
       { id: theGreatFlood_theWindWaker, action: "down" },
@@ -339,52 +387,110 @@ export const releases: releasesI[] = [
     year: 2005,
     name: "The Legend of Zelda: The Minish Cap",
     centerWindow: [creation1, theFierceWar],
-    makeSpace: [
-      {
-        x: 0, y: -731, ids: [
-          creation1,
-          creation2,
-          creation1_creationOfTheMasterSword,
-          creationOfTheMasterSword,
-          creationOfTheMasterSword2,
-          creationOfTheMasterSword2_creation2
-        ]
-      }
-    ],
     eras: get2005(),
     animations: [
-      { id: creationOfTheMasterSword2_theFierceWar, action: "hide" },
-      { id: creationOfTheMasterSword_vaatiIsSealed, action: "hide" },
-      { id: creationOfTheMasterSword1_hyruleKingdomIsEstablished1, action: "down" },
-      { id: hyruleKingdomIsEstablished1, action: "down" },
+      {
+        parallel: true,
+        animations: [
+          {
+            id: [
+              creationOfTheMasterSword2_theFierceWar,
+              creationOfTheMasterSword_vaatiIsSealed
+            ], action: "hide"
+          },
+        ]
+      },
+      {
+        parallel: true,
+        animations: [
+          {
+            id: [
+              creation1,
+              creation2,
+              creation1_creationOfTheMasterSword,
+              creationOfTheMasterSword,
+              creationOfTheMasterSword2,
+              creationOfTheMasterSword2_creation2
+            ],
+            y: -731
+          }
+        ]
+      },
+      { pause: 2 },
+      {
+        parallel: false,
+        animations: [
+          { id: creationOfTheMasterSword1_hyruleKingdomIsEstablished1, action: "down" },
+          { id: creationOfTheMasterSword2_hyruleKingdomIsEstablished2, action: "down" },
+        ]
+      },
+      {
+        parallel: false,
+        animations: [
+          { id: hyruleKingdomIsEstablished1, action: "down" },
+          { id: hyruleKingdomIsEstablished2, action: "down" },
+          { id: hyruleKingdomIsEstablished2_theFierceWar, action: "down" },
+        ]
+      },
       { id: hyruleKingdomIsEstablished1_theWarOfTheBoundChest, action: "down" },
       { id: theWarOfTheBoundChest, action: "down" },
       { id: theWarOfTheBoundChest_theMinishCap, action: "down" },
       { id: theMinishCap, action: "down" },
       { id: theMinishCap_vaatiIsSealed, action: "down" },
-      { id: creationOfTheMasterSword2_hyruleKingdomIsEstablished2, action: "down" },
-      { id: hyruleKingdomIsEstablished2, action: "down" },
-      { id: hyruleKingdomIsEstablished2_theFierceWar, action: "down" },
     ]
   }, // "The Legend of Zelda: The Minish Cap" 
   {
     year: 2006,
     name: "The Legend of Zelda: Twilight Princess",
-    centerWindow: [ganondorfGetsTheCompleteTriforce, theWindWaker],
-    makeSpace: [],
+    centerWindow: [twilightPrincess, hyruleKingdomIsEstablished2],
     eras: get2006(),
     animations: [
-      { id: majorasMask_ganondorfExecution, action: "down" },
-      { id: ganondorfExecution, action: "down" },
-      { id: ganondorfExecution_twilightPrincess, action: "down" },
+      { id: hyruleKingdomIsEstablished2_theFierceWar, action: "hide" },
+      {
+        parallel: true,
+        animations: [
+          {
+            id: [
+              theFierceWar
+            ],
+            y: -163
+          },
+          {
+            id: [ocarinaOfTimeChild_theFierceWar],
+            y: -163,
+            height: "243px"
+          }]
+      },
+      {
+        parallel: false,
+        animations: [
+          { id: majorasMask_ganondorfExecution, action: "down" },
+          { id: hyruleKingdomIsEstablished2_theTriforceWar, action: "down" }
+        ]
+      },
+      {
+        parallel: false,
+        animations: [
+          { id: ganondorfExecution, action: "down" },
+          { id: theTriforceWar, action: "down" }
+        ]
+      },
+      {
+        parallel: false,
+        animations: [
+          { id: ganondorfExecution_twilightPrincess, action: "down" },
+          { id: theTriforceWar_theFierceWar, action: "down" }
+        ]
+      },
       { id: twilightPrincess, action: "down" },
+
+
     ]
   }, // "The Legend of Zelda: Twilight Princess" 
   {
     year: 2007,
     name: "The Legend of Zelda: Phantom Hourglass",
     centerWindow: [theGreatFlood, phantomHourglass],
-    makeSpace: [],
     eras: get2007(),
     animations: [
       { id: theWindWaker_phantomHourglass, action: "down" },
@@ -395,7 +501,6 @@ export const releases: releasesI[] = [
     year: 2009,
     name: "The Legend of Zelda: Spirit Tracks",
     centerWindow: [theGreatFlood, spiritTracks],
-    makeSpace: [],
     eras: get2009(),
     animations: [
       { id: phantomHourglass_spiritTracks, action: "down" },

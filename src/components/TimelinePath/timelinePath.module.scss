@@ -10,15 +10,15 @@
 
 .verticalLine {
   height: auto;
-  width: 20px;
-  background-color: black;
+  width: var(--vertical-line-thickness);
+  background-color: var(--vertical-line-color);
   margin-right: 20px;
 }
 
 .horizontalLine {
-  height: 20px;
+  height: var(--horizontal-line-thickness);
   width: auto;
-  background-color: black;
+  background-color: var(--horizontal-line-color);
   margin-right: 20px;
 }
 
