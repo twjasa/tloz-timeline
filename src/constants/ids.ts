@@ -106,6 +106,14 @@ export const ID = {
   theDemonInvasion_skywardSword: "tdi-skywardSword",
   skywardSword: "skywardSword",
 
+  // ─── 2013: The Legend of Zelda: A Link Between Worlds ───────────────────────────
+  vaatiIsSealed_theTriforceWar1: "vis-ttw1",
+  theTriforceWar1: "theTriforceWar1",
+  theTriforceWar1_fourSwords: "ttw1-fs",
+  aLinkToThePast_aLinkBetweenWorlds: "la-albw",
+  aLinkBetweenWorlds: "aLinkBetweenWorlds",
+  aLinkBetweenWorlds_theTragedyOfPrincessZeldaI: "albw-ttopzi",
+
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -286,6 +294,21 @@ declare global {
   const theDemonInvasion_skywardSword: "tdi-ss";
   /** Era: Skyward Sword (2011) */
   const skywardSword: "skywardSword";
+
+  // ─── 2013: The Legend of Zelda: A Link Between Worlds ───────────────────────────
+  /** Connection: Vaati is Sealed ➔ The Triforce War (Part 1) */
+  const vaatiIsSealed_theTriforceWar1: "vis-ttw1";
+  /** Era: The Triforce War (Part 1) */
+  const theTriforceWar1: "theTriforceWar1";
+  /** Connection: The Triforce War (Part 1) ➔ Four Swords */
+  const theTriforceWar1_fourSwords: "ttw1-fs";
+  /** Connection: A Link to the Past ➔ A Link Between Worlds */
+  const aLinkToThePast_aLinkBetweenWorlds: "alttp-albw";
+  /** Era: A Link Between Worlds (2013) */
+  const aLinkBetweenWorlds: "aLinkBetweenWorlds";
+  /** Connection: A Link Between Worlds ➔ The Tragedy of Princess Zelda (I) */
+  const aLinkBetweenWorlds_theTragedyOfPrincessZeldaI: "albw-ttopzi";
+
 
 }
 

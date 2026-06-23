@@ -24,13 +24,24 @@ import {
 } from "./constants/variables.js";
 
 /**
+ * Asegura que un valor numérico o string numérico tenga la unidad "px".
+ */
+const ensurePx = (val: string | number): string => {
+  if (typeof val === "number") {
+    return `${val}px`;
+  }
+  if (val && !isNaN(Number(val))) {
+    return `${val}px`;
+  }
+  return val as string;
+};
+
+/**
  * Obtiene la altura original de un elemento (si es una conexión vertical con un length definido).
  */
 const getOriginalHeight = (id: string): string | number => {
   for (const r of releases) {
-    const found = r.eras.find(
-      (e) => !("backgroundImage" in e) && e.id === id
-    );
+    const found = r.eras.find((e) => !("backgroundImage" in e) && e.id === id);
     if (found && !("backgroundImage" in found)) {
       const conn = found as connectionI;
       if (conn.orientation === "vertical" && conn.length !== undefined) {
@@ -126,11 +137,16 @@ function App() {
               const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
               selectors.forEach((id: string) => {
                 const originalHeight = getOriginalHeight(id);
-                const current = stateMap.get(id) || { x: 0, y: 0, height: originalHeight };
+                const current = stateMap.get(id) || {
+                  x: 0,
+                  y: 0,
+                  height: originalHeight,
+                };
                 stateMap.set(id, {
                   x: current.x + (anim.x !== undefined ? anim.x : 0),
                   y: current.y + (anim.y !== undefined ? anim.y : 0),
-                  height: anim.height !== undefined ? anim.height : current.height,
+                  height:
+                    anim.height !== undefined ? anim.height : current.height,
                 });
               });
             }
@@ -147,49 +163,59 @@ function App() {
    * Acumula todos los desplazamientos hasta el paso anterior (targetStepIdx - 1), más los desplazamientos iniciales
    * que se encuentran al comienzo de la lista de animaciones de targetStepIdx.
    */
-  const getElementsStateBeforeAnimations = useCallback((targetStepIdx: number) => {
-    // Comenzar con el estado al final del paso anterior
-    const stateMap = getElementsStateAtStep(targetStepIdx - 1);
+  const getElementsStateBeforeAnimations = useCallback(
+    (targetStepIdx: number) => {
+      // Comenzar con el estado al final del paso anterior
+      const stateMap = getElementsStateAtStep(targetStepIdx - 1);
 
-    const r = releases[targetStepIdx];
-    if (r && r.animations) {
-      for (const animOrArray of r.animations) {
-        const isParallelWrapper =
-          animOrArray &&
-          typeof animOrArray === "object" &&
-          "parallel" in animOrArray &&
-          "animations" in animOrArray &&
-          animOrArray.parallel;
+      const r = releases[targetStepIdx];
+      if (r && r.animations) {
+        for (const animOrArray of r.animations) {
+          const isParallelWrapper =
+            animOrArray &&
+            typeof animOrArray === "object" &&
+            "parallel" in animOrArray &&
+            "animations" in animOrArray &&
+            animOrArray.parallel;
 
-        const anims = getAnimsFromBlock(animOrArray);
-        
-        // Si el bloque es un wrapper paralelo, o si tiene acción, o si alguna animación tiene parallel, detenemos la acumulación
-        const hasAction = anims.some((anim: any) => "action" in anim && anim.action);
-        const hasParallel = anims.some((anim: any) => anim.parallel);
-        if (isParallelWrapper || hasAction || hasParallel) {
-          break;
-        }
+          const anims = getAnimsFromBlock(animOrArray);
 
-        // Si no, es un desplazamiento inicial, por lo que lo acumulamos
-        anims.forEach((anim) => {
-          if (!("action" in anim) && "id" in anim) {
-            const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-            selectors.forEach((id: string) => {
-              const originalHeight = getOriginalHeight(id);
-              const current = stateMap.get(id) || { x: 0, y: 0, height: originalHeight };
-              stateMap.set(id, {
-                x: current.x + (anim.x !== undefined ? anim.x : 0),
-                y: current.y + (anim.y !== undefined ? anim.y : 0),
-                height: anim.height !== undefined ? anim.height : current.height,
-              });
-            });
+          // Si el bloque es un wrapper paralelo, o si tiene acción, o si alguna animación tiene parallel, detenemos la acumulación
+          const hasAction = anims.some(
+            (anim: any) => "action" in anim && anim.action
+          );
+          const hasParallel = anims.some((anim: any) => anim.parallel);
+          if (isParallelWrapper || hasAction || hasParallel) {
+            break;
           }
-        });
-      }
-    }
 
-    return stateMap;
-  }, [getElementsStateAtStep]);
+          // Si no, es un desplazamiento inicial, por lo que lo acumulamos
+          anims.forEach((anim) => {
+            if (!("action" in anim) && "id" in anim) {
+              const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+              selectors.forEach((id: string) => {
+                const originalHeight = getOriginalHeight(id);
+                const current = stateMap.get(id) || {
+                  x: 0,
+                  y: 0,
+                  height: originalHeight,
+                };
+                stateMap.set(id, {
+                  x: current.x + (anim.x !== undefined ? anim.x : 0),
+                  y: current.y + (anim.y !== undefined ? anim.y : 0),
+                  height:
+                    anim.height !== undefined ? anim.height : current.height,
+                });
+              });
+            }
+          });
+        }
+      }
+
+      return stateMap;
+    },
+    [getElementsStateAtStep]
+  );
 
   /**
    * Completa instantáneamente todas las animaciones activas:
@@ -268,11 +294,7 @@ function App() {
    *   (solo si no fue cancelada por un cambio de paso).
    */
   const animateElement = useCallback(
-    (
-      anim: any,
-      clipPathDirection: string,
-      onComplete: () => void
-    ) => {
+    (anim: any, clipPathDirection: string, onComplete: () => void) => {
       let props: any = {};
       const action = anim.action;
 
@@ -288,9 +310,11 @@ function App() {
 
       const clipPathValue = clipPathAnimation[clipPathDirection];
       const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-      const targets = selectors.map((sel: string) => 
-        sel.startsWith("#") || sel.startsWith(".") ? sel : `#${sel}`
-      ).join(", ");
+      const targets = selectors
+        .map((sel: string) =>
+          sel.startsWith("#") || sel.startsWith(".") ? sel : `#${sel}`
+        )
+        .join(", ");
 
       animationRef.current.push(
         anime({
@@ -313,10 +337,7 @@ function App() {
    * Anima un desplazamiento de layout individual (x, y, height) usando anime.js.
    */
   const animateLayoutShift = useCallback(
-    (
-      anim: any,
-      onComplete: () => void
-    ) => {
+    (anim: any, onComplete: () => void) => {
       const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
       const promises = selectors.map((selector: string) => {
         const query =
@@ -328,11 +349,21 @@ function App() {
 
         // Obtener el estado objetivo acumulado al final del paso actual
         const targetStates = getElementsStateAtStep(currentStepRef.current);
-        const targetState = targetStates.get(selector) || { x: 0, y: 0, height: "" };
+        const targetState = targetStates.get(selector) || {
+          x: 0,
+          y: 0,
+          height: "",
+        };
 
         // Obtener el estado inicial (antes de las animaciones del paso actual) de forma determinista
-        const beforeStates = getElementsStateBeforeAnimations(currentStepRef.current);
-        const startState = beforeStates.get(selector) || { x: 0, y: 0, height: getOriginalHeight(selector) };
+        const beforeStates = getElementsStateBeforeAnimations(
+          currentStepRef.current
+        );
+        const startState = beforeStates.get(selector) || {
+          x: 0,
+          y: 0,
+          height: getOriginalHeight(selector),
+        };
 
         const diffX = Math.abs(startState.x - targetState.x) > 0.1;
         const diffY = Math.abs(startState.y - targetState.y) > 0.1;
@@ -366,7 +397,10 @@ function App() {
             if (animTargetHeight === "") {
               animTargetHeight = getNaturalHeight(el);
             }
-            animeParams.height = [animStartHeight, animTargetHeight];
+            animeParams.height = [
+              ensurePx(animStartHeight),
+              ensurePx(animTargetHeight),
+            ];
           }
 
           const instance = anime(animeParams);
@@ -398,12 +432,35 @@ function App() {
         runSequentialAnimations(elements, index + 1);
       };
 
-      if (anim && typeof anim === "object" && "parallel" in anim && "animations" in anim) {
+      if (
+        anim &&
+        typeof anim === "object" &&
+        "parallel" in anim &&
+        "animations" in anim
+      ) {
         // Ejecución de un lote (wrapper) en paralelo
+        let abortController: AbortController | undefined;
         const promises = anim.animations.map((item: any) => {
           return new Promise<void>((resolve) => {
             if ("action" in item && item.action) {
               animateElement(item, item.action, resolve);
+            } else if ("center" in item) {
+              abortController = new AbortController();
+              transitionAbortRef.current = abortController;
+              centerWindow(
+                panzoomRef,
+                ZOOM_DURATION,
+                CENTER_EASING,
+                CENTER_PADDING,
+                abortController.signal,
+                getPendingMakeSpaceForStep(currentStepRef.current),
+                item.center
+              ).then(() => {
+                if (transitionAbortRef.current === abortController) {
+                  transitionAbortRef.current = null;
+                }
+                resolve();
+              });
             } else {
               animateLayoutShift(item, resolve);
             }
@@ -433,6 +490,23 @@ function App() {
 
         if ("action" in anim && anim.action) {
           animateElement(anim, anim.action, onComplete);
+        } else if ("center" in anim) {
+          const abortController = new AbortController();
+          transitionAbortRef.current = abortController;
+          centerWindow(
+            panzoomRef,
+            ZOOM_DURATION,
+            CENTER_EASING,
+            CENTER_PADDING,
+            abortController.signal,
+            getPendingMakeSpaceForStep(currentStepRef.current),
+            anim.center
+          ).then(() => {
+            if (transitionAbortRef.current === abortController) {
+              transitionAbortRef.current = null;
+            }
+            onComplete();
+          });
         } else {
           animateLayoutShift(anim, onComplete);
         }
@@ -498,7 +572,9 @@ function App() {
       const eraEl = main.querySelector(".externalBorder1") as HTMLElement;
       const eraWidth = eraEl ? eraEl.offsetWidth : 530;
       const eraHeight = eraEl ? eraEl.offsetHeight : 130;
-      const initialMaxZoom = Math.min(main.clientWidth / eraWidth, main.clientHeight / eraHeight) * 0.95;
+      const initialMaxZoom =
+        Math.min(main.clientWidth / eraWidth, main.clientHeight / eraHeight) *
+        0.95;
       pz.setMaxZoom(initialMaxZoom);
     }
   }, []);
@@ -512,8 +588,6 @@ function App() {
       stepAnimationsCompletedRef.current.add(0);
     }
   }, [runSequentialAnimations]);
-
-
 
   /**
    * Convierte el mapa de estados calculados en la estructura esperada por centerWindow (pendingMakeSpace).
@@ -564,7 +638,8 @@ function App() {
 
         const computedStyle = window.getComputedStyle(child);
         const transform = computedStyle.transform;
-        const { translateX, translateY, scale } = parseTransformMatrix(transform);
+        const { translateX, translateY, scale } =
+          parseTransformMatrix(transform);
 
         const msOffset = makeSpaceOffsets.get(child.id);
         const finalTranslateX = msOffset ? msOffset.x : translateX;
@@ -620,8 +695,6 @@ function App() {
     return fitScale * 0.95;
   }, []);
 
-
-
   /**
    * Anima todos los elementos modificados por makeSpace hacia sus posiciones y alturas
    * correspondientes en el paso objetivo.
@@ -629,13 +702,18 @@ function App() {
   const moveElementsToStep = useCallback(
     async (fromStepIdx: number, toStepIdx: number) => {
       const startStates = getElementsStateAtStep(fromStepIdx);
-      const targetStates = toStepIdx > fromStepIdx
-        ? getElementsStateBeforeAnimations(toStepIdx)
-        : getElementsStateAtStep(toStepIdx);
+      const targetStates =
+        toStepIdx > fromStepIdx
+          ? getElementsStateBeforeAnimations(toStepIdx)
+          : getElementsStateAtStep(toStepIdx);
       const promises: Promise<void>[] = [];
 
       targetStates.forEach((targetState, selector) => {
-        const startState = startStates.get(selector) || { x: 0, y: 0, height: "" };
+        const startState = startStates.get(selector) || {
+          x: 0,
+          y: 0,
+          height: "",
+        };
 
         const diffX = Math.abs(startState.x - targetState.x) > 0.1;
         const diffY = Math.abs(startState.y - targetState.y) > 0.1;
@@ -671,7 +749,7 @@ function App() {
               if (targetHeight === "") {
                 animHeight = getNaturalHeight(el);
               }
-              animeParams.height = animHeight;
+              animeParams.height = ensurePx(animHeight);
             }
 
             const instance = anime(animeParams);
@@ -727,9 +805,9 @@ function App() {
       // 2. Forzar posiciones y alturas de desplazamientos acumuladas
       const targetStates = isTransitioningRef.current
         ? getElementsStateAtStep(targetStepIdx - 1)
-        : (stepAnimationsCompletedRef.current.has(targetStepIdx)
+        : stepAnimationsCompletedRef.current.has(targetStepIdx)
           ? getElementsStateAtStep(targetStepIdx)
-          : getElementsStateBeforeAnimations(targetStepIdx));
+          : getElementsStateBeforeAnimations(targetStepIdx);
 
       targetStates.forEach((targetState, selector) => {
         const query =

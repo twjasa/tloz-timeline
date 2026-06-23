@@ -9,6 +9,7 @@ import { get2006 } from './eras/2006-tloztp';
 import { get2007 } from './eras/2007-tlozph';
 import { get2009 } from './eras/2009-tlozst';
 import { get2011 } from './eras/2011-tlozsw';
+import { get2013 } from './eras/2013-tlozalbw';
 
 
 /**
@@ -32,6 +33,10 @@ export type animationI =
   }
   | {
     pause: number;
+  }
+  | {
+    center: string[];
+    parallel?: boolean;
   };
 
 export type animationBlock =
@@ -370,12 +375,7 @@ export const releases: releasesI[] = [
             ],
             y: 1100
           },
-          {
-            id: [
-              theSealingWar_aLinkToThePast
-            ],
-            height: "1181px"
-          }
+          { id: theSealingWar_aLinkToThePast, height: "1181px" }
         ]
       },
       { id: ocarinaOfTimeAdult_theGreatFlood, action: "down" },
@@ -399,11 +399,6 @@ export const releases: releasesI[] = [
               creationOfTheMasterSword_vaatiIsSealed
             ], action: "hide"
           },
-        ]
-      },
-      {
-        parallel: true,
-        animations: [
           {
             id: [
               creation1,
@@ -419,19 +414,19 @@ export const releases: releasesI[] = [
       },
       { pause: 2 },
       {
-        parallel: false,
-        animations: [
-          { id: creationOfTheMasterSword1_hyruleKingdomIsEstablished1, action: "down" },
-          { id: creationOfTheMasterSword2_hyruleKingdomIsEstablished2, action: "down" },
-        ]
+        id: [
+          creationOfTheMasterSword1_hyruleKingdomIsEstablished1,
+          creationOfTheMasterSword2_hyruleKingdomIsEstablished2
+        ],
+        action: "down"
       },
       {
-        parallel: false,
-        animations: [
-          { id: hyruleKingdomIsEstablished1, action: "down" },
-          { id: hyruleKingdomIsEstablished2, action: "down" },
-          { id: hyruleKingdomIsEstablished2_theFierceWar, action: "down" },
-        ]
+        id: [
+          hyruleKingdomIsEstablished1,
+          hyruleKingdomIsEstablished2,
+          hyruleKingdomIsEstablished2_theFierceWar
+        ],
+        action: "down"
       },
       { id: hyruleKingdomIsEstablished1_theWarOfTheBoundChest, action: "down" },
       { id: theWarOfTheBoundChest, action: "down" },
@@ -462,27 +457,9 @@ export const releases: releasesI[] = [
             height: "243px"
           }]
       },
-      {
-        parallel: false,
-        animations: [
-          { id: majorasMask_ganondorfExecution, action: "down" },
-          { id: hyruleKingdomIsEstablished2_theTriforceWar, action: "down" }
-        ]
-      },
-      {
-        parallel: false,
-        animations: [
-          { id: ganondorfExecution, action: "down" },
-          { id: theTriforceWar, action: "down" }
-        ]
-      },
-      {
-        parallel: false,
-        animations: [
-          { id: ganondorfExecution_twilightPrincess, action: "down" },
-          { id: theTriforceWar_theFierceWar, action: "down" }
-        ]
-      },
+      { id: [majorasMask_ganondorfExecution, hyruleKingdomIsEstablished2_theTriforceWar], action: "down" },
+      { id: [ganondorfExecution, theTriforceWar], action: "down" },
+      { id: [ganondorfExecution_twilightPrincess, theTriforceWar_theFierceWar], action: "down" },
       { id: twilightPrincess, action: "down" },
 
 
@@ -518,26 +495,16 @@ export const releases: releasesI[] = [
         parallel: true,
         animations: [
           { height: "320px", id: [creation1_creationOfTheMasterSword] },
-        ]
-      },
-      {
-        parallel: true, animations: [
           { id: [creationOfTheMasterSword2_creation2], action: "hide" }
         ]
       },
       {
-        parallel: false,
-        animations: [
-          {
-            y: -241,
-            id: [
-              creation1,
-              creation2,
-              creation1_creationOfTheMasterSword,
-              creationOfTheMasterSword2_creation2
-            ],
-          },
-        ]
+        y: -241, id: [
+          creation1,
+          creation2,
+          creation1_creationOfTheMasterSword,
+          creationOfTheMasterSword2_creation2
+        ],
       },
       { id: creation2_theDemonInvasion, action: "down" },
       { id: theDemonInvasion, action: "down" },
@@ -549,5 +516,68 @@ export const releases: releasesI[] = [
         ]
       }
     ]
-  } // "The Legend of Zelda: Skyward Sword" 
+  }, // "The Legend of Zelda: Skyward Sword" 
+  {
+    year: 2013,
+    name: "The Legend of Zelda: A Link Between Worlds",
+    centerWindow: [fourSwords, hyruleKingdomIsEstablished2],
+    eras: get2013(),
+    animations: [
+      {
+        parallel: false,
+        animations: [
+          { id: vaatiIsSealed_fourSwords, action: "hide" },
+          {
+            y: -500,
+            id: [
+              vaatiIsSealed_fourSwords,
+              vaatiIsSealed,
+              theMinishCap_vaatiIsSealed,
+              theMinishCap,
+              theWarOfTheBoundChest_theMinishCap,
+              theWarOfTheBoundChest,
+              hyruleKingdomIsEstablished1,
+              hyruleKingdomIsEstablished1_theWarOfTheBoundChest,
+              creationOfTheMasterSword,
+              creationOfTheMasterSword1_hyruleKingdomIsEstablished1,
+              creation1,
+              creation1_creationOfTheMasterSword,
+              hyruleKingdomIsEstablished2,
+              creationOfTheMasterSword2_hyruleKingdomIsEstablished2,
+              skywardSword,
+              theDemonInvasion_skywardSword,
+              theDemonInvasion,
+              creation2,
+              creation2_theDemonInvasion,
+              hyruleKingdomIsEstablished2_theTriforceWar
+            ]
+          },
+          { id: theTriforceWar, y: -256 },
+          { height: "810px", id: [hyruleKingdomIsEstablished2_theTriforceWar] },
+          { height: 519, y: -256, id: [theTriforceWar_theFierceWar] }
+        ]
+      },
+      { id: vaatiIsSealed_theTriforceWar1, action: "down" },
+      { id: theTriforceWar1, action: "down" },
+      { id: theTriforceWar1_fourSwords, action: "down" },
+      { pause: 2 },
+      { center: [oracleOfSeason, ganonInvadesHyrule] },
+      { action: 'hide', id: [aLinkToThePast_tragedyOfPrincessZeldaI] },
+      {
+        y: 241,
+        id: [
+          tragedyOfPrincessZeldaI,
+          tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+          ganonInvadesHyrule,
+          ganonInvadesHyrule_theLegendOfZelda,
+          theLegendOfZelda,
+          theLegendOfZelda_zeldaIITAoL,
+          zeldaIITAoL,
+        ]
+      },
+      { id: aLinkToThePast_aLinkBetweenWorlds, action: "down" },
+      { id: aLinkBetweenWorlds, action: "down" },
+      { id: aLinkBetweenWorlds_theTragedyOfPrincessZeldaI, action: "down" },
+    ]
+  } // "The Legend of Zelda: A Link Between Worlds" 
 ];
