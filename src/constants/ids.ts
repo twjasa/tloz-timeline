@@ -101,8 +101,10 @@ export const ID = {
   spiritTracks: "spiritTracks",
 
   // ─── 2011: The Legend of Zelda: Skyward Sword ──────────────────────────────
+  creation2_theDemonInvasion: "creation2-tdi",
   theDemonInvasion: "theDemonInvasion",
   theDemonInvasion_skywardSword: "tdi-skywardSword",
+  skywardSword: "skywardSword",
 
 } as const;
 
@@ -274,6 +276,16 @@ declare global {
   const phantomHourglass_spiritTracks: "ph-st";
   /** Era: Spirit Tracks (2009) */
   const spiritTracks: "spiritTracks";
+
+  // ─── 2011: The Legend of Zelda: Skyward Sword ─────────────────────────────
+  /** Connection: Creation (Part 2) ➔ The Demon Invasion */
+  const creation2_theDemonInvasion: "creation2-tdi";
+  /** Era: The Demon Invasion */
+  const theDemonInvasion: "theDemonInvasion";
+  /** Connection: The Demon Invasion ➔ Skyward Sword */
+  const theDemonInvasion_skywardSword: "tdi-ss";
+  /** Era: Skyward Sword (2011) */
+  const skywardSword: "skywardSword";
 
 }
 

@@ -8,6 +8,7 @@ import { get2005 } from './eras/2005-tloztmc';
 import { get2006 } from './eras/2006-tloztp';
 import { get2007 } from './eras/2007-tlozph';
 import { get2009 } from './eras/2009-tlozst';
+import { get2011 } from './eras/2011-tlozsw';
 
 
 /**
@@ -297,12 +298,12 @@ export const releases: releasesI[] = [
           }
         ]
       },
-      // { id: aLinkToThePast_linksAwakening, action: 'hide' },
       { id: aLinkToThePast_oracleOfAges, action: 'down' },
       { id: oracleOfAges, action: 'down' },
       { id: oracleOfAges_oracleOfSeason, action: 'down' },
       { id: oracleOfSeason, action: 'down' },
-      { id: oracleOfSeason_linksAwakening, action: "down" }
+      { id: oracleOfSeason_linksAwakening, action: "down" },
+      { id: aLinkToThePast_linksAwakening, action: 'hide' },
     ]
   }, // "The Legend of Zelda: Oracle of Ages" 
   {
@@ -506,5 +507,47 @@ export const releases: releasesI[] = [
       { id: phantomHourglass_spiritTracks, action: "down" },
       { id: spiritTracks, action: "down" },
     ]
-  } // "The Legend of Zelda: Spirit Tracks" 
+  }, // "The Legend of Zelda: Spirit Tracks" 
+  {
+    year: 2011,
+    name: "The Legend of Zelda: Skyward Sword",
+    centerWindow: [creation2, creation1, skywardSword],
+    eras: get2011(),
+    animations: [
+      {
+        parallel: true,
+        animations: [
+          { height: "320px", id: [creation1_creationOfTheMasterSword] },
+        ]
+      },
+      {
+        parallel: true, animations: [
+          { id: [creationOfTheMasterSword2_creation2], action: "hide" }
+        ]
+      },
+      {
+        parallel: false,
+        animations: [
+          {
+            y: -241,
+            id: [
+              creation1,
+              creation2,
+              creation1_creationOfTheMasterSword,
+              creationOfTheMasterSword2_creation2
+            ],
+          },
+        ]
+      },
+      { id: creation2_theDemonInvasion, action: "down" },
+      { id: theDemonInvasion, action: "down" },
+      { id: theDemonInvasion_skywardSword, action: "down" },
+      {
+        parallel: true, animations: [
+          { id: creationOfTheMasterSword2, action: "hide" },
+          { id: skywardSword, action: "down" },
+        ]
+      }
+    ]
+  } // "The Legend of Zelda: Skyward Sword" 
 ];
