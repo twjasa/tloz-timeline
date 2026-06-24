@@ -240,11 +240,14 @@ function App() {
             const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
             selectors.forEach((selector: string) => {
               const query =
-                selector.startsWith("#") || selector.startsWith(".")
+                selector === "all-elements"
+                  ? "#main > *"
+                  : selector.startsWith("#") || selector.startsWith(".")
                   ? selector
                   : `#${selector}`;
-              const el = document.querySelector(query) as HTMLElement;
-              if (el) {
+              const elements = document.querySelectorAll(query);
+              elements.forEach((elNode) => {
+                const el = elNode as HTMLElement;
                 if (anim.action === "hide") {
                   el.style.opacity = "0";
                   el.style.visibility = "hidden";
@@ -257,7 +260,7 @@ function App() {
                     el.style.clipPath = clipPathAnimation[anim.action][1];
                   }
                 }
-              }
+              });
             });
           }
         });
@@ -316,18 +319,24 @@ function App() {
       // Before starting the animation, set visibility to visible if revealing
       if (action !== "hide") {
         selectors.forEach((selector: string) => {
-          const query = selector.startsWith("#") || selector.startsWith(".") ? selector : `#${selector}`;
-          const el = document.querySelector(query) as HTMLElement;
-          if (el) {
+          const query =
+            selector === "all-elements"
+              ? "#main > *"
+              : selector.startsWith("#") || selector.startsWith(".")
+              ? selector
+              : `#${selector}`;
+          document.querySelectorAll(query).forEach((elNode) => {
+            const el = elNode as HTMLElement;
             el.style.visibility = "visible";
-          }
+          });
         });
       }
 
       const targets = selectors
-        .map((sel: string) =>
-          sel.startsWith("#") || sel.startsWith(".") ? sel : `#${sel}`
-        )
+        .map((sel: string) => {
+          if (sel === "all-elements") return "#main > *";
+          return sel.startsWith("#") || sel.startsWith(".") ? sel : `#${sel}`;
+        })
         .join(", ");
 
       animationRef.current.push(
@@ -342,11 +351,16 @@ function App() {
             // After completing the animation, set visibility to hidden if hiding
             if (action === "hide") {
               selectors.forEach((selector: string) => {
-                const query = selector.startsWith("#") || selector.startsWith(".") ? selector : `#${selector}`;
-                const el = document.querySelector(query) as HTMLElement;
-                if (el) {
+                const query =
+                  selector === "all-elements"
+                    ? "#main > *"
+                    : selector.startsWith("#") || selector.startsWith(".")
+                    ? selector
+                    : `#${selector}`;
+                document.querySelectorAll(query).forEach((elNode) => {
+                  const el = elNode as HTMLElement;
                   el.style.visibility = "hidden";
-                }
+                });
               });
             }
             if (!canceledAnimation.current) onComplete();
@@ -805,11 +819,14 @@ function App() {
                 const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
                 selectors.forEach((selector: string) => {
                   const query =
-                    selector.startsWith("#") || selector.startsWith(".")
+                    selector === "all-elements"
+                      ? "#main > *"
+                      : selector.startsWith("#") || selector.startsWith(".")
                       ? selector
                       : `#${selector}`;
-                  const el = document.querySelector(query) as HTMLElement;
-                  if (el) {
+                  const elements = document.querySelectorAll(query);
+                  elements.forEach((elNode) => {
+                    const el = elNode as HTMLElement;
                     if (anim.action === "hide") {
                       el.style.opacity = "0";
                       el.style.visibility = "hidden";
@@ -820,7 +837,7 @@ function App() {
                         el.style.clipPath = clipPathAnimation[anim.action][1];
                       }
                     }
-                  }
+                  });
                 });
               }
             });
@@ -1048,6 +1065,24 @@ function App() {
                 key={release.id}
                 {...release}
               />
+            );
+          }
+          if ("textOnly" in release && release.textOnly) {
+            return (
+              <h1
+                id={release.backgroundImage}
+                key={release.backgroundImage}
+                className="unificationText"
+                style={{
+                  position: "absolute",
+                  opacity: release.show ? 1 : 0,
+                  visibility: (release.show ? "visible" : "hidden") as any,
+                  left: release.position?.left,
+                  top: release.position?.top,
+                }}
+              >
+                {release.title}
+              </h1>
             );
           }
           return <Era key={release.backgroundImage} {...release} />;

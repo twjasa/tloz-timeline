@@ -12,6 +12,7 @@ import { get2011 } from './eras/2011-tlozsw';
 import { get2013 } from './eras/2013-tlozalbw';
 import { get2015 } from './eras/2015-tloztfh';
 import { get2017 } from './eras/2017-tlozbotw';
+import { getUnification } from './eras/unification';
 
 
 /**
@@ -78,6 +79,7 @@ export interface eraI {
   backgroundPosition?: { left: number, top: number; };
   show: boolean;
   position?: { left: string | number; top: string | number; };
+  textOnly?: boolean;
 }
 
 /** Mapa de dirección a par de valores clip-path [inicio, fin] para las animaciones. */
@@ -625,5 +627,19 @@ export const releases: releasesI[] = [
       { center: [breathOfTheWild, twilightPrincess] }
     ],
 
-  }, // "The Legend of Zelda: Tri Force Heroes" 
+  }, // "The Legend of Zelda: Breath of the Wild" 
+  {
+    year: 2001,
+    name: "Unification",
+    eras: getUnification(),
+    animations: [
+      { id: "all-elements", action: "hide" },
+      { center: ["unificationText"] },
+      { id: "unificationText", action: "down" },
+      { pause: 2 },
+      { id: "unificationText", action: "hide" },
+      { center: [creation1] },
+      { id: creation1, action: "down" }
+    ]
+  }
 ];

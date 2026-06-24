@@ -88,3 +88,17 @@ main {
   align-items: center;
   margin-top: 20px;
 }
+
+.unificationText {
+  font-family: 'HyliaSerif', serif;
+  font-size: 80px;
+  font-weight: bold;
+  color: #d4b35e; /* Zelda Gold */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 179, 94, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  text-align: center;
+  width: 1200px;
+  transform: translateX(-50%);
+  z-index: 10;
+}
