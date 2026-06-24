@@ -247,9 +247,11 @@ function App() {
               if (el) {
                 if (anim.action === "hide") {
                   el.style.opacity = "0";
+                  el.style.visibility = "hidden";
                 } else {
                   if (["up", "down", "left", "right"].includes(anim.action)) {
                     el.style.opacity = "1";
+                    el.style.visibility = "visible";
                   }
                   if (clipPathAnimation[anim.action]) {
                     el.style.clipPath = clipPathAnimation[anim.action][1];
@@ -310,6 +312,18 @@ function App() {
 
       const clipPathValue = clipPathAnimation[clipPathDirection];
       const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+      
+      // Before starting the animation, set visibility to visible if revealing
+      if (action !== "hide") {
+        selectors.forEach((selector: string) => {
+          const query = selector.startsWith("#") || selector.startsWith(".") ? selector : `#${selector}`;
+          const el = document.querySelector(query) as HTMLElement;
+          if (el) {
+            el.style.visibility = "visible";
+          }
+        });
+      }
+
       const targets = selectors
         .map((sel: string) =>
           sel.startsWith("#") || sel.startsWith(".") ? sel : `#${sel}`
@@ -325,6 +339,16 @@ function App() {
           delay: 100,
           ...props,
           complete: () => {
+            // After completing the animation, set visibility to hidden if hiding
+            if (action === "hide") {
+              selectors.forEach((selector: string) => {
+                const query = selector.startsWith("#") || selector.startsWith(".") ? selector : `#${selector}`;
+                const el = document.querySelector(query) as HTMLElement;
+                if (el) {
+                  el.style.visibility = "hidden";
+                }
+              });
+            }
             if (!canceledAnimation.current) onComplete();
           },
         })
@@ -788,8 +812,10 @@ function App() {
                   if (el) {
                     if (anim.action === "hide") {
                       el.style.opacity = "0";
+                      el.style.visibility = "hidden";
                     } else {
                       el.style.opacity = "1";
+                      el.style.visibility = "visible";
                       if (clipPathAnimation[anim.action]) {
                         el.style.clipPath = clipPathAnimation[anim.action][1];
                       }

@@ -35,6 +35,7 @@ export const TimelinePath = ({
 }: TimelinePathProps) => {
   const containerStyle = {
     opacity: show ? 1 : 0,
+    visibility: (show ? "visible" : "hidden") as "visible" | "hidden",
     ...position,
     ...(orientation === "horizontal" && length ? { width: length, justifyContent: "flex-start" } : {}),
     ...(orientation === "vertical" && length ? { height: length } : {}),
