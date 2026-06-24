@@ -87,6 +87,8 @@ function App() {
   const [title, setTitle] = useState(
     `${releases[step].name} - year ${releases[step].year}`
   );
+  const [unmountedIds, setUnmountedIds] = useState<Set<string>>(new Set());
+
 
   /**
    * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
@@ -291,6 +293,43 @@ function App() {
   }, []);
 
   /**
+   * Obtiene todos los IDs que se animarán o centrarán después de la animación de "all-elements"
+   * en el paso actual, para evitar desmontarlos del DOM.
+   */
+  const getUpcomingIdsAfterAllElements = useCallback((stepIdx: number): Set<string> => {
+    const ids = new Set<string>();
+    const animations = releases[stepIdx]?.animations || [];
+    const idx = animations.findIndex(
+      (a: any) =>
+        a &&
+        typeof a === "object" &&
+        !("parallel" in a) &&
+        a.id === "all-elements" &&
+        a.action === "hide"
+    );
+    if (idx === -1) return ids;
+
+    for (let i = idx + 1; i < animations.length; i++) {
+      const block = animations[i];
+      if (!block) continue;
+      const anims = getAnimsFromBlock(block);
+      anims.forEach((anim) => {
+        if (anim) {
+          if (anim.id) {
+            const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+            selectors.forEach((sel: string) => ids.add(sel));
+          }
+          if (anim.center) {
+            const centers = Array.isArray(anim.center) ? anim.center : [anim.center];
+            centers.forEach((c: string) => ids.add(c));
+          }
+        }
+      });
+    }
+    return ids;
+  }, []);
+
+  /**
    * Anima un elemento individual usando clip-path con anime.js.
    *
    * @param element - Elemento DOM a animar. Debe tener un `id` y una propiedad `action`.
@@ -362,13 +401,25 @@ function App() {
                   el.style.visibility = "hidden";
                 });
               });
+
+              if (selectors.includes("all-elements")) {
+                const upcoming = getUpcomingIdsAfterAllElements(currentStepRef.current);
+                const toUnmount = new Set<string>();
+                releases[currentStepRef.current].eras.forEach((release) => {
+                  const id = "backgroundImage" in release ? release.backgroundImage : release.id;
+                  if (!upcoming.has(id)) {
+                    toUnmount.add(id);
+                  }
+                });
+                setUnmountedIds(toUnmount);
+              }
             }
             if (!canceledAnimation.current) onComplete();
           },
         })
       );
     },
-    []
+    [getUpcomingIdsAfterAllElements]
   );
 
   /**
@@ -879,6 +930,11 @@ function App() {
     syncElementsState(step);
   }, [step, syncElementsState]);
 
+  // Resetea el conjunto de elementos desmontados al cambiar de paso
+  useEffect(() => {
+    setUnmountedIds(new Set());
+  }, [step]);
+
   // Actualiza minZoom y maxZoom dinámicamente cuando cambia el paso o se redimensiona la ventana
   useEffect(() => {
     const handleResize = () => {
@@ -1058,6 +1114,10 @@ function App() {
         id="main"
       >
         {releases[step].eras.map((release) => {
+          const elementId = "backgroundImage" in release ? release.backgroundImage : release.id;
+          if (unmountedIds.has(elementId)) {
+            return null;
+          }
           if (!("backgroundImage" in release)) {
             return (
               <TimelinePath
