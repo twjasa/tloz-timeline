@@ -50,6 +50,7 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: theTriforceWar,
     show,
+    backgroundPosition: { left: 0, top: -204 },
     position: { left: 2354, top: 456 }
   },
   {
