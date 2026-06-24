@@ -10,6 +10,8 @@ import { get2007 } from './eras/2007-tlozph';
 import { get2009 } from './eras/2009-tlozst';
 import { get2011 } from './eras/2011-tlozsw';
 import { get2013 } from './eras/2013-tlozalbw';
+import { get2015 } from './eras/2015-tloztfh';
+import { get2017 } from './eras/2017-tlozbotw';
 
 
 /**
@@ -579,5 +581,49 @@ export const releases: releasesI[] = [
       { id: aLinkBetweenWorlds, action: "down" },
       { id: aLinkBetweenWorlds_theTragedyOfPrincessZeldaI, action: "down" },
     ]
-  } // "The Legend of Zelda: A Link Between Worlds" 
+  }, // "The Legend of Zelda: A Link Between Worlds" 
+  {
+    year: 2015,
+    name: "The Legend of Zelda: Tri Force Heroes",
+    centerWindow: [linksAwakening, ganonInvadesHyrule],
+    eras: get2015(),
+    animations: [
+      { parallel: true, animations: [{ id: aLinkBetweenWorlds_theTragedyOfPrincessZeldaI, action: 'hide' }] },
+      {
+        y: 244, id: [
+          aLinkBetweenWorlds_theTragedyOfPrincessZeldaI,
+          tragedyOfPrincessZeldaI,
+          tragedyOfPrincessZeldaI_ganonInvadesHyrule,
+          ganonInvadesHyrule,
+          ganonInvadesHyrule_theLegendOfZelda,
+          theLegendOfZelda,
+          theLegendOfZelda_zeldaIITAoL,
+          zeldaIITAoL
+        ]
+      },
+      { id: aLinkBetweenWorlds_triForceHeroes, action: "down" },
+      { id: triForceHeroes, action: "down" },
+      { id: triForceHeroes_theTragedyOfPrincessZeldaI, action: "down" },
+    ]
+  }, // "The Legend of Zelda: Tri Force Heroes" 
+  {
+    year: 2017,
+    name: "The Legend of Zelda: Breath of the Wild",
+    centerWindow: [ocarinaOfTimeAdult, aLinkToThePast],
+    eras: get2017(),
+    animations: [
+      { id: twilightPrincess_ganondorfSealing, action: "down" },
+      { center: [ganondorfSealing, breathOfTheWild] },
+      { id: ganondorfSealing, action: "down" },
+      { id: ganondorfSealing_theAncientCalamity, action: "down" },
+      { id: theAncientCalamity, action: "down" },
+      { id: theAncientCalamity_theGreatCalamity, action: "down" },
+      { id: theGreatCalamity, action: "down" },
+      { id: theGreatCalamity_breathOfTheWild, action: "down" },
+      { id: breathOfTheWild, action: "down" },
+      { pause: 1 },
+      { center: [breathOfTheWild, twilightPrincess] }
+    ],
+
+  }, // "The Legend of Zelda: Tri Force Heroes" 
 ];

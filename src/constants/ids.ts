@@ -114,6 +114,21 @@ export const ID = {
   aLinkBetweenWorlds: "aLinkBetweenWorlds",
   aLinkBetweenWorlds_theTragedyOfPrincessZeldaI: "albw-ttopzi",
 
+  // ─── 2015: The Legend of Zelda: Tri Force Heroes ───────────────────────────
+  aLinkBetweenWorlds_triForceHeroes: "albw-tfh",
+  triForceHeroes: "triForceHeroes",
+  triForceHeroes_theTragedyOfPrincessZeldaI: "tfh-ttopzi",
+
+  // ─── 2017: The Legend of Zelda: Breath of the Wild ───────────────────────────
+  twilightPrincess_ganondorfSealing: "tp-gs",
+  ganondorfSealing: "ganondorfSealing",
+  ganondorfSealing_theAncientCalamity: "gs-tac",
+  theAncientCalamity: "theAncientCalamity",
+  theAncientCalamity_theGreatCalamity: "tac-tgc",
+  theGreatCalamity: "theGreatCalamity",
+  theGreatCalamity_breathOfTheWild: "tgc-botw",
+  breathOfTheWild: "breathOfTheWild",
+
 } as const;
 
 export type TimelineId = typeof ID[keyof typeof ID];
@@ -309,6 +324,31 @@ declare global {
   /** Connection: A Link Between Worlds ➔ The Tragedy of Princess Zelda (I) */
   const aLinkBetweenWorlds_theTragedyOfPrincessZeldaI: "albw-ttopzi";
 
+  // ─── 2015: The Legend of Zelda: Tri Force Heroes ───────────────────────────
+  /** Connection: A Link Between Worlds ➔ Tri Force Heroes */
+  const aLinkBetweenWorlds_triForceHeroes: "albw-tfh";
+  /** Era: Tri Force Heroes (2015) */
+  const triForceHeroes: "triForceHeroes";
+  /** Connection: Tri Force Heroes ➔ The Tragedy of Princess Zelda (I) */
+  const triForceHeroes_theTragedyOfPrincessZeldaI: "tfh-ttopzi";
+
+  // ─── 2017: The Legend of Zelda: Breath of the Wild ───────────────────────────
+  /** Connection: Twilight Princess ➔ Ganondorf Sealing */
+  const twilightPrincess_ganondorfSealing: "tp-gs";
+  /** Era: Ganondorf Sealing */
+  const ganondorfSealing: "ganondorfSealing";
+  /** Connection: Ganondorf Sealing ➔ The Ancient Calamity */
+  const ganondorfSealing_theAncientCalamity: "gs-tac";
+  /** Era: The Ancient Calamity */
+  const theAncientCalamity: "theAncientCalamity";
+  /** Connection: The Ancient Calamity ➔ The Great Calamity */
+  const theAncientCalamity_theGreatCalamity: "tac-tgc";
+  /** Era: The Great Calamity */
+  const theGreatCalamity: "theGreatCalamity";
+  /** Connection: The Great Calamity ➔ Breath of the Wild */
+  const theGreatCalamity_breathOfTheWild: "tgc-botw";
+  /** Era: Breath of the Wild (2017) */
+  const breathOfTheWild: "breathOfTheWild";
 
 }
 
