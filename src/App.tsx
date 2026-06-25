@@ -958,7 +958,7 @@ function App() {
   /**
    * Prepara la escena para el paso anterior y retrocede la timeline.
    */
-  const prevScene = async () => {
+  const prevScene = useCallback(async () => {
     if (currentStepRef.current <= 0) return;
 
     // Completar/cancelar todas las animaciones activas del paso actual
@@ -1004,7 +1004,13 @@ function App() {
     transitionAbortRef.current = null;
 
     syncElementsState(prevStepIdx);
-  };
+  }, [
+    decrementStep,
+    finishAllAnimations,
+    getPendingMakeSpaceForStep,
+    moveElementsToStep,
+    syncElementsState,
+  ]);
 
   /**
    * Prepara la escena para el siguiente paso y avanza la timeline.
@@ -1017,7 +1023,7 @@ function App() {
    * 5. Ejecuta las animaciones secuenciales de revelado.
    * 6. Actualiza el título con el nombre y año del juego.
    */
-  const setScene = async () => {
+  const setScene = useCallback(async () => {
     // Si ya estamos en el último paso, no hacemos nada
     if (currentStepRef.current >= releases.length - 1) return;
 
@@ -1063,7 +1069,30 @@ function App() {
     if (nextStep.animations.length > 0) {
       runSequentialAnimations(nextStep.animations, 0);
     }
-  };
+  }, [
+    incrementStep,
+    finishAllAnimations,
+    getPendingMakeSpaceForStep,
+    moveElementsToStep,
+    syncElementsState,
+    runSequentialAnimations,
+  ]);
+
+  // Maneja la navegación en la timeline usando las flechas izquierda/derecha del teclado
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        setScene();
+      } else if (e.key === "ArrowLeft") {
+        prevScene();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [setScene, prevScene]);
 
   return (
     <>
