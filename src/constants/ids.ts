@@ -28,18 +28,20 @@ export const ID = {
   aLinkToThePast: "aLinkToThePast",
   aLinkToThePast_tragedyOfPrincessZeldaI: "alttp-ttopzI",
 
+  // ─── 1993: Link's Awakening ─────────────────────────────────────────────────
   aLinkToThePast_linksAwakening: "alttp-la",
   linksAwakening: "linksAwakening",
+  linksAwakening_tragedyOfPrincessZeldaI: "la-ttopzI",
 
   // ─── 1998: Ocarina of Time ──────────────────────────────────────────────────
   ocarinaOfTimeAdult: "ocarinaOfTimeAdult",
-  ocarinaOfTimeAdult_ocarinaOfTimeChild: "oot-adult-oot-child",
+  ocarinaOfTimeChild_ocarinaOfTimeAdult: "oot-child-oot-adult",
   ocarinaOfTimeChild: "ocarinaOfTimeChild",
-  ocarinaOfTimeChild_theFierceWar: "oot-child-tfw",
+  theFierceWar_ocarinaOfTimeChild: "tfw-oot-child",
   theFierceWar: "theFierceWar",
   creationOfTheMasterSword2_theFierceWar: "cotms2-tfw",
   creationOfTheMasterSword2: "creationOfTheMasterSword2",
-  creationOfTheMasterSword2_creation2: "cotms2-creation2",
+  creation2_creationOfTheMasterSword2: "creation2-cotms2",
   creation2: "creation2",
 
   // ─── 2000: Majora's Mask ────────────────────────────────────────────────────
@@ -103,14 +105,14 @@ export const ID = {
   // ─── 2011: The Legend of Zelda: Skyward Sword ──────────────────────────────
   creation2_theDemonInvasion: "creation2-tdi",
   theDemonInvasion: "theDemonInvasion",
-  theDemonInvasion_skywardSword: "tdi-skywardSword",
+  theDemonInvasion_skywardSword: "tdi-ss",
   skywardSword: "skywardSword",
 
   // ─── 2013: The Legend of Zelda: A Link Between Worlds ───────────────────────────
   vaatiIsSealed_theTriforceWar1: "vis-ttw1",
   theTriforceWar1: "theTriforceWar1",
   theTriforceWar1_fourSwords: "ttw1-fs",
-  aLinkToThePast_aLinkBetweenWorlds: "la-albw",
+  aLinkToThePast_aLinkBetweenWorlds: "alttp-albw",
   aLinkBetweenWorlds: "aLinkBetweenWorlds",
   aLinkBetweenWorlds_theTragedyOfPrincessZeldaI: "albw-ttopzi",
 
@@ -179,24 +181,26 @@ declare global {
   const aLinkToThePast_linksAwakening: "alttp-la";
   /** Era: Link's Awakening (1993) */
   const linksAwakening: "linksAwakening";
+  /** Connection: Link's Awakening ➔ Tragedy of Princess Zelda I */
+  const linksAwakening_tragedyOfPrincessZeldaI: "la-ttopzI";
 
   // ─── 1998: Ocarina of Time ──────────────────────────────────────────────────
   /** Era: Ocarina of Time - Adult Timeline (1998) */
   const ocarinaOfTimeAdult: "ocarinaOfTimeAdult";
   /** Connection: Ocarina of Time (Adult) ➔ Ocarina of Time (Child) */
-  const ocarinaOfTimeAdult_ocarinaOfTimeChild: "oot-adult-oot-child";
+  const ocarinaOfTimeChild_ocarinaOfTimeAdult: "oot-child-oot-adult";
   /** Era: Ocarina of Time - Child Timeline (1998) */
   const ocarinaOfTimeChild: "ocarinaOfTimeChild";
   /** Connection: Ocarina of Time (Child) ➔ The Fierce War */
-  const ocarinaOfTimeChild_theFierceWar: "oot-child-tfw";
+  const theFierceWar_ocarinaOfTimeChild: "tfw-oot-child";
   /** Era: The Fierce War */
   const theFierceWar: "theFierceWar";
   /** Connection: Creation of the Master Sword 2 ➔ The Fierce War */
   const creationOfTheMasterSword2_theFierceWar: "cotms2-tfw";
   /** Era: Creation of the Master Sword (Part 2) */
   const creationOfTheMasterSword2: "creationOfTheMasterSword2";
-  /** Connection: Creation of the Master Sword 2 ➔ Creation 2 */
-  const creationOfTheMasterSword2_creation2: "cotms2-creation2";
+  /** Connection: Creation 2 ➔ Creation of the Master Sword 2 */
+  const creation2_creationOfTheMasterSword2: "creation2-cotms2";
   /** Era: Creation (Part 2) */
   const creation2: "creation2";
 

@@ -15,15 +15,17 @@ export const get1987 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     id: tragedyOfPrincessZeldaI_ganonInvadesHyrule,
     show,
-    position: { left: 1101, top: 2452 }
-  },
+    from: tragedyOfPrincessZeldaI,
+    to: ganonInvadesHyrule,
+    },
   ...get1986(true),
   {
     title: "4 years later",
     id: theLegendOfZelda_zeldaIITAoL,
     show,
-    position: { left: 1101, top: 2945 }
-  },
+    from: theLegendOfZelda,
+    to: zeldaIITAoL,
+    },
   {
     title: "Zelda II: The Adventure of Link",
     color: "golden",

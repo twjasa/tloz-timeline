@@ -17,7 +17,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "",
     show,
     id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2,
-    position: { left: 2114, top: 1200 },
+    position: { left: 2302, top: 1200 },
     length: 666,
     orientation: "vertical"
   },
@@ -49,9 +49,8 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     title: "Several Months",
     show,
     id: ID.linkWarnsZeldaOfGanondorf_majorasMask,
-    position: { left: 1797, top: 1463 },
-    length: 81,
-    orientation: "vertical"
+    from: ID.linkWarnsZeldaOfGanondorf,
+    to: ID.majorasMask,
   },
   {
     title: "Majora's Mask",

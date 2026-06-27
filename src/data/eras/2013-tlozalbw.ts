@@ -9,9 +9,9 @@ export const get2013 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A Long Time)",
     show,
     id: vaatiIsSealed_theTriforceWar1,
-    position: { left: 1105, top: 122 },
-    orientation: "vertical"
-  },
+    from: vaatiIsSealed,
+    to: theTriforceWar1,
+    },
   {
     title: "The Triforce War",
     show,
@@ -23,17 +23,16 @@ export const get2013 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A Long Time)",
     show,
     id: theTriforceWar1_fourSwords,
-    position: { left: 1105, top: 366 },
-    orientation: "vertical",
-    length: 334
-  },
+    from: theTriforceWar1,
+    to: fourSwords,
+    },
   {
     title: "120 years (6 generations)",
     show,
     id: aLinkToThePast_aLinkBetweenWorlds,
-    position: { left: 1138, top: 4034 },
-    orientation: "vertical",
-  },
+    from: aLinkToThePast,
+    to: aLinkBetweenWorlds,
+    },
   {
     title: "A Link Between Worlds",
     show,

@@ -16,8 +16,9 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
   {
     title: "7 years",
     show,
-    id: ID.ocarinaOfTimeAdult_ocarinaOfTimeChild,
-    position: { left: 1803, top: 1460 },
+    id: ID.ocarinaOfTimeChild_ocarinaOfTimeAdult,
+    from: ID.ocarinaOfTimeChild,
+    to: ID.ocarinaOfTimeAdult,
   },
   {
     title: "Ocarina of Time (Child)",
@@ -30,8 +31,9 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
   {
     title: "9 years",
     show,
-    id: ID.ocarinaOfTimeChild_theFierceWar,
-    position: { left: 1803, top: 1214 },
+    id: ID.theFierceWar_ocarinaOfTimeChild,
+    from: ID.theFierceWar,
+    to: ID.ocarinaOfTimeChild,
   },
   {
     title: "The Fierce War",
@@ -44,9 +46,8 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: ID.creationOfTheMasterSword2_theFierceWar,
-    position: { left: 1865, top: 777 },
-    length: 271,
-    orientation: "vertical",
+    from: ID.creationOfTheMasterSword2,
+    to: ID.theFierceWar,
   },
   {
     title: "Creation of the master sword",
@@ -58,8 +59,9 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
   {
     title: "??? (A long time)",
     show,
-    id: ID.creationOfTheMasterSword2_creation2,
-    position: { left: 1865, top: 531 },
+    id: ID.creation2_creationOfTheMasterSword2,
+    from: ID.creation2,
+    to: ID.creationOfTheMasterSword2,
   },
   {
     title: "Creation",

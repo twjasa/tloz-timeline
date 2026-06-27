@@ -8,9 +8,9 @@ export const get2009 = (show = false): Array<eraI | connectionI> => [
     title: "100 years",
     show,
     id: phantomHourglass_spiritTracks,
-    position: { left: 2455, top: 2692 },
-    orientation: "vertical"
-  },
+    from: phantomHourglass,
+    to: spiritTracks,
+    },
   {
     title: "Spirit Tracks",
     show,

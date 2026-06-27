@@ -8,9 +8,9 @@ export const get2007 = (show = false): Array<eraI | connectionI> => [
     title: "A few months?",
     show,
     id: theWindWaker_phantomHourglass,
-    position: { left: 2455, top: 2447 },
-    orientation: "vertical"
-  },
+    from: theWindWaker,
+    to: phantomHourglass,
+    },
   {
     title: "Phantom Hourglass",
     show,

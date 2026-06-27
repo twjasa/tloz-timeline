@@ -53,6 +53,22 @@ const getOriginalHeight = (id: string): string | number => {
 };
 
 /**
+ * Determina si una conexión calcula sus extremos (from/to) de forma dinámica en runtime.
+ */
+const isDynamicConnection = (id: string): boolean => {
+  for (const r of releases) {
+    const found = r.eras.find((e) => !("backgroundImage" in e) && e.id === id);
+    if (found && !("backgroundImage" in found)) {
+      const conn = found as connectionI;
+      if (conn.from && conn.to) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+/**
  * Obtiene un array plano de animaciones de un bloque del timeline (objeto, sub-array, o wrapper).
  */
 const getAnimsFromBlock = (block: any): any[] => {
@@ -436,6 +452,9 @@ function App() {
         const el = document.querySelector(query) as HTMLElement;
         if (!el) return Promise.resolve();
 
+        const cleanId = selector.startsWith("#") ? selector.slice(1) : selector;
+        if (isDynamicConnection(cleanId)) return Promise.resolve();
+
         // Obtener el estado objetivo acumulado al final del paso actual
         const targetStates = getElementsStateAtStep(currentStepRef.current);
         const targetState = targetStates.get(selector) || {
@@ -626,12 +645,18 @@ function App() {
     // para que el contenido se vea centrado desde el primer frame.
     const main = document.querySelector("main")!;
     const children = Array.from(main.children) as HTMLElement[];
-    if (children.length > 0) {
+    const positionedChildren = children.filter(
+      (child) =>
+        child.classList.contains("externalBorder1") ||
+        child.offsetLeft > 0 ||
+        child.offsetTop > 0
+    );
+    if (positionedChildren.length > 0) {
       let minLeft = Infinity,
         minTop = Infinity,
         maxRight = -Infinity,
         maxBottom = -Infinity;
-      for (const child of children) {
+      for (const child of positionedChildren) {
         const left = child.offsetLeft;
         const top = child.offsetTop;
         minLeft = Math.min(minLeft, left);
@@ -703,7 +728,13 @@ function App() {
       if (!main) return 0;
 
       const children = Array.from(main.children) as HTMLElement[];
-      if (children.length === 0) return 0;
+      const positionedChildren = children.filter(
+        (child) =>
+          child.classList.contains("externalBorder1") ||
+          child.offsetLeft > 0 ||
+          child.offsetTop > 0
+      );
+      if (positionedChildren.length === 0) return 0;
 
       const pendingMakeSpace = getPendingMakeSpaceForStep(stepIdx);
       const makeSpaceOffsets = new Map<string, { x: number; y: number }>();
@@ -721,7 +752,7 @@ function App() {
         maxRight = -Infinity,
         maxBottom = -Infinity;
 
-      for (const child of children) {
+      for (const child of positionedChildren) {
         const baseLeft = child.offsetLeft + main.scrollLeft;
         const baseTop = child.offsetTop + main.scrollTop;
 
@@ -798,6 +829,9 @@ function App() {
       const promises: Promise<void>[] = [];
 
       targetStates.forEach((targetState, selector) => {
+        const cleanId = selector.startsWith("#") ? selector.slice(1) : selector;
+        if (isDynamicConnection(cleanId)) return;
+
         const startState = startStates.get(selector) || {
           x: 0,
           y: 0,
@@ -910,6 +944,9 @@ function App() {
             : `#${selector}`;
         const el = document.querySelector(query) as HTMLElement;
         if (el) {
+          const cleanId = selector.startsWith("#") ? selector.slice(1) : selector;
+          if (isDynamicConnection(cleanId)) return;
+
           el.style.transform = `translateX(${targetState.x}px) translateY(${targetState.y}px)`;
           if (targetState.height !== "") {
             el.style.height =

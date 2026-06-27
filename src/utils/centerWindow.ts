@@ -57,6 +57,14 @@ export const centerWindow = async (
     if (filtered.length > 0) {
       childrenToCenter = filtered;
     }
+  } else {
+    // Si targetIds es true o undefined, filtramos elementos sin posición válida
+    childrenToCenter = children.filter(
+      (child) =>
+        child.classList.contains("externalBorder1") ||
+        child.offsetLeft > 0 ||
+        child.offsetTop > 0
+    );
   }
 
   // Pre-calcular los offsets de makeSpace por ID para O(1) lookup

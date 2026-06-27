@@ -43,3 +43,10 @@ export const CENTER_EASING = "easeOutCubic" as const;
 
 /** Easing por defecto para las animaciones de clip-path y movimiento. */
 export const ANIMATION_EASING = "easeOutSine" as const;
+
+// ─── Conexiones: Offsets de punto de partida ─────────────────────────────────
+/** Desplazamiento horizontal para las conexiones respecto al centro de la era (px). */
+export const CONNECTION_OFFSET_X = 100;
+
+/** Desplazamiento vertical para las conexiones respecto al centro de la era (px). */
+export const CONNECTION_OFFSET_Y = 0;

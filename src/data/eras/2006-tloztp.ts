@@ -8,10 +8,9 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     title: "7 years",
     show,
     id: majorasMask_ganondorfExecution,
-    position: { left: 1742, top: 1704 },
-    orientation: "vertical",
-    length: 81
-  },
+    from: majorasMask,
+    to: ganondorfExecution,
+    },
   {
     title: "Ganondorf's Execution",
     show,
@@ -24,10 +23,9 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     title: "100 years",
     show,
     id: ganondorfExecution_twilightPrincess,
-    position: { left: 1742, top: 1951 },
-    orientation: "vertical",
-    length: 86
-  },
+    from: ganondorfExecution,
+    to: twilightPrincess,
+    },
   {
     title: "Twilight Princess",
     show,
@@ -41,10 +39,9 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: hyruleKingdomIsEstablished2_theTriforceWar,
-    position: { left: 2456, top: -110 },
-    orientation: "vertical",
-    length: 566
-  },
+    from: hyruleKingdomIsEstablished2,
+    to: theTriforceWar,
+    },
   {
     title: "The Triforce War",
     color: "silver",
@@ -57,9 +54,8 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: theTriforceWar_theFierceWar,
-    length: 263,
-    position: { left: 2456, top: 622 },
-    orientation: "vertical",
-  }
+    from: theTriforceWar,
+    to: theFierceWar,
+    }
 
 ];

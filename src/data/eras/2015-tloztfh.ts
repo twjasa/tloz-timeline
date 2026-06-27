@@ -9,9 +9,9 @@ export const get2015 = (show = false): Array<eraI | connectionI> => [
     title: "Several years",
     show,
     id: aLinkBetweenWorlds_triForceHeroes,
-    position: { left: 1061, top: 4278 },
-    orientation: "vertical",
-  },
+    from: aLinkBetweenWorlds,
+    to: triForceHeroes,
+    },
   {
     title: "Tri Force Heroes",
     show,
@@ -23,7 +23,7 @@ export const get2015 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A Long Time)",
     id: triForceHeroes_theTragedyOfPrincessZeldaI,
     show,
-    position: { left: 1087, top: 4522 },
-    orientation: "vertical"
-  }
+    from: triForceHeroes,
+    to: tragedyOfPrincessZeldaI,
+    }
 ];

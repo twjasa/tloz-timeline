@@ -10,9 +10,9 @@ export const get2011 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: ID.creation2_theDemonInvasion,
-    position: { left: 2456, top: -842 },
-    orientation: "vertical"
-  },
+    from: ID.creation2,
+    to: ID.theDemonInvasion,
+    },
   {
     title: "The Demon Invasion",
     show,
@@ -24,8 +24,9 @@ export const get2011 = (show = false): Array<eraI | connectionI> => [
     title: "Thousands of years",
     show,
     id: ID.theDemonInvasion_skywardSword,
-    position: { left: 2472, top: -598 },
-  },
+    from: ID.theDemonInvasion,
+    to: ID.skywardSword,
+    },
   {
     title: "Skyward Sword",
     show,

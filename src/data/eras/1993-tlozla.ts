@@ -10,7 +10,8 @@ export const get1993 = (show = false): Array<eraI | connectionI> => [
     title: "A few months later",
     show,
     id: ID.aLinkToThePast_linksAwakening,
-    position: { left: 1101, top: 2202 },
+    from: ID.aLinkToThePast,
+    to: ID.linksAwakening,
   },
   {
     title: "Link's Awakening",
@@ -19,5 +20,11 @@ export const get1993 = (show = false): Array<eraI | connectionI> => [
     show,
     position: { left: centerX, top: 2036 },
   },
-
+  {
+    title: "??? (a long time)",
+    show,
+    id: ID.linksAwakening_tragedyOfPrincessZeldaI,
+    from: ID.linksAwakening,
+    to: ID.tragedyOfPrincessZeldaI,
+  },
 ];

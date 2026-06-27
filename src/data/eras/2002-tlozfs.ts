@@ -9,9 +9,9 @@ export const get2002 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: creationOfTheMasterSword_vaatiIsSealed,
-    position: { left: 1101, top: 377 },
-    orientation: "vertical"
-  },
+    from: creationOfTheMasterSword,
+    to: vaatiIsSealed,
+    },
   {
     title: "Vaati is Sealed",
     show,
@@ -23,9 +23,9 @@ export const get2002 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: vaatiIsSealed_fourSwords,
-    position: { left: 1101, top: 622 },
-    orientation: "vertical"
-  },
+    from: vaatiIsSealed,
+    to: fourSwords,
+    },
   {
     title: "Four Swords",
     show,
@@ -39,8 +39,7 @@ export const get2002 = (show = false): Array<eraI | connectionI> => [
     title: "???",
     show,
     id: fourSwords_ganondorfGetsTheCompleteTriforce,
-    position: { left: centerX, top: 866 },
-    length: 428,
-    orientation: "vertical"
-  },
+    from: fourSwords,
+    to: ganondorfGetsTheCompleteTriforce,
+    },
 ];

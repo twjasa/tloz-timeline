@@ -8,16 +8,16 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: creationOfTheMasterSword1_hyruleKingdomIsEstablished1,
-    position: { left: 1101, top: -354 },
-    orientation: "vertical"
-  },
+    from: creationOfTheMasterSword,
+    to: hyruleKingdomIsEstablished1,
+    },
   {
     title: "??? (A long time)",
     show,
     id: creationOfTheMasterSword2_hyruleKingdomIsEstablished2,
-    position: { left: 2456, top: -354 },
-    orientation: "vertical"
-  },
+    from: creationOfTheMasterSword2,
+    to: hyruleKingdomIsEstablished2,
+    },
   {
     title: "Hyrule Kingdom is Established",
     show,
@@ -40,17 +40,16 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     title: "??? (A long time)",
     show,
     id: hyruleKingdomIsEstablished2_theFierceWar,
-    position: { left: 2456, top: -110 },
-    orientation: "vertical",
-    length: 1157
-  },
+    from: hyruleKingdomIsEstablished2,
+    to: theFierceWar,
+    },
   {
     title: "??? (A long time)",
     show,
     id: hyruleKingdomIsEstablished1_theWarOfTheBoundChest,
-    position: { left: 1101, top: -110 },
-    orientation: "vertical"
-  },
+    from: hyruleKingdomIsEstablished1,
+    to: theWarOfTheBoundChest,
+    },
   {
     title: "The War of the Bound Chest",
     show,
@@ -64,9 +63,9 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     title: "??? (Centuries?)",
     show,
     id: theWarOfTheBoundChest_theMinishCap,
-    position: { left: 1101, top: 134 },
-    orientation: "vertical"
-  },
+    from: theWarOfTheBoundChest,
+    to: theMinishCap,
+    },
   {
     title: "The Minish Cap",
     show,
@@ -80,7 +79,7 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     title: "???",
     show,
     id: theMinishCap_vaatiIsSealed,
-    position: { left: 1101, top: 378 },
-    orientation: "vertical"
-  },
+    from: theMinishCap,
+    to: vaatiIsSealed,
+    },
 ];

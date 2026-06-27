@@ -15,8 +15,9 @@ export const get1986 = (show = false): Array<eraI | connectionI> => [
     title: "Immediately after",
     id: ID.ganonInvadesHyrule_theLegendOfZelda,
     show,
-    position: { left: 1101, top: 2700 }
-  },
+    from: ID.ganonInvadesHyrule,
+    to: ID.theLegendOfZelda,
+    },
   {
     title: "The legend of zelda",
     color: "golden",

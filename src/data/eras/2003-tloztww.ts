@@ -8,10 +8,9 @@ export const get2003 = (show = false): Array<eraI | connectionI> => [
     title: "About 100 years",
     show,
     id: ocarinaOfTimeAdult_theGreatFlood,
-    position: { left: 2455, top: 1704 + 247 },
-    length: 85,
-    orientation: "vertical"
-  },
+    from: ocarinaOfTimeAdult,
+    to: theGreatFlood,
+    },
   {
     title: "The Great Flood",
     show,
@@ -24,9 +23,9 @@ export const get2003 = (show = false): Array<eraI | connectionI> => [
     title: "About 300 years later...",
     show,
     id: theGreatFlood_theWindWaker,
-    position: { left: 2456, top: 2203 },
-    orientation: "vertical"
-  },
+    from: theGreatFlood,
+    to: theWindWaker,
+    },
   {
     title: "The Wind Waker",
     show,

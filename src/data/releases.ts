@@ -67,6 +67,8 @@ export interface connectionI {
   position?: { left: string | number; top: string | number; };
   orientation?: "horizontal" | "vertical";
   length?: number | string;
+  from?: string;
+  to?: string;
 }
 
 /**
@@ -161,6 +163,7 @@ export const releases: releasesI[] = [
     ],
     eras: get1993(),
     animations: [
+      { id: aLinkToThePast_tragedyOfPrincessZeldaI, action: 'hide' },
       {
         parallel: false,
         animations: [
@@ -183,6 +186,7 @@ export const releases: releasesI[] = [
       },
       { id: aLinkToThePast_linksAwakening, action: 'down' },
       { id: linksAwakening, action: 'down' },
+      { id: linksAwakening_tragedyOfPrincessZeldaI, action: 'down' },
     ]
   }, // "The Legend of Zelda: Link's Awakening"   
   {
@@ -199,26 +203,20 @@ export const releases: releasesI[] = [
               creation1,
               creation1_creationOfTheMasterSword,
               creationOfTheMasterSword,
-            ],
-            y: -436.9
-          },
-          {
-            id: [
               creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
             ],
-            y: -436.9,
-            height: "517px"
+            y: -436.9
           }
         ]
       },
       { id: creation2, action: 'down' },
-      { id: creationOfTheMasterSword2_creation2, action: 'down' },
+      { id: creation2_creationOfTheMasterSword2, action: 'down' },
       { id: creationOfTheMasterSword2, action: 'down' },
       { id: creationOfTheMasterSword2_theFierceWar, action: 'down' },
       { id: theFierceWar, action: 'down' },
-      { id: ocarinaOfTimeChild_theFierceWar, action: 'down' },
+      { id: theFierceWar_ocarinaOfTimeChild, action: 'down' },
       { id: ocarinaOfTimeChild, action: 'down' },
-      { id: ocarinaOfTimeAdult_ocarinaOfTimeChild, action: 'down' },
+      { id: ocarinaOfTimeChild_ocarinaOfTimeAdult, action: 'down' },
       { id: ocarinaOfTimeAdult, action: 'down' },
     ]
   }, // "The Legend of Zelda: Ocarina of Time" 
@@ -234,13 +232,13 @@ export const releases: releasesI[] = [
           {
             id: [
               creation2,
-              creationOfTheMasterSword2_creation2,
+              creation2_creationOfTheMasterSword2,
               creationOfTheMasterSword2,
               creationOfTheMasterSword2_theFierceWar,
               theFierceWar,
-              ocarinaOfTimeChild_theFierceWar,
+              theFierceWar_ocarinaOfTimeChild,
               ocarinaOfTimeChild,
-              ocarinaOfTimeAdult_ocarinaOfTimeChild,
+              ocarinaOfTimeChild_ocarinaOfTimeAdult,
               ocarinaOfTimeAdult,
             ],
             x: 600
@@ -263,13 +261,6 @@ export const releases: releasesI[] = [
               ocarinaOfTimeAdult
             ],
             y: 247
-          },
-          {
-            id: [
-              ocarinaOfTimeAdult_ocarinaOfTimeChild,
-              ganondorfGetsTheCompleteTriforce_theSealingWar,
-            ],
-            height: "325px"
           }
         ]
       },
@@ -331,14 +322,10 @@ export const releases: releasesI[] = [
               creation2,
               creationOfTheMasterSword2,
               creation1_creationOfTheMasterSword,
-              creationOfTheMasterSword2_creation2,
+              creation2_creationOfTheMasterSword2,
               creationOfTheMasterSword2_theFierceWar
             ],
             y: -400
-          },
-          {
-            id: [creationOfTheMasterSword2_theFierceWar],
-            height: "670px"
           }
         ]
       },
@@ -378,8 +365,7 @@ export const releases: releasesI[] = [
               zeldaIITAoL,
             ],
             y: 1100
-          },
-          { id: theSealingWar_aLinkToThePast, height: "1181px" }
+          }
         ]
       },
       { id: ocarinaOfTimeAdult_theGreatFlood, action: "down" },
@@ -410,7 +396,7 @@ export const releases: releasesI[] = [
               creation1_creationOfTheMasterSword,
               creationOfTheMasterSword,
               creationOfTheMasterSword2,
-              creationOfTheMasterSword2_creation2
+              creation2_creationOfTheMasterSword2
             ],
             y: -731
           }
@@ -451,14 +437,10 @@ export const releases: releasesI[] = [
         animations: [
           {
             id: [
-              theFierceWar
+              theFierceWar,
+              theFierceWar_ocarinaOfTimeChild
             ],
             y: -163
-          },
-          {
-            id: [ocarinaOfTimeChild_theFierceWar],
-            y: -163,
-            height: "243px"
           }]
       },
       { id: [majorasMask_ganondorfExecution, hyruleKingdomIsEstablished2_theTriforceWar], action: "down" },
@@ -498,8 +480,7 @@ export const releases: releasesI[] = [
       {
         parallel: true,
         animations: [
-          { height: "320px", id: [creation1_creationOfTheMasterSword] },
-          { id: [creationOfTheMasterSword2_creation2], action: "hide" }
+          { id: [creation2_creationOfTheMasterSword2], action: "hide" }
         ]
       },
       {
@@ -507,7 +488,7 @@ export const releases: releasesI[] = [
           creation1,
           creation2,
           creation1_creationOfTheMasterSword,
-          creationOfTheMasterSword2_creation2
+          creation2_creationOfTheMasterSword2
         ],
       },
       { id: creation2_theDemonInvasion, action: "down" },
@@ -556,9 +537,7 @@ export const releases: releasesI[] = [
               hyruleKingdomIsEstablished2_theTriforceWar
             ]
           },
-          { id: theTriforceWar, y: -256 },
-          { height: "810px", id: [hyruleKingdomIsEstablished2_theTriforceWar] },
-          { height: 519, y: -256, id: [theTriforceWar_theFierceWar] }
+          { id: [theTriforceWar, theTriforceWar_theFierceWar], y: -256 }
         ]
       },
       { id: vaatiIsSealed_theTriforceWar1, action: "down" },

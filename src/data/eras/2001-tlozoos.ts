@@ -9,8 +9,9 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "A few months later?",
         show,
         id: ID.aLinkToThePast_oracleOfAges,
-        position: { left: 1110, top: 2205 },
-        // length: 146,
+        from: ID.aLinkToThePast,
+    to: ID.oracleOfAges,
+    // length: 146,
         orientation: "vertical"
     },
     {
@@ -25,8 +26,8 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "Immediately after",
         show,
         id: ID.oracleOfAges_oracleOfSeason,
-        position: { left: 1101, top: 2200 + 247 },
-        orientation: "vertical"
+        from: ID.oracleOfAges,
+    to: ID.oracleOfSeason,
     },
     {
         title: "Oracle of Season",
@@ -40,7 +41,7 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         title: "A few months later?",
         show,
         id: ID.oracleOfSeason_linksAwakening,
-        position: { left: 1101, top: 2442 + 247 },
-        orientation: "vertical"
+        from: ID.oracleOfSeason,
+    to: ID.linksAwakening,
     },
 ];
