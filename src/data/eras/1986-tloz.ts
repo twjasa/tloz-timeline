@@ -1,5 +1,5 @@
 import { connectionI } from "../releases";
-import { centerX, eraI } from "../releases";
+import { eraI } from "../releases";
 import { ID } from "../../constants/ids";
 
 // THE LEGEND OF ZELDA
@@ -9,7 +9,8 @@ export const get1986 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: ID.ganonInvadesHyrule,
     show,
-    position: { left: centerX, top: 2532 },
+    event: 10,
+    timeline: 0,
   },
   {
     title: "Immediately after",
@@ -24,6 +25,7 @@ export const get1986 = (show = false): Array<eraI | connectionI> => [
     backgroundImage: ID.theLegendOfZelda,
     backgroundPosition: { left: 2, top: 0 },
     show,
-    position: { left: centerX, top: 2779 }
+    event: 11,
+    timeline: 0,
   },
 ];

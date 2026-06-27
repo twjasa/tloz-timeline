@@ -11,7 +11,8 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "golden",
     backgroundImage: ID.ocarinaOfTimeAdult,
-    position: { left: 1754, top: 1538 },
+    event: 6,
+    timeline: 1
   },
   {
     title: "7 years",
@@ -25,8 +26,8 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "golden",
     backgroundImage: ID.ocarinaOfTimeChild,
-    position: { left: 1754, top: 1294 },
-    backgroundPosition: { left: 0, top: -192 },
+    event: 5,
+    timeline: 1
   },
   {
     title: "9 years",
@@ -40,7 +41,8 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: ID.theFierceWar,
     show,
-    position: { left: 1754, top: 1048 },
+    event: 4,
+    timeline: 1
   },
   {
     title: "??? (A long time)",
@@ -54,7 +56,8 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: ID.creationOfTheMasterSword2,
-    position: { left: 1754, top: 611 },
+    event: 3,
+    timeline: 1
   },
   {
     title: "??? (A long time)",
@@ -68,6 +71,7 @@ export const get1998 = (show = false): Array<eraI | connectionI> => [
     show,
     color: "silver",
     backgroundImage: ID.creation2,
-    position: { left: 1754, top: 364 },
+    event: 2,
+    timeline: 1
   },
 ];

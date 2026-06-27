@@ -1,7 +1,7 @@
 import { eraI, connectionI } from "../releases";
 import { get2005 } from "./2005-tloztmc";
 
-// THE LEGEND OF ZELDA: THE WIND WAKER
+// THE LEGEND OF ZELDA: TWILIGHT PRINCESS
 export const get2006 = (show = false): Array<eraI | connectionI> => [
   ...get2005(show),
   {
@@ -10,14 +10,15 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     id: majorasMask_ganondorfExecution,
     from: majorasMask,
     to: ganondorfExecution,
-    },
+  },
   {
     title: "Ganondorf's Execution",
     show,
     id: ganondorfExecution,
     color: "silver",
     backgroundImage: ganondorfExecution,
-    position: { left: 1691, top: 1785 },
+    event: 7,
+    timeline: 1,
   },
   {
     title: "100 years",
@@ -25,7 +26,7 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     id: ganondorfExecution_twilightPrincess,
     from: ganondorfExecution,
     to: twilightPrincess,
-    },
+  },
   {
     title: "Twilight Princess",
     show,
@@ -33,7 +34,8 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     color: "golden",
     backgroundImage: twilightPrincess,
     backgroundPosition: { left: 0, top: -93 },
-    position: { left: 1691, top: 2037 },
+    event: 8,
+    timeline: 1
   },
   {
     title: "??? (A long time)",
@@ -41,14 +43,15 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     id: hyruleKingdomIsEstablished2_theTriforceWar,
     from: hyruleKingdomIsEstablished2,
     to: theTriforceWar,
-    },
+  },
   {
     title: "The Triforce War",
     color: "silver",
     backgroundImage: theTriforceWar,
     show,
     backgroundPosition: { left: 0, top: -204 },
-    position: { left: 2354, top: 456 }
+    event: 1,
+    timeline: 2
   },
   {
     title: "??? (A long time)",
@@ -56,6 +59,6 @@ export const get2006 = (show = false): Array<eraI | connectionI> => [
     id: theTriforceWar_theFierceWar,
     from: theTriforceWar,
     to: theFierceWar,
-    }
+  }
 
 ];

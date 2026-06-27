@@ -11,13 +11,14 @@ export const get2015 = (show = false): Array<eraI | connectionI> => [
     id: aLinkBetweenWorlds_triForceHeroes,
     from: aLinkBetweenWorlds,
     to: triForceHeroes,
-    },
+  },
   {
     title: "Tri Force Heroes",
     show,
     color: "golden",
     backgroundImage: triForceHeroes,
-    position: { left: 1009, top: 4356 }
+    event: 16,
+    timeline: 0
   },
   {
     title: "??? (A Long Time)",
@@ -25,5 +26,5 @@ export const get2015 = (show = false): Array<eraI | connectionI> => [
     show,
     from: triForceHeroes,
     to: tragedyOfPrincessZeldaI,
-    }
+  }
 ];

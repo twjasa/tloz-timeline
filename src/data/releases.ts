@@ -31,6 +31,8 @@ export type animationI =
     id: string | string[];
     x?: number;
     y?: number;
+    eventY?: number;
+    timelineX?: number;
     height?: number | string;
     parallel?: boolean;
   }
@@ -65,6 +67,8 @@ export interface connectionI {
   id: string;
   show: boolean;
   position?: { left: string | number; top: string | number; };
+  event?: number;
+  timeline?: number;
   orientation?: "horizontal" | "vertical";
   length?: number | string;
   from?: string;
@@ -81,6 +85,8 @@ export interface eraI {
   backgroundPosition?: { left: number, top: number; };
   show: boolean;
   position?: { left: string | number; top: string | number; };
+  event?: number;
+  timeline?: number;
   textOnly?: boolean;
 }
 
@@ -180,7 +186,7 @@ export const releases: releasesI[] = [
               creation1_creationOfTheMasterSword,
               creation1,
             ],
-            y: -244.06
+            eventY: -1
           }
         ]
       },
@@ -205,7 +211,7 @@ export const releases: releasesI[] = [
               creationOfTheMasterSword,
               creationOfTheMasterSword_ganondorfGetsTheCompleteTriforce,
             ],
-            y: -436.9
+            eventY: -1
           }
         ]
       },
@@ -241,7 +247,7 @@ export const releases: releasesI[] = [
               ocarinaOfTimeChild_ocarinaOfTimeAdult,
               ocarinaOfTimeAdult,
             ],
-            x: 600
+            timelineX: 2
           },
           {
             id: [
@@ -260,14 +266,14 @@ export const releases: releasesI[] = [
               zeldaIITAoL,
               ocarinaOfTimeAdult
             ],
-            y: 247
+            eventY: 1
           }
         ]
       },
-      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
-      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2, action: 'up' },
-      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3, action: 'left' },
-      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4, action: 'down' },
+      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
+      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2, action: 'up' },
+      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3, action: 'left' },
+      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4, action: 'down' },
       { id: linkWarnsZeldaOfGanondorf, action: 'down' },
       { id: linkWarnsZeldaOfGanondorf_majorasMask, action: 'down' },
       { id: majorasMask, action: 'down' }
@@ -294,10 +300,11 @@ export const releases: releasesI[] = [
               zeldaIITAoL,
               theLegendOfZelda_zeldaIITAoL,
             ],
-            y: 485
+            eventY: 2
           }
         ]
       },
+      { id: aLinkToThePast_linksAwakening, action: 'hide' },
       { id: aLinkToThePast_oracleOfAges, action: 'down' },
       { id: oracleOfAges, action: 'down' },
       { id: oracleOfAges_oracleOfSeason, action: 'down' },
@@ -325,7 +332,7 @@ export const releases: releasesI[] = [
               creation2_creationOfTheMasterSword2,
               creationOfTheMasterSword2_theFierceWar
             ],
-            y: -400
+            eventY: -3
           }
         ]
       },
@@ -364,7 +371,7 @@ export const releases: releasesI[] = [
               theLegendOfZelda_zeldaIITAoL,
               zeldaIITAoL,
             ],
-            y: 1100
+            eventY: 3
           }
         ]
       },
@@ -398,7 +405,7 @@ export const releases: releasesI[] = [
               creationOfTheMasterSword2,
               creation2_creationOfTheMasterSword2
             ],
-            y: -731
+            eventY: -3
           }
         ]
       },
@@ -428,7 +435,7 @@ export const releases: releasesI[] = [
   {
     year: 2006,
     name: "The Legend of Zelda: Twilight Princess",
-    centerWindow: [twilightPrincess, hyruleKingdomIsEstablished2],
+    centerWindow: [twilightPrincess, theTriforceWar],
     eras: get2006(),
     animations: [
       { id: hyruleKingdomIsEstablished2_theFierceWar, action: "hide" },
@@ -440,7 +447,7 @@ export const releases: releasesI[] = [
               theFierceWar,
               theFierceWar_ocarinaOfTimeChild
             ],
-            y: -163
+            eventY: -1
           }]
       },
       { id: [majorasMask_ganondorfExecution, hyruleKingdomIsEstablished2_theTriforceWar], action: "down" },
@@ -484,7 +491,7 @@ export const releases: releasesI[] = [
         ]
       },
       {
-        y: -241, id: [
+        eventY: -1, id: [
           creation1,
           creation2,
           creation1_creationOfTheMasterSword,
@@ -513,7 +520,7 @@ export const releases: releasesI[] = [
         animations: [
           { id: vaatiIsSealed_fourSwords, action: "hide" },
           {
-            y: -500,
+            eventY: -2,
             id: [
               vaatiIsSealed_fourSwords,
               vaatiIsSealed,
@@ -537,7 +544,7 @@ export const releases: releasesI[] = [
               hyruleKingdomIsEstablished2_theTriforceWar
             ]
           },
-          { id: [theTriforceWar, theTriforceWar_theFierceWar], y: -256 }
+          { id: [theTriforceWar, theTriforceWar_theFierceWar], eventY: -1 }
         ]
       },
       { id: vaatiIsSealed_theTriforceWar1, action: "down" },
@@ -547,7 +554,7 @@ export const releases: releasesI[] = [
       { center: [oracleOfSeason, ganonInvadesHyrule] },
       { action: 'hide', id: [aLinkToThePast_tragedyOfPrincessZeldaI] },
       {
-        y: 241,
+        eventY: 1,
         id: [
           tragedyOfPrincessZeldaI,
           tragedyOfPrincessZeldaI_ganonInvadesHyrule,
@@ -558,7 +565,8 @@ export const releases: releasesI[] = [
           zeldaIITAoL,
         ]
       },
-      { id: aLinkToThePast_aLinkBetweenWorlds, action: "down" },
+      { id: linksAwakening_tragedyOfPrincessZeldaI, action: 'hide' },
+      { id: linksAwakening_aLinkBetweenWorlds, action: "down" },
       { id: aLinkBetweenWorlds, action: "down" },
       { id: aLinkBetweenWorlds_theTragedyOfPrincessZeldaI, action: "down" },
     ]
@@ -571,7 +579,7 @@ export const releases: releasesI[] = [
     animations: [
       { parallel: true, animations: [{ id: aLinkBetweenWorlds_theTragedyOfPrincessZeldaI, action: 'hide' }] },
       {
-        y: 244, id: [
+        eventY: 1, id: [
           aLinkBetweenWorlds_theTragedyOfPrincessZeldaI,
           tragedyOfPrincessZeldaI,
           tragedyOfPrincessZeldaI_ganonInvadesHyrule,
@@ -618,7 +626,8 @@ export const releases: releasesI[] = [
       { pause: 2 },
       { id: "unificationText", action: "hide" },
       { center: [creation1] },
-      { id: creation1, action: "down" }
+      { id: creation1, action: "down" },
+      { id: skywardSword, action: "down" },
     ]
   }
 ];

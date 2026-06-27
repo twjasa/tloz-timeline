@@ -10,14 +10,15 @@ export const get2017 = (show = false): Array<eraI | connectionI> => [
     id: twilightPrincess_ganondorfSealing,
     from: twilightPrincess,
     to: ganondorfSealing,
-    },
+  },
   {
     title: "Ganondorf's Sealing",
     show,
     id: ganondorfSealing,
     color: "silver",
     backgroundImage: ganondorfSealing,
-    position: { left: 1691, top: 5577 },
+    event: 21,
+    timeline: 1
   },
   {
     title: "??? (A long time)",
@@ -25,7 +26,7 @@ export const get2017 = (show = false): Array<eraI | connectionI> => [
     id: ganondorfSealing_theAncientCalamity,
     from: ganondorfSealing,
     to: theAncientCalamity,
-    },
+  },
   {
     title: "The Ancient Calamity",
     show,
@@ -33,7 +34,8 @@ export const get2017 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: theAncientCalamity,
     backgroundPosition: { left: -1, top: -69 },
-    position: { left: 1691, top: 5821 },
+    event: 22,
+    timeline: 1
   },
   {
     title: "9,900 years",
@@ -41,14 +43,15 @@ export const get2017 = (show = false): Array<eraI | connectionI> => [
     id: theAncientCalamity_theGreatCalamity,
     from: theAncientCalamity,
     to: theGreatCalamity,
-    },
+  },
   {
     title: "The Great Calamity",
     color: "silver",
     backgroundImage: theGreatCalamity,
     show,
     backgroundPosition: { left: 0, top: -101 },
-    position: { left: 1691, top: 6065 }
+    event: 23,
+    timeline: 1
   },
   {
     title: "100 years",
@@ -56,14 +59,15 @@ export const get2017 = (show = false): Array<eraI | connectionI> => [
     id: theGreatCalamity_breathOfTheWild,
     from: theGreatCalamity,
     to: breathOfTheWild,
-    },
+  },
   {
     title: "Breath of the Wild",
     color: "golden",
     backgroundImage: breathOfTheWild,
     show,
     backgroundPosition: { left: 0, top: -75 },
-    position: { left: 1691, top: 6309 }
+    event: 24,
+    timeline: 1
   },
 
 ];

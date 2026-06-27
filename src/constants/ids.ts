@@ -112,7 +112,7 @@ export const ID = {
   vaatiIsSealed_theTriforceWar1: "vis-ttw1",
   theTriforceWar1: "theTriforceWar1",
   theTriforceWar1_fourSwords: "ttw1-fs",
-  aLinkToThePast_aLinkBetweenWorlds: "alttp-albw",
+  linksAwakening_aLinkBetweenWorlds: "la-albw",
   aLinkBetweenWorlds: "aLinkBetweenWorlds",
   aLinkBetweenWorlds_theTragedyOfPrincessZeldaI: "albw-ttopzi",
 
@@ -322,7 +322,7 @@ declare global {
   /** Connection: The Triforce War (Part 1) ➔ Four Swords */
   const theTriforceWar1_fourSwords: "ttw1-fs";
   /** Connection: A Link to the Past ➔ A Link Between Worlds */
-  const aLinkToThePast_aLinkBetweenWorlds: "alttp-albw";
+  const linksAwakening_aLinkBetweenWorlds: "la-albw";
   /** Era: A Link Between Worlds (2013) */
   const aLinkBetweenWorlds: "aLinkBetweenWorlds";
   /** Connection: A Link Between Worlds ➔ The Tragedy of Princess Zelda (I) */

@@ -12,13 +12,14 @@ export const get2011 = (show = false): Array<eraI | connectionI> => [
     id: ID.creation2_theDemonInvasion,
     from: ID.creation2,
     to: ID.theDemonInvasion,
-    },
+  },
   {
     title: "The Demon Invasion",
     show,
     color: "silver",
     backgroundImage: ID.theDemonInvasion,
-    position: { left: 2354, top: -764 },
+    event: -4,
+    timeline: 2
   },
   {
     title: "Thousands of years",
@@ -26,12 +27,13 @@ export const get2011 = (show = false): Array<eraI | connectionI> => [
     id: ID.theDemonInvasion_skywardSword,
     from: ID.theDemonInvasion,
     to: ID.skywardSword,
-    },
+  },
   {
     title: "Skyward Sword",
     show,
     color: "golden",
     backgroundImage: ID.skywardSword,
-    position: { left: 2354, top: -520 },
+    event: -3,
+    timeline: 2
   },
 ];

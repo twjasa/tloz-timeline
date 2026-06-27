@@ -10,13 +10,14 @@ export const get2009 = (show = false): Array<eraI | connectionI> => [
     id: phantomHourglass_spiritTracks,
     from: phantomHourglass,
     to: spiritTracks,
-    },
+  },
   {
     title: "Spirit Tracks",
     show,
     id: spiritTracks,
     color: "golden",
     backgroundImage: spiritTracks,
-    position: { left: 2354, top: 2771 },
+    event: 11,
+    timeline: 2
   },
 ];

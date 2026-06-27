@@ -50,3 +50,10 @@ export const CONNECTION_OFFSET_X = 100;
 
 /** Desplazamiento vertical para las conexiones respecto al centro de la era (px). */
 export const CONNECTION_OFFSET_Y = 0;
+
+// ─── Layout Grid ────────────────────────────────────────────────────────────
+/** Distancia vertical predeterminada entre eventos (px). */
+export const GRID_VERTICAL_SPACING = 244;
+
+/** Espacio horizontal entre timelines/columnas (px). */
+export const GRID_HORIZONTAL_SPACING = 700;

@@ -3,8 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.scss";
 import { Era } from "./components/Era/Era";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
-import { clipPathAnimation } from "./data/releases";
-import { releases } from "./data/releases";
+import { clipPathAnimation, releases, centerX } from "./data/releases";
 import type { connectionI } from "./data/releases";
 // import {
 //   debug_majoras_mask as releases,
@@ -21,6 +20,8 @@ import {
   ZOOM_DURATION,
   CENTER_PADDING,
   CENTER_EASING,
+  GRID_VERTICAL_SPACING,
+  GRID_HORIZONTAL_SPACING,
 } from "./constants/variables.js";
 
 /**
@@ -88,6 +89,21 @@ const getAnimsFromBlock = (block: any): any[] => {
  * - Gestiona el pan/zoom del canvas mediante la librería panzoom.
  * - Re-centra y ajusta la vista automáticamente cuando un paso lo requiere.
  */
+/**
+ * Resuelve la posición absoluta (left, top) de un elemento en base a sus propiedades
+ * de grid (event y timeline), con fallback a la propiedad position tradicional.
+ */
+const resolvePosition = (release: any) => {
+  const pos = release.position || {};
+  const left = release.timeline !== undefined
+    ? centerX + release.timeline * GRID_HORIZONTAL_SPACING
+    : pos.left;
+  const top = release.event !== undefined
+    ? release.event * GRID_VERTICAL_SPACING
+    : pos.top;
+  return { left, top };
+};
+
 function App() {
   const { step, incrementStep, decrementStep } = useStep(releases.length - 1);
   const animationRef = useRef<AnimeInstance[]>([]);
@@ -115,6 +131,36 @@ function App() {
     const naturalHeight = el.offsetHeight;
     el.style.height = prevHeight;
     return naturalHeight;
+  }, []);
+
+  /**
+   * Obtiene la columna (timeline) base de una era consultando la base de datos de releases.
+   */
+  const getElementBaseTimeline = useCallback((id: string): number => {
+    for (const r of releases) {
+      if (r.eras) {
+        const found = r.eras.find((e) => ("backgroundImage" in e ? e.backgroundImage : e.id) === id);
+        if (found) {
+          return found.timeline !== undefined ? found.timeline : 0;
+        }
+      }
+    }
+    return 0;
+  }, []);
+
+  /**
+   * Obtiene la definición base (el primer registro) de una era en las releases.
+   */
+  const getElementBaseDef = useCallback((id: string): any => {
+    for (const r of releases) {
+      if (r.eras) {
+        const found = r.eras.find((e) => ("backgroundImage" in e ? e.backgroundImage : e.id) === id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
   }, []);
 
   /**
@@ -147,6 +193,32 @@ function App() {
     // Aplicar desplazamientos secuencialmente hasta el paso objetivo
     for (let i = 0; i <= targetStepIdx; i++) {
       const r = releases[i];
+      if (r && r.eras) {
+        r.eras.forEach((e) => {
+          const id = "backgroundImage" in e ? e.backgroundImage : e.id;
+          const baseDef = getElementBaseDef(id);
+          if (baseDef) {
+            const current = stateMap.get(id);
+            if (current) {
+              let nextX = current.x;
+              let nextY = current.y;
+              const eraE = e as any;
+              if (eraE.timeline !== undefined && baseDef.timeline !== undefined && eraE.timeline !== baseDef.timeline) {
+                nextX = 0;
+              }
+              if (eraE.event !== undefined && baseDef.event !== undefined && eraE.event !== baseDef.event) {
+                nextY = 0;
+              }
+              stateMap.set(id, {
+                x: nextX,
+                y: nextY,
+                height: current.height,
+              });
+            }
+          }
+        });
+      }
+
       if (r && r.animations) {
         r.animations.forEach((animOrArray) => {
           const anims = getAnimsFromBlock(animOrArray);
@@ -160,9 +232,15 @@ function App() {
                   y: 0,
                   height: originalHeight,
                 };
+                const baseTimeline = getElementBaseTimeline(id);
+                const shiftCols = anim.timelineX !== undefined ? anim.timelineX - baseTimeline : 0;
+                const shiftX = (anim.x !== undefined ? anim.x : 0) +
+                  (anim.timelineX !== undefined ? shiftCols * GRID_HORIZONTAL_SPACING : 0);
+                const shiftY = (anim.y !== undefined ? anim.y : 0) +
+                  (anim.eventY !== undefined ? anim.eventY * GRID_VERTICAL_SPACING : 0);
                 stateMap.set(id, {
-                  x: current.x + (anim.x !== undefined ? anim.x : 0),
-                  y: current.y + (anim.y !== undefined ? anim.y : 0),
+                  x: current.x + shiftX,
+                  y: current.y + shiftY,
                   height:
                     anim.height !== undefined ? anim.height : current.height,
                 });
@@ -174,7 +252,7 @@ function App() {
     }
 
     return stateMap;
-  }, []);
+  }, [getElementBaseTimeline, getElementBaseDef]);
 
   /**
    * Obtiene el estado esperado (x, y, height) antes de comenzar las animaciones secuenciales de un paso específico.
@@ -187,6 +265,32 @@ function App() {
       const stateMap = getElementsStateAtStep(targetStepIdx - 1);
 
       const r = releases[targetStepIdx];
+      if (r && r.eras) {
+        r.eras.forEach((e) => {
+          const id = "backgroundImage" in e ? e.backgroundImage : e.id;
+          const baseDef = getElementBaseDef(id);
+          if (baseDef) {
+            const current = stateMap.get(id);
+            if (current) {
+              let nextX = current.x;
+              let nextY = current.y;
+              const eraE = e as any;
+              if (eraE.timeline !== undefined && baseDef.timeline !== undefined && eraE.timeline !== baseDef.timeline) {
+                nextX = 0;
+              }
+              if (eraE.event !== undefined && baseDef.event !== undefined && eraE.event !== baseDef.event) {
+                nextY = 0;
+              }
+              stateMap.set(id, {
+                x: nextX,
+                y: nextY,
+                height: current.height,
+              });
+            }
+          }
+        });
+      }
+
       if (r && r.animations) {
         for (const animOrArray of r.animations) {
           const isParallelWrapper =
@@ -218,9 +322,15 @@ function App() {
                   y: 0,
                   height: originalHeight,
                 };
+                const baseTimeline = getElementBaseTimeline(id);
+                const shiftCols = anim.timelineX !== undefined ? anim.timelineX - baseTimeline : 0;
+                const shiftX = (anim.x !== undefined ? anim.x : 0) +
+                  (anim.timelineX !== undefined ? shiftCols * GRID_HORIZONTAL_SPACING : 0);
+                const shiftY = (anim.y !== undefined ? anim.y : 0) +
+                  (anim.eventY !== undefined ? anim.eventY * GRID_VERTICAL_SPACING : 0);
                 stateMap.set(id, {
-                  x: current.x + (anim.x !== undefined ? anim.x : 0),
-                  y: current.y + (anim.y !== undefined ? anim.y : 0),
+                  x: current.x + shiftX,
+                  y: current.y + shiftY,
                   height:
                     anim.height !== undefined ? anim.height : current.height,
                 });
@@ -232,7 +342,7 @@ function App() {
 
       return stateMap;
     },
-    [getElementsStateAtStep]
+    [getElementsStateAtStep, getElementBaseTimeline, getElementBaseDef]
   );
 
   /**
@@ -1179,40 +1289,63 @@ function App() {
         }}
         id="main"
       >
-        {releases[step].eras.map((release) => {
-          const elementId = "backgroundImage" in release ? release.backgroundImage : release.id;
-          if (unmountedIds.has(elementId)) {
-            return null;
-          }
-          if (!("backgroundImage" in release)) {
+        {(() => {
+          const elementStates = getElementsStateAtStep(step);
+          return releases[step].eras.map((release) => {
+            const elementId = "backgroundImage" in release ? release.backgroundImage : release.id;
+            if (unmountedIds.has(elementId)) {
+              return null;
+            }
+
+            if (!("backgroundImage" in release)) {
+              const resolvedPosition = resolvePosition(release);
+              return (
+                <TimelinePath
+                  text={release.title}
+                  key={release.id}
+                  {...release}
+                  position={resolvedPosition}
+                />
+              );
+            }
+            
+            const resolvedPosition = resolvePosition(release);
+            const shiftState = elementStates.get(elementId) || { x: 0, y: 0 };
+            const baseTop = resolvedPosition.top !== undefined
+              ? typeof resolvedPosition.top === "number"
+                ? resolvedPosition.top
+                : parseFloat(resolvedPosition.top as string)
+              : 0;
+            const currentEvent = Math.round((baseTop + shiftState.y) / GRID_VERTICAL_SPACING);
+
+            if ("textOnly" in release && release.textOnly) {
+              return (
+                <h1
+                  id={release.backgroundImage}
+                  key={release.backgroundImage}
+                  className="unificationText"
+                  style={{
+                    position: "absolute",
+                    opacity: release.show ? 1 : 0,
+                    visibility: (release.show ? "visible" : "hidden") as any,
+                    left: resolvedPosition.left,
+                    top: resolvedPosition.top,
+                  }}
+                >
+                  {release.title}
+                </h1>
+              );
+            }
             return (
-              <TimelinePath
-                text={release.title}
-                key={release.id}
-                {...release}
+              <Era 
+                key={release.backgroundImage} 
+                {...release} 
+                position={resolvedPosition} 
+                event={currentEvent}
               />
             );
-          }
-          if ("textOnly" in release && release.textOnly) {
-            return (
-              <h1
-                id={release.backgroundImage}
-                key={release.backgroundImage}
-                className="unificationText"
-                style={{
-                  position: "absolute",
-                  opacity: release.show ? 1 : 0,
-                  visibility: (release.show ? "visible" : "hidden") as any,
-                  left: release.position?.left,
-                  top: release.position?.top,
-                }}
-              >
-                {release.title}
-              </h1>
-            );
-          }
-          return <Era key={release.backgroundImage} {...release} />;
-        })}
+          });
+        })()}
       </main>
       <section className="rightButtonContainer">
         <button

@@ -1,4 +1,4 @@
-import { eraI, connectionI, centerX } from "../releases";
+import { eraI, connectionI } from "../releases";
 import { get2000 } from "./2000-tlozmm";
 import { ID } from "../../constants/ids";
 
@@ -10,9 +10,7 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         show,
         id: ID.aLinkToThePast_oracleOfAges,
         from: ID.aLinkToThePast,
-    to: ID.oracleOfAges,
-    // length: 146,
-        orientation: "vertical"
+        to: ID.oracleOfAges
     },
     {
         title: "Oracle of Ages",
@@ -20,14 +18,15 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         color: "golden",
         backgroundImage: ID.oracleOfAges,
         backgroundPosition: { left: -1, top: -56 },
-        position: { left: centerX, top: 2034 + 247 },
+        event: 9,
+        timeline: 0
     },
     {
         title: "Immediately after",
         show,
         id: ID.oracleOfAges_oracleOfSeason,
         from: ID.oracleOfAges,
-    to: ID.oracleOfSeason,
+        to: ID.oracleOfSeason,
     },
     {
         title: "Oracle of Season",
@@ -35,13 +34,14 @@ export const get2001 = (show = false): Array<eraI | connectionI> => [
         color: "golden",
         backgroundImage: ID.oracleOfSeason,
         backgroundPosition: { left: 2, top: -54 },
-        position: { left: centerX, top: 2275 + 247 },
+        event: 10,
+        timeline: 0,
     },
     {
         title: "A few months later?",
         show,
         id: ID.oracleOfSeason_linksAwakening,
         from: ID.oracleOfSeason,
-    to: ID.linksAwakening,
+        to: ID.linksAwakening,
     },
 ];

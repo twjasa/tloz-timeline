@@ -1,5 +1,5 @@
 import { connectionI } from "../releases";
-import { centerX, eraI } from "../releases";
+import { eraI } from "../releases";
 import { get1991 } from "./1991-tlozalttp";
 import { ID } from "../../constants/ids";
 
@@ -18,7 +18,8 @@ export const get1993 = (show = false): Array<eraI | connectionI> => [
     color: "golden",
     backgroundImage: ID.linksAwakening,
     show,
-    position: { left: centerX, top: 2036 },
+    event: 8,
+    timeline: 0,
   },
   {
     title: "??? (a long time)",

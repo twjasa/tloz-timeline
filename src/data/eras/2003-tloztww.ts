@@ -10,14 +10,15 @@ export const get2003 = (show = false): Array<eraI | connectionI> => [
     id: ocarinaOfTimeAdult_theGreatFlood,
     from: ocarinaOfTimeAdult,
     to: theGreatFlood,
-    },
+  },
   {
     title: "The Great Flood",
     show,
     id: theGreatFlood,
     color: "silver",
     backgroundImage: theGreatFlood,
-    position: { left: 2354, top: 2037 },
+    event: 8,
+    timeline: 2
   },
   {
     title: "About 300 years later...",
@@ -25,7 +26,7 @@ export const get2003 = (show = false): Array<eraI | connectionI> => [
     id: theGreatFlood_theWindWaker,
     from: theGreatFlood,
     to: theWindWaker,
-    },
+  },
   {
     title: "The Wind Waker",
     show,
@@ -33,7 +34,8 @@ export const get2003 = (show = false): Array<eraI | connectionI> => [
     color: "golden",
     backgroundImage: theWindWaker,
     backgroundPosition: { left: 0, top: -93 },
-    position: { left: 2354, top: 2281 },
+    event: 9,
+    timeline: 2
   },
 
 ];

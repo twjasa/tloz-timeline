@@ -43,7 +43,8 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: ID.linkWarnsZeldaOfGanondorf,
     backgroundPosition: { left: 0, top: -46 },
-    position: { left: 1691, top: 1294 },
+    event: 5,
+    timeline: 1
   },
   {
     title: "Several Months",
@@ -58,6 +59,7 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
     color: "golden",
     backgroundImage: ID.majorasMask,
     backgroundPosition: { left: 0, top: -167 },
-    position: { left: 1691, top: 1538 },
+    event: 6,
+    timeline: 1
   },
 ];

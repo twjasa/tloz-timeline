@@ -10,13 +10,14 @@ export const get2007 = (show = false): Array<eraI | connectionI> => [
     id: theWindWaker_phantomHourglass,
     from: theWindWaker,
     to: phantomHourglass,
-    },
+  },
   {
     title: "Phantom Hourglass",
     show,
     id: phantomHourglass,
     color: "golden",
     backgroundImage: phantomHourglass,
-    position: { left: 2354, top: 2526 },
+    event: 10,
+    timeline: 2
   },
 ];

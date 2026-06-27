@@ -1,14 +1,36 @@
 import { connectionI, eraI } from "../releases";
-import { get2017 } from "./2017-tlozbotw";
 
 export const getUnification = (): Array<eraI | connectionI> => [
-  ...get2017(true),
   {
     title: "UNIFICATION OF ALL TIMELINES",
     color: "zeldaColor",
     backgroundImage: "unificationText",
     show: false,
-    position: { left: 1280, top: 6300 },
+    event: 0,
+    timeline: 0,
     textOnly: true,
-  } as any
+  } as any,
+  {
+    title: "Creation",
+    color: "silver",
+    backgroundImage: creation1,
+    show: false,
+    timeline: 0,
+    event: 0,
+  },
+  // {
+  //   title: "??? (A long time)",
+  //   show: false,
+  //   id: creation1_sky,
+  //   from: creation1,
+  //   to: skywardSword,
+  // },
+  {
+    title: "Skyward Sword",
+    color: "golden",
+    backgroundImage: skywardSword,
+    show: false,
+    timeline: 0,
+    event: 1,
+  }
 ];

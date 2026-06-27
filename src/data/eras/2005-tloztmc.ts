@@ -1,4 +1,4 @@
-import { eraI, connectionI, centerX } from "../releases";
+import { eraI, connectionI } from "../releases";
 import { get2003 } from "./2003-tloztww";
 
 // THE LEGEND OF ZELDA: THE MINISH CAP
@@ -10,14 +10,14 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     id: creationOfTheMasterSword1_hyruleKingdomIsEstablished1,
     from: creationOfTheMasterSword,
     to: hyruleKingdomIsEstablished1,
-    },
+  },
   {
     title: "??? (A long time)",
     show,
     id: creationOfTheMasterSword2_hyruleKingdomIsEstablished2,
     from: creationOfTheMasterSword2,
     to: hyruleKingdomIsEstablished2,
-    },
+  },
   {
     title: "Hyrule Kingdom is Established",
     show,
@@ -25,7 +25,8 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: hyruleKingdomIsEstablished1,
     backgroundPosition: { left: 0, top: -27 },
-    position: { left: centerX, top: -276 },
+    event: -2,
+    timeline: 0,
   },
   {
     title: "Hyrule Kingdom is Established",
@@ -34,7 +35,8 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundPosition: { left: 0, top: -47 },
     backgroundImage: hyruleKingdomIsEstablished2,
-    position: { left: 2354, top: -276 },
+    event: -2,
+    timeline: 2,
   },
   {
     title: "??? (A long time)",
@@ -42,14 +44,14 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     id: hyruleKingdomIsEstablished2_theFierceWar,
     from: hyruleKingdomIsEstablished2,
     to: theFierceWar,
-    },
+  },
   {
     title: "??? (A long time)",
     show,
     id: hyruleKingdomIsEstablished1_theWarOfTheBoundChest,
     from: hyruleKingdomIsEstablished1,
     to: theWarOfTheBoundChest,
-    },
+  },
   {
     title: "The War of the Bound Chest",
     show,
@@ -57,7 +59,8 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     color: "silver",
     backgroundImage: theWarOfTheBoundChest,
     backgroundPosition: { left: 0, top: -108 },
-    position: { left: centerX, top: -32 },
+    event: -1,
+    timeline: 0,
   },
   {
     title: "??? (Centuries?)",
@@ -65,7 +68,7 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     id: theWarOfTheBoundChest_theMinishCap,
     from: theWarOfTheBoundChest,
     to: theMinishCap,
-    },
+  },
   {
     title: "The Minish Cap",
     show,
@@ -73,7 +76,8 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     color: "golden",
     backgroundImage: theMinishCap,
     backgroundPosition: { left: 2, top: -54 },
-    position: { left: centerX, top: 212 },
+    event: 0,
+    timeline: 0,
   },
   {
     title: "???",
@@ -81,5 +85,5 @@ export const get2005 = (show = false): Array<eraI | connectionI> => [
     id: theMinishCap_vaatiIsSealed,
     from: theMinishCap,
     to: vaatiIsSealed,
-    },
+  },
 ];

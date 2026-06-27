@@ -3,6 +3,8 @@ import { TriangleCorner } from '../TriangleCorner/TriangleCorner';
 import styles from './era.module.scss';
 import clsx from 'clsx';
 
+import { GRID_VERTICAL_SPACING } from '../../constants/variables';
+
 /**
  * Props del componente Era.
  *
@@ -15,6 +17,7 @@ import clsx from 'clsx';
  * @property show - Si `true`, la era se muestra visible (opacity 1); si `false`, permanece oculta
  *   hasta que una animación la revele.
  * @property position - Posición absoluta de la era dentro del canvas (`left`, `top`).
+ * @property event - Número de evento (fila) opcional en el sistema de grid.
  */
 interface EraProps {
   title: string;
@@ -23,6 +26,7 @@ interface EraProps {
   backgroundPosition?: { left: string | number; top: string | number };
   show: boolean;
   position?: { left: number | string; top: number | string };
+  event?: number;
 }
 
 /**
@@ -39,13 +43,42 @@ export const Era = ({
   backgroundPosition,
   show,
   position,
+  event,
 }: EraProps) => {
+  const showDebugInfo = import.meta.env.DEV || (window as any).DEBUG_MODE;
+  const topVal = typeof position?.top === "number"
+    ? position.top
+    : typeof position?.top === "string"
+    ? parseFloat(position.top)
+    : 0;
+  const estimatedEvent = Math.round(topVal / GRID_VERTICAL_SPACING);
+
   return (
     <div
       id={backgroundImage}
       className={clsx(styles.externalBorder1, styles[color])}
       style={{ opacity: show ? 1 : 0, visibility: show ? "visible" : "hidden", ...position }}
     >
+      {showDebugInfo && (
+        <div
+          style={{
+            position: "absolute",
+            top: "8px",
+            left: "8px",
+            background: "rgba(0, 0, 0, 0.85)",
+            color: "#00ffcc",
+            border: "1px solid #00ffcc",
+            padding: "2px 6px",
+            fontSize: "11px",
+            borderRadius: "4px",
+            zIndex: 100,
+            fontFamily: "monospace",
+            pointerEvents: "none",
+          }}
+        >
+          {event !== undefined ? `E: ${event}` : `E (est): ${estimatedEvent}`}
+        </div>
+      )}
       <div className={clsx(styles.externalBorder0)}>
         <div className={clsx(styles.eraContainer, styles[color])}>
           <TriangleCorner position={0} color={color} />
