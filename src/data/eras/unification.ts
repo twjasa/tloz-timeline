@@ -344,9 +344,4 @@ export const getUnification = (): Array<eraI | connectionI> => [
     timeline: 0,
     event: 30,
   }
-
-
-
-
-
 ];
