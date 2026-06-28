@@ -258,7 +258,7 @@ export const getUnification = (): Array<eraI | connectionI> => [
   },
   {
     title: "The Wind Waker",
-    color: "silver",
+    color: "golden",
     backgroundImage: theWindWaker,
     show: true,
     timeline: 1,
@@ -314,7 +314,7 @@ export const getUnification = (): Array<eraI | connectionI> => [
   },
   {
     title: "Ganondorf's Sealing",
-    color: "golden",
+    color: "silver",
     backgroundImage: ganondorfSealing,
     show: true,
     timeline: 0,
