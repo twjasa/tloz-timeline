@@ -503,7 +503,9 @@ export default function createPanZoom(domElement, options) {
     owner.addEventListener("mousedown", onMouseDown, { passive: false });
     owner.addEventListener("dblclick", onDoubleClick, { passive: false });
     owner.addEventListener("touchstart", onTouch, { passive: false });
-    owner.addEventListener("keydown", onKeyDown, { passive: false });
+    if (!options.disableKeyboardInteraction) {
+      owner.addEventListener("keydown", onKeyDown, { passive: false });
+    }
 
     // Need to listen on the owner container, so that we are not limited
     // by the size of the scrollable domElement

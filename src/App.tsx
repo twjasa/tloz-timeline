@@ -748,6 +748,7 @@ function App() {
     const pz = createPanZoom(document.querySelector("main")!, {
       // bounds: true,
       // boundsPadding: 0.1,
+      disableKeyboardInteraction: true,
     });
     panzoomRef.current = pz;
 
