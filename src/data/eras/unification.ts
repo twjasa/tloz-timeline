@@ -105,12 +105,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 6,
   },
   {
+    title: "??? (A long time)",
+    id: "vaatiIsSealed_theTriforceWar",
+    from: vaatiIsSealed,
+    to: theTriforceWar,
+  },
+  {
     title: "The Triforce War",
     color: "silver",
-    backgroundImage: theTriforceWar1,
+    backgroundImage: theTriforceWar,
     show: true,
     timeline: -1,
     event: 7,
+  },
+  {
+    title: "??? (A long time)",
+    id: "theTriforceWar_fourSwords",
+    from: theTriforceWar,
+    to: fourSwords,
   },
   {
     title: "Four Swords",
@@ -121,12 +133,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 8,
   },
   {
+    title: "??? (A long time)",
+    id: "fourSwords_ganondorfGetsTheCompleteTriforce",
+    from: fourSwords,
+    to: ganondorfGetsTheCompleteTriforce,
+  },
+  {
     title: "Ganondorf Gets The Complete Triforce",
     color: "silver",
     backgroundImage: ganondorfGetsTheCompleteTriforce,
     show: true,
     timeline: -1,
     event: 10,
+  },
+  {
+    title: "7 years",
+    id: "ganondorfGetsTheCompleteTriforce_theSealingWar",
+    from: ganondorfGetsTheCompleteTriforce,
+    to: theSealingWar,
   },
   {
     title: "The Sealing War",
@@ -137,12 +161,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 12,
   },
   {
+    title: "Centuries (600 years?)",
+    id: "theSealingWar_aLinkToThePast",
+    from: theSealingWar,
+    to: aLinkToThePast,
+  },
+  {
     title: "A Link to the past",
     color: "golden",
     backgroundImage: aLinkToThePast,
     show: true,
     timeline: -1,
     event: 17,
+  },
+  {
+    title: "A few months",
+    id: "aLinkToThePast_oracleOfAges",
+    from: aLinkToThePast,
+    to: oracleOfAges,
   },
   {
     title: "Oracle of Ages",
@@ -153,12 +189,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 18,
   },
   {
+    title: "Immediately after",
+    id: "oracleOfAges_oracleOfSeasons",
+    from: oracleOfAges,
+    to: oracleOfSeason,
+  },
+  {
     title: "Oracle of Seasons",
     color: "golden",
     backgroundImage: oracleOfSeason,
     show: true,
     timeline: -1,
     event: 19,
+  },
+  {
+    title: "??? (A few months?)",
+    id: "oracleOfSeason_linksAwakening",
+    from: oracleOfSeason,
+    to: linksAwakening,
   },
   {
     title: "Link's Awakening",
@@ -169,12 +217,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 20,
   },
   {
+    title: "120 years (6 generations)",
+    id: "linksAwakening_aLinkBetweenWorlds",
+    from: linksAwakening,
+    to: aLinkBetweenWorlds,
+  },
+  {
     title: "A Link Between Worlds",
     color: "golden",
     backgroundImage: aLinkBetweenWorlds,
     show: true,
     timeline: -1,
     event: 21,
+  },
+  {
+    title: "Several years",
+    id: "aLinkBetweenWorlds_triForceHeroes",
+    from: aLinkBetweenWorlds,
+    to: triForceHeroes,
   },
   {
     title: "Tri Force Heroes",
@@ -185,12 +245,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 22,
   },
   {
+    title: "??? (A long time)",
+    id: "triForceHeroes_tragedyOfPrincessZeldaI",
+    from: triForceHeroes,
+    to: tragedyOfPrincessZeldaI,
+  },
+  {
     title: "The Tragedy of Princess Zelda I",
     color: "silver",
     backgroundImage: tragedyOfPrincessZeldaI,
     show: true,
     timeline: -1,
     event: 23,
+  },
+  {
+    title: "??? (A long time)",
+    id: "tragedyOfPrincessZeldaI_ganonInvadesHyrule",
+    from: tragedyOfPrincessZeldaI,
+    to: ganonInvadesHyrule,
   },
   {
     title: "Ganon Invades Hyrule",
@@ -201,12 +273,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 24,
   },
   {
+    title: "Immediately after",
+    id: "ganonInvadesHyrule_theLegendOfZelda",
+    from: ganonInvadesHyrule,
+    to: theLegendOfZelda,
+  },
+  {
     title: "The Legend of Zelda",
     color: "golden",
     backgroundImage: theLegendOfZelda,
     show: true,
     timeline: -1,
     event: 25,
+  },
+  {
+    title: "4 years",
+    id: "theLegendOfZelda_zeldaIITAoL",
+    from: theLegendOfZelda,
+    to: zeldaIITAoL,
   },
   {
     title: "The Adventure of Link",
@@ -217,12 +301,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 26,
   },
   {
+    title: "??? (A long time)",
+    id: "theMinishCap_theTriforceWar",
+    from: theMinishCap,
+    to: theTriforceWar1,
+  },
+  {
     title: "The Trifoce War",
     color: "silver",
-    backgroundImage: theTriforceWar,
+    backgroundImage: theTriforceWar1,
     show: true,
     timeline: 1,
     event: 7,
+  },
+  {
+    title: "??? (Centuries?)",
+    id: "theTriforceWar1_theFierceWar",
+    from: theTriforceWar1,
+    to: theFierceWar,
   },
   {
     title: "The Fierce War",
@@ -233,12 +329,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 9,
   },
   {
+    title: "9 years",
+    id: "theFierceWar_ocarinaOfTimeChild",
+    from: theFierceWar,
+    to: ocarinaOfTimeChild,
+  },
+  {
     title: "Ocarina of Time (child)",
     color: "golden",
     backgroundImage: ocarinaOfTimeChild,
     show: true,
     timeline: 1,
     event: 10,
+  },
+  {
+    title: "7 years",
+    id: "ocarinaOfTimeChild_ocarinaOfTimeAdult",
+    from: ocarinaOfTimeChild,
+    to: ocarinaOfTimeAdult,
   },
   {
     title: "Ocarina of Time (adult)",
@@ -249,12 +357,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 12,
   },
   {
+    title: "100 years",
+    id: "ocarinaOfTimeAdult_theGreatFlood",
+    from: ocarinaOfTimeAdult,
+    to: theGreatFlood,
+  },
+  {
     title: "The Great Flood",
     color: "silver",
     backgroundImage: theGreatFlood,
     show: true,
     timeline: 1,
     event: 13,
+  },
+  {
+    title: "300 years?",
+    id: "theGreatFlood_theWindWaker",
+    from: theGreatFlood,
+    to: theWindWaker,
   },
   {
     title: "The Wind Waker",
@@ -265,12 +385,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 14,
   },
   {
+    title: "A few months?",
+    id: "theWindWaker_phantomHourglass",
+    from: theWindWaker,
+    to: phantomHourglass,
+  },
+  {
     title: "Phantom Hourglass",
     color: "golden",
     backgroundImage: phantomHourglass,
     show: true,
     timeline: 1,
     event: 15,
+  },
+  {
+    title: "100 years",
+    id: "phantomHourglass_spiritTracks",
+    from: phantomHourglass,
+    to: spiritTracks,
   },
   {
     title: "Spirit Tracks",
@@ -280,6 +412,7 @@ export const getUnification = (): Array<eraI | connectionI> => [
     timeline: 1,
     event: 16,
   },
+  /// conexion especial
   {
     title: "Link Warns Zelda Of Ganondorf",
     color: "silver",
@@ -287,6 +420,12 @@ export const getUnification = (): Array<eraI | connectionI> => [
     show: true,
     timeline: 0,
     event: 10,
+  },
+  {
+    title: "Several months",
+    id: "linkWarnsZeldaOfGanondorf_majorasMask",
+    from: linkWarnsZeldaOfGanondorf,
+    to: majorasMask,
   },
   {
     title: "Majora's Mask",
@@ -297,12 +436,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 11,
   },
   {
+    title: "7 years",
+    id: "majorasMask_ganondorfExecution",
+    from: majorasMask,
+    to: ganondorfExecution,
+  },
+  {
     title: "Ganondorf's Execution",
     color: "silver",
     backgroundImage: ganondorfExecution,
     show: true,
     timeline: 0,
     event: 12,
+  },
+  {
+    title: "100 years",
+    id: "ganondorfExecution_twilightPrincess",
+    from: ganondorfExecution,
+    to: twilightPrincess,
   },
   {
     title: "Twilight Princess",
@@ -313,12 +464,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 13,
   },
   {
+    title: "??? (A long time)",
+    id: "twilightPrincess_ganondorfSealing",
+    from: twilightPrincess,
+    to: ganondorfSealing,
+  },
+  {
     title: "Ganondorf's Sealing",
     color: "silver",
     backgroundImage: ganondorfSealing,
     show: true,
     timeline: 0,
     event: 27,
+  },
+  {
+    title: "??? (A long time)",
+    id: "ganondorfSealing_theAncientCalamity",
+    from: ganondorfSealing,
+    to: theAncientCalamity,
   },
   {
     title: "The Ancient Calamity",
@@ -329,12 +492,24 @@ export const getUnification = (): Array<eraI | connectionI> => [
     event: 28,
   },
   {
+    title: "9,900 years",
+    id: "theAncientCalamity_theGreatCalamity",
+    from: theAncientCalamity,
+    to: theGreatCalamity,
+  },
+  {
     title: "The Great Calamity",
     color: "silver",
     backgroundImage: theGreatCalamity,
     show: true,
     timeline: 0,
     event: 29,
+  },
+  {
+    title: "100 years",
+    id: "theGreatCalamity_breathOfTheWild",
+    from: theGreatCalamity,
+    to: breathOfTheWild,
   },
   {
     title: "Breath of the Wild",

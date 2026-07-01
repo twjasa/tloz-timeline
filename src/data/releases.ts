@@ -64,7 +64,7 @@ export interface releasesI {
  */
 export interface connectionI {
   title: string;
-  id: string;
+  id?: string;
   show: boolean;
   position?: { left: string | number; top: string | number; };
   event?: number;
@@ -625,9 +625,111 @@ export const releases: releasesI[] = [
       { id: "unificationText", action: "down" },
       { pause: 2 },
       { id: "unificationText", action: "hide" },
-      { center: [creation1] },
+      { center: [creation1, hyruleKingdomIsEstablished1] },
       { id: creation1, action: "down" },
+      { id: 'creation1_theDemonInvasion', action: "down" },
+      { id: theDemonInvasion, action: "down" },
+      { id: 'theDemonInvasion_skywardSword', action: 'down' },
       { id: skywardSword, action: "down" },
+      { id: 'skywardSword_hyruleKingdomIsEstablished1', action: "down" },
+      {
+        parallel: false,
+        animations: [
+          { id: hyruleKingdomIsEstablished1, action: "down" },
+          // { center: [hyruleKingdomIsEstablished1, theMinishCap] }
+        ]
+      },
+      { id: 'hyruleKingdomIsEstablished1_theWarOfTheBoundChest', action: 'down' },
+      { id: theWarOfTheBoundChest, action: 'down' },
+      { id: 'theWarOfTheBoundChest_theMinishCap', action: 'down' },
+      { id: theMinishCap, action: 'down' },
+      // { id: 'theMinishCap_vaatiIsSealed', action: 'down' },
+      {
+        parallel: false,
+        animations: [
+          { id: vaatiIsSealed, action: 'down' },
+          // { center: [vaatiIsSealed, fourSwords] }
+        ]
+      },
+      { id: 'vaatiIsSealed_theTriforceWar', action: 'down' },
+      { id: theTriforceWar, action: 'down' },
+      { id: 'theTriforceWar_fourSwords', action: 'down' },
+      { id: fourSwords, action: 'down' },
+      {
+        parallel: false,
+        animations: [
+          { id: "fourSwords_ganondorfGetsTheCompleteTriforce", action: 'down' },
+          // { center: [ganondorfGetsTheCompleteTriforce, aLinkToThePast] }
+        ]
+      },
+      { id: ganondorfGetsTheCompleteTriforce, action: 'down' },
+      { id: 'ganondorfGetsTheCompleteTriforce_theSealingWar', action: 'down' },
+      { id: theSealingWar, action: 'down' },
+      { id: 'theSealingWar_aLinkToThePast', action: 'down' },
+      { id: aLinkToThePast, action: 'down' },
+      {
+        parallel: false,
+        animations: [
+          { id: "aLinkToThePast_oracleOfAges", action: 'down' },
+          // { center: [oracleOfAges, ganonInvadesHyrule] }
+        ]
+      },
+      { id: oracleOfAges, action: 'down' },
+      { id: 'oracleOfAges_oracleOfSeasons', action: 'down' },
+      { id: oracleOfSeason, action: 'down' },
+      { id: 'oracleOfSeason_linksAwakening', action: 'down' },
+      { id: linksAwakening, action: 'down' },
+      { id: 'linksAwakening_aLinkBetweenWorlds', action: 'down' },
+      { id: aLinkBetweenWorlds, action: 'down' },
+      { id: 'aLinkBetweenWorlds_triForceHeroes', action: 'down' },
+      { id: triForceHeroes, action: 'down' },
+      { id: 'triForceHeroes_tragedyOfPrincessZeldaI', action: 'down' },
+      {
+        parallel: false,
+        animations: [
+          { id: "tragedyOfPrincessZeldaI", action: 'down' },
+          // { center: [tragedyOfPrincessZeldaI, zeldaIITAoL] }
+        ]
+      },
+      { id: 'tragedyOfPrincessZeldaI_ganonInvadesHyrule', action: 'down' },
+      { id: ganonInvadesHyrule, action: 'down' },
+      { id: 'ganonInvadesHyrule_theLegendOfZelda', action: 'down' },
+      { id: theLegendOfZelda, action: 'down' },
+      { id: 'theLegendOfZelda_zeldaIITAoL', action: 'down' },
+      { id: zeldaIITAoL, action: 'down' },
+      //// conexion especial
+      // { center: [theTriforceWar1, ocarinaOfTimeAdult] },
+      { id: theTriforceWar1, action: 'down' },
+      { id: "theTriforceWar1_theFierceWar", action: "down" },
+      { id: theFierceWar, action: "down" },
+      { id: "theFierceWar_ocarinaOfTimeChild", action: "down" },
+      { id: ocarinaOfTimeChild, action: "down" },
+      { id: "ocarinaOfTimeChild_ocarinaOfTimeAdult", action: "down" },
+      { id: ocarinaOfTimeAdult, action: "down" },
+      { id: "ocarinaOfTimeAdult_theGreatFlood", action: "down" },
+      { id: theGreatFlood, action: "down" },
+      { id: "theGreatFlood_theWindWaker", action: "down" },
+      { id: theWindWaker, action: "down" },
+      { id: "theWindWaker_phantomHourglass", action: "down" },
+      { id: phantomHourglass, action: "down" },
+      { id: "phantomHourglass_spiritTracks", action: "down" },
+      { id: spiritTracks, action: "down" },
+      /// conexion especial
+      { id: linkWarnsZeldaOfGanondorf, action: "down" },
+      { id: "linkWarnsZeldaOfGanondorf_majorasMask", action: "down" },
+      { id: majorasMask, action: "down" },
+      { id: "majorasMask_ganondorfExecution", action: "down" },
+      { id: ganondorfExecution, action: "down" },
+      { id: "ganondorfExecution_twilightPrincess", action: "down" },
+      { id: twilightPrincess, action: "down" },
+      { id: "twilightPrincess_ganondorfSealing", action: "down" },
+      { id: ganondorfSealing, action: "down" },
+      { id: "ganondorfSealing_theAncientCalamity", action: "down" },
+      { id: theAncientCalamity, action: "down" },
+      { id: "theAncientCalamity_theGreatCalamity", action: "down" },
+      { id: theGreatCalamity, action: "down" },
+      { id: "theGreatCalamity_breathOfTheWild", action: "down" },
+      { id: breathOfTheWild, action: "down" },
     ]
   }
 ];

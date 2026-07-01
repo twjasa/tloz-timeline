@@ -95,12 +95,14 @@ const getAnimsFromBlock = (block: any): any[] => {
  */
 const resolvePosition = (release: any) => {
   const pos = release.position || {};
-  const left = release.timeline !== undefined
-    ? centerX + release.timeline * GRID_HORIZONTAL_SPACING
-    : pos.left;
-  const top = release.event !== undefined
-    ? release.event * GRID_VERTICAL_SPACING
-    : pos.top;
+  const left =
+    release.timeline !== undefined
+      ? centerX + release.timeline * GRID_HORIZONTAL_SPACING
+      : pos.left;
+  const top =
+    release.event !== undefined
+      ? release.event * GRID_VERTICAL_SPACING
+      : pos.top;
   return { left, top };
 };
 
@@ -121,7 +123,6 @@ function App() {
   );
   const [unmountedIds, setUnmountedIds] = useState<Set<string>>(new Set());
 
-
   /**
    * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
    */
@@ -139,7 +140,9 @@ function App() {
   const getElementBaseTimeline = useCallback((id: string): number => {
     for (const r of releases) {
       if (r.eras) {
-        const found = r.eras.find((e) => ("backgroundImage" in e ? e.backgroundImage : e.id) === id);
+        const found = r.eras.find(
+          (e) => ("backgroundImage" in e ? e.backgroundImage : e.id) === id
+        );
         if (found) {
           return found.timeline !== undefined ? found.timeline : 0;
         }
@@ -154,7 +157,9 @@ function App() {
   const getElementBaseDef = useCallback((id: string): any => {
     for (const r of releases) {
       if (r.eras) {
-        const found = r.eras.find((e) => ("backgroundImage" in e ? e.backgroundImage : e.id) === id);
+        const found = r.eras.find(
+          (e) => ("backgroundImage" in e ? e.backgroundImage : e.id) === id
+        );
         if (found) {
           return found;
         }
@@ -167,92 +172,116 @@ function App() {
    * Obtiene el estado esperado (x, y, height) de todos los elementos que alguna vez
    * han sido modificados por un desplazamiento en animations, calculando su estado acumulado en un paso específico.
    */
-  const getElementsStateAtStep = useCallback((targetStepIdx: number) => {
-    const stateMap = new Map<
-      string,
-      { x: number; y: number; height: string | number }
-    >();
+  const getElementsStateAtStep = useCallback(
+    (targetStepIdx: number) => {
+      const stateMap = new Map<
+        string,
+        { x: number; y: number; height: string | number }
+      >();
 
-    // Inicializar todos los IDs de desplazamientos a su valor por defecto (0, 0, originalHeight)
-    releases.forEach((r) => {
-      if (r.animations) {
-        r.animations.forEach((animOrArray) => {
-          const anims = getAnimsFromBlock(animOrArray);
-          anims.forEach((anim) => {
-            if (!("action" in anim) && "id" in anim) {
-              const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-              selectors.forEach((id: string) => {
-                stateMap.set(id, { x: 0, y: 0, height: getOriginalHeight(id) });
-              });
-            }
-          });
-        });
-      }
-    });
-
-    // Aplicar desplazamientos secuencialmente hasta el paso objetivo
-    for (let i = 0; i <= targetStepIdx; i++) {
-      const r = releases[i];
-      if (r && r.eras) {
-        r.eras.forEach((e) => {
-          const id = "backgroundImage" in e ? e.backgroundImage : e.id;
-          const baseDef = getElementBaseDef(id);
-          if (baseDef) {
-            const current = stateMap.get(id);
-            if (current) {
-              let nextX = current.x;
-              let nextY = current.y;
-              const eraE = e as any;
-              if (eraE.timeline !== undefined && baseDef.timeline !== undefined && eraE.timeline !== baseDef.timeline) {
-                nextX = 0;
-              }
-              if (eraE.event !== undefined && baseDef.event !== undefined && eraE.event !== baseDef.event) {
-                nextY = 0;
-              }
-              stateMap.set(id, {
-                x: nextX,
-                y: nextY,
-                height: current.height,
-              });
-            }
-          }
-        });
-      }
-
-      if (r && r.animations) {
-        r.animations.forEach((animOrArray) => {
-          const anims = getAnimsFromBlock(animOrArray);
-          anims.forEach((anim) => {
-            if (!("action" in anim) && "id" in anim) {
-              const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-              selectors.forEach((id: string) => {
-                const originalHeight = getOriginalHeight(id);
-                const current = stateMap.get(id) || {
-                  x: 0,
-                  y: 0,
-                  height: originalHeight,
-                };
-                const baseTimeline = getElementBaseTimeline(id);
-                const shiftCols = anim.timelineX !== undefined ? anim.timelineX - baseTimeline : 0;
-                const shiftX = (anim.x !== undefined ? anim.x : 0) +
-                  (anim.timelineX !== undefined ? shiftCols * GRID_HORIZONTAL_SPACING : 0);
-                const shiftY = (anim.y !== undefined ? anim.y : 0) +
-                  (anim.eventY !== undefined ? anim.eventY * GRID_VERTICAL_SPACING : 0);
-                stateMap.set(id, {
-                  x: current.x + shiftX,
-                  y: current.y + shiftY,
-                  height:
-                    anim.height !== undefined ? anim.height : current.height,
+      // Inicializar todos los IDs de desplazamientos a su valor por defecto (0, 0, originalHeight)
+      releases.forEach((r) => {
+        if (r.animations) {
+          r.animations.forEach((animOrArray) => {
+            const anims = getAnimsFromBlock(animOrArray);
+            anims.forEach((anim) => {
+              if (!("action" in anim) && "id" in anim) {
+                const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+                selectors.forEach((id: string) => {
+                  stateMap.set(id, {
+                    x: 0,
+                    y: 0,
+                    height: getOriginalHeight(id),
+                  });
                 });
-              });
+              }
+            });
+          });
+        }
+      });
+
+      // Aplicar desplazamientos secuencialmente hasta el paso objetivo
+      for (let i = 0; i <= targetStepIdx; i++) {
+        const r = releases[i];
+        if (r && r.eras) {
+          r.eras.forEach((e) => {
+            const id = "backgroundImage" in e ? e.backgroundImage : e.id;
+            const baseDef = getElementBaseDef(id);
+            if (baseDef) {
+              const current = stateMap.get(id);
+              if (current) {
+                let nextX = current.x;
+                let nextY = current.y;
+                const eraE = e as any;
+                if (
+                  eraE.timeline !== undefined &&
+                  baseDef.timeline !== undefined &&
+                  eraE.timeline !== baseDef.timeline
+                ) {
+                  nextX = 0;
+                }
+                if (
+                  eraE.event !== undefined &&
+                  baseDef.event !== undefined &&
+                  eraE.event !== baseDef.event
+                ) {
+                  nextY = 0;
+                }
+                stateMap.set(id, {
+                  x: nextX,
+                  y: nextY,
+                  height: current.height,
+                });
+              }
             }
           });
-        });
-      }
-    }
+        }
 
-    return stateMap;
-  }, [getElementBaseTimeline, getElementBaseDef]);
+        if (r && r.animations) {
+          r.animations.forEach((animOrArray) => {
+            const anims = getAnimsFromBlock(animOrArray);
+            anims.forEach((anim) => {
+              if (!("action" in anim) && "id" in anim) {
+                const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+                selectors.forEach((id: string) => {
+                  const originalHeight = getOriginalHeight(id);
+                  const current = stateMap.get(id) || {
+                    x: 0,
+                    y: 0,
+                    height: originalHeight,
+                  };
+                  const baseTimeline = getElementBaseTimeline(id);
+                  const shiftCols =
+                    anim.timelineX !== undefined
+                      ? anim.timelineX - baseTimeline
+                      : 0;
+                  const shiftX =
+                    (anim.x !== undefined ? anim.x : 0) +
+                    (anim.timelineX !== undefined
+                      ? shiftCols * GRID_HORIZONTAL_SPACING
+                      : 0);
+                  const shiftY =
+                    (anim.y !== undefined ? anim.y : 0) +
+                    (anim.eventY !== undefined
+                      ? anim.eventY * GRID_VERTICAL_SPACING
+                      : 0);
+                  stateMap.set(id, {
+                    x: current.x + shiftX,
+                    y: current.y + shiftY,
+                    height:
+                      anim.height !== undefined ? anim.height : current.height,
+                  });
+                });
+              }
+            });
+          });
+        }
+      }
+
+      return stateMap;
+    },
+    [getElementBaseTimeline, getElementBaseDef]
+  );
 
   /**
    * Obtiene el estado esperado (x, y, height) antes de comenzar las animaciones secuenciales de un paso específico.
@@ -275,10 +304,18 @@ function App() {
               let nextX = current.x;
               let nextY = current.y;
               const eraE = e as any;
-              if (eraE.timeline !== undefined && baseDef.timeline !== undefined && eraE.timeline !== baseDef.timeline) {
+              if (
+                eraE.timeline !== undefined &&
+                baseDef.timeline !== undefined &&
+                eraE.timeline !== baseDef.timeline
+              ) {
                 nextX = 0;
               }
-              if (eraE.event !== undefined && baseDef.event !== undefined && eraE.event !== baseDef.event) {
+              if (
+                eraE.event !== undefined &&
+                baseDef.event !== undefined &&
+                eraE.event !== baseDef.event
+              ) {
                 nextY = 0;
               }
               stateMap.set(id, {
@@ -323,11 +360,20 @@ function App() {
                   height: originalHeight,
                 };
                 const baseTimeline = getElementBaseTimeline(id);
-                const shiftCols = anim.timelineX !== undefined ? anim.timelineX - baseTimeline : 0;
-                const shiftX = (anim.x !== undefined ? anim.x : 0) +
-                  (anim.timelineX !== undefined ? shiftCols * GRID_HORIZONTAL_SPACING : 0);
-                const shiftY = (anim.y !== undefined ? anim.y : 0) +
-                  (anim.eventY !== undefined ? anim.eventY * GRID_VERTICAL_SPACING : 0);
+                const shiftCols =
+                  anim.timelineX !== undefined
+                    ? anim.timelineX - baseTimeline
+                    : 0;
+                const shiftX =
+                  (anim.x !== undefined ? anim.x : 0) +
+                  (anim.timelineX !== undefined
+                    ? shiftCols * GRID_HORIZONTAL_SPACING
+                    : 0);
+                const shiftY =
+                  (anim.y !== undefined ? anim.y : 0) +
+                  (anim.eventY !== undefined
+                    ? anim.eventY * GRID_VERTICAL_SPACING
+                    : 0);
                 stateMap.set(id, {
                   x: current.x + shiftX,
                   y: current.y + shiftY,
@@ -371,8 +417,8 @@ function App() {
                 selector === "all-elements"
                   ? "#main > *"
                   : selector.startsWith("#") || selector.startsWith(".")
-                  ? selector
-                  : `#${selector}`;
+                    ? selector
+                    : `#${selector}`;
               const elements = document.querySelectorAll(query);
               elements.forEach((elNode) => {
                 const el = elNode as HTMLElement;
@@ -422,38 +468,43 @@ function App() {
    * Obtiene todos los IDs que se animarán o centrarán después de la animación de "all-elements"
    * en el paso actual, para evitar desmontarlos del DOM.
    */
-  const getUpcomingIdsAfterAllElements = useCallback((stepIdx: number): Set<string> => {
-    const ids = new Set<string>();
-    const animations = releases[stepIdx]?.animations || [];
-    const idx = animations.findIndex(
-      (a: any) =>
-        a &&
-        typeof a === "object" &&
-        !("parallel" in a) &&
-        a.id === "all-elements" &&
-        a.action === "hide"
-    );
-    if (idx === -1) return ids;
+  const getUpcomingIdsAfterAllElements = useCallback(
+    (stepIdx: number): Set<string> => {
+      const ids = new Set<string>();
+      const animations = releases[stepIdx]?.animations || [];
+      const idx = animations.findIndex(
+        (a: any) =>
+          a &&
+          typeof a === "object" &&
+          !("parallel" in a) &&
+          a.id === "all-elements" &&
+          a.action === "hide"
+      );
+      if (idx === -1) return ids;
 
-    for (let i = idx + 1; i < animations.length; i++) {
-      const block = animations[i];
-      if (!block) continue;
-      const anims = getAnimsFromBlock(block);
-      anims.forEach((anim) => {
-        if (anim) {
-          if (anim.id) {
-            const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-            selectors.forEach((sel: string) => ids.add(sel));
+      for (let i = idx + 1; i < animations.length; i++) {
+        const block = animations[i];
+        if (!block) continue;
+        const anims = getAnimsFromBlock(block);
+        anims.forEach((anim) => {
+          if (anim) {
+            if (anim.id) {
+              const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
+              selectors.forEach((sel: string) => ids.add(sel));
+            }
+            if (anim.center) {
+              const centers = Array.isArray(anim.center)
+                ? anim.center
+                : [anim.center];
+              centers.forEach((c: string) => ids.add(c));
+            }
           }
-          if (anim.center) {
-            const centers = Array.isArray(anim.center) ? anim.center : [anim.center];
-            centers.forEach((c: string) => ids.add(c));
-          }
-        }
-      });
-    }
-    return ids;
-  }, []);
+        });
+      }
+      return ids;
+    },
+    []
+  );
 
   /**
    * Anima un elemento individual usando clip-path con anime.js.
@@ -480,7 +531,7 @@ function App() {
 
       const clipPathValue = clipPathAnimation[clipPathDirection];
       const selectors = Array.isArray(anim.id) ? anim.id : [anim.id];
-      
+
       // Before starting the animation, set visibility to visible if revealing
       if (action !== "hide") {
         selectors.forEach((selector: string) => {
@@ -488,8 +539,8 @@ function App() {
             selector === "all-elements"
               ? "#main > *"
               : selector.startsWith("#") || selector.startsWith(".")
-              ? selector
-              : `#${selector}`;
+                ? selector
+                : `#${selector}`;
           document.querySelectorAll(query).forEach((elNode) => {
             const el = elNode as HTMLElement;
             el.style.visibility = "visible";
@@ -520,8 +571,8 @@ function App() {
                   selector === "all-elements"
                     ? "#main > *"
                     : selector.startsWith("#") || selector.startsWith(".")
-                    ? selector
-                    : `#${selector}`;
+                      ? selector
+                      : `#${selector}`;
                 document.querySelectorAll(query).forEach((elNode) => {
                   const el = elNode as HTMLElement;
                   el.style.visibility = "hidden";
@@ -529,10 +580,15 @@ function App() {
               });
 
               if (selectors.includes("all-elements")) {
-                const upcoming = getUpcomingIdsAfterAllElements(currentStepRef.current);
+                const upcoming = getUpcomingIdsAfterAllElements(
+                  currentStepRef.current
+                );
                 const toUnmount = new Set<string>();
                 releases[currentStepRef.current].eras.forEach((release) => {
-                  const id = "backgroundImage" in release ? release.backgroundImage : release.id;
+                  const id =
+                    "backgroundImage" in release
+                      ? release.backgroundImage
+                      : release.id;
                   if (!upcoming.has(id)) {
                     toUnmount.add(id);
                   }
@@ -1018,8 +1074,8 @@ function App() {
                     selector === "all-elements"
                       ? "#main > *"
                       : selector.startsWith("#") || selector.startsWith(".")
-                      ? selector
-                      : `#${selector}`;
+                        ? selector
+                        : `#${selector}`;
                   const elements = document.querySelectorAll(query);
                   elements.forEach((elNode) => {
                     const el = elNode as HTMLElement;
@@ -1055,7 +1111,9 @@ function App() {
             : `#${selector}`;
         const el = document.querySelector(query) as HTMLElement;
         if (el) {
-          const cleanId = selector.startsWith("#") ? selector.slice(1) : selector;
+          const cleanId = selector.startsWith("#")
+            ? selector.slice(1)
+            : selector;
           if (isDynamicConnection(cleanId)) return;
 
           el.style.transform = `translateX(${targetState.x}px) translateY(${targetState.y}px)`;
@@ -1293,7 +1351,10 @@ function App() {
         {(() => {
           const elementStates = getElementsStateAtStep(step);
           return releases[step].eras.map((release) => {
-            const elementId = "backgroundImage" in release ? release.backgroundImage : release.id;
+            const elementId =
+              "backgroundImage" in release
+                ? release.backgroundImage
+                : release.id;
             if (unmountedIds.has(elementId)) {
               return null;
             }
@@ -1309,15 +1370,18 @@ function App() {
                 />
               );
             }
-            
+
             const resolvedPosition = resolvePosition(release);
             const shiftState = elementStates.get(elementId) || { x: 0, y: 0 };
-            const baseTop = resolvedPosition.top !== undefined
-              ? typeof resolvedPosition.top === "number"
-                ? resolvedPosition.top
-                : parseFloat(resolvedPosition.top as string)
-              : 0;
-            const currentEvent = Math.round((baseTop + shiftState.y) / GRID_VERTICAL_SPACING);
+            const baseTop =
+              resolvedPosition.top !== undefined
+                ? typeof resolvedPosition.top === "number"
+                  ? resolvedPosition.top
+                  : parseFloat(resolvedPosition.top as string)
+                : 0;
+            const currentEvent = Math.round(
+              (baseTop + shiftState.y) / GRID_VERTICAL_SPACING
+            );
 
             if ("textOnly" in release && release.textOnly) {
               return (
@@ -1338,10 +1402,10 @@ function App() {
               );
             }
             return (
-              <Era 
-                key={release.backgroundImage} 
-                {...release} 
-                position={resolvedPosition} 
+              <Era
+                key={release.backgroundImage}
+                {...release}
+                position={resolvedPosition}
                 event={currentEvent}
               />
             );

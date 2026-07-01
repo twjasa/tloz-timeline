@@ -18,7 +18,7 @@ import { CONNECTION_OFFSET_X, CONNECTION_OFFSET_Y } from "../../constants/variab
  */
 interface TimelinePathProps {
   text: string;
-  id: string;
+  id?: string;
   show: boolean;
   position?: { left: number | string; top: number | string };
   orientation?: "horizontal" | "vertical";
@@ -43,6 +43,7 @@ export const TimelinePath = ({
   from,
   to,
 }: TimelinePathProps) => {
+  const connectionId = id || (from && to ? `${from}_${to}` : undefined);
   const containerRef = useRef<HTMLDivElement>(null);
   const [styleOverride, setStyleOverride] = useState<React.CSSProperties>({});
 
@@ -192,7 +193,7 @@ export const TimelinePath = ({
   return (
     <div
       ref={containerRef}
-      id={id}
+      id={connectionId}
       className={clsx(styles.container, styles[orientation])}
       style={containerStyle}
     >
