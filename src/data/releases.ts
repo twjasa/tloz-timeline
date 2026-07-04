@@ -271,10 +271,7 @@ export const releases: releasesI[] = [
           }
         ]
       },
-      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1, action: 'left' },
-      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2, action: 'up' },
-      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3, action: 'left' },
-      // { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4, action: 'down' },
+      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf, action: 'down' },
       { id: linkWarnsZeldaOfGanondorf, action: 'down' },
       { id: linkWarnsZeldaOfGanondorf_majorasMask, action: 'down' },
       { id: majorasMask, action: 'down' }
@@ -645,7 +642,7 @@ export const releases: releasesI[] = [
       { id: theWarOfTheBoundChest, action: 'down' },
       { id: 'theWarOfTheBoundChest_theMinishCap', action: 'down' },
       { id: theMinishCap, action: 'down' },
-      // { id: 'theMinishCap_vaatiIsSealed', action: 'down' },
+      { id: 'theMinishCap_vaatiIsSealed', action: 'down' },
       {
         parallel: false,
         animations: [
@@ -701,6 +698,7 @@ export const releases: releasesI[] = [
       { id: zeldaIITAoL, action: 'down' },
       //// conexion especial
       // { center: [theTriforceWar1, ocarinaOfTimeAdult] },
+      { id: "theMinishCap_theTriforceWar1", action: "down" },
       { id: theTriforceWar1, action: 'down' },
       { id: "theTriforceWar1_theFierceWar", action: "down" },
       { id: theFierceWar, action: "down" },
@@ -716,7 +714,7 @@ export const releases: releasesI[] = [
       { id: phantomHourglass, action: "down" },
       { id: "phantomHourglass_spiritTracks", action: "down" },
       { id: spiritTracks, action: "down" },
-      /// conexion especial
+      { id: "ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf", action: "up" },
       { id: linkWarnsZeldaOfGanondorf, action: "down" },
       { id: "linkWarnsZeldaOfGanondorf_majorasMask", action: "down" },
       { id: majorasMask, action: "down" },

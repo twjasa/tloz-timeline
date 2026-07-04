@@ -45,10 +45,7 @@ export const ID = {
   creation2: "creation2",
 
   // ─── 2000: Majora's Mask ────────────────────────────────────────────────────
-  ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1: "oot-adult-lwzog-1",
-  ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2: "oot-adult-lwzog-2",
-  ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3: "oot-adult-lwzog-3",
-  ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4: "oot-adult-lwzog-4",
+  ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf: "oot-adult-lwzog",
   linkWarnsZeldaOfGanondorf: "linkWarnsZeldaOfGanondorf",
   linkWarnsZeldaOfGanondorf_majorasMask: "lwzog-mm",
   majorasMask: "majorasMask",
@@ -205,6 +202,8 @@ declare global {
   const creation2: "creation2";
 
   // ─── 2000: Majora's Mask ────────────────────────────────────────────────────
+  /** Connection: Ocarina of Time (Adult) ➔ Link Warns Zelda of Ganondorf (Automatic Bent) */
+  const ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf: "oot-adult-lwzog";
   /** Connection: Ocarina of Time (Adult) ➔ Link Warns Zelda of Ganondorf (Path 1) */
   const ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1: "oot-adult-lwzog-1";
   /** Connection: Ocarina of Time (Adult) ➔ Link Warns Zelda of Ganondorf (Path 2) */

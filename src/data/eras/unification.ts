@@ -90,12 +90,12 @@ export const getUnification = (): Array<eraI | connectionI> => [
     timeline: 0,
     event: 5,
   },
-  // {
-  //   title: "??? (Centuries?)",
-  //   id: "theMinishCap_theLegendOfZeldaFourSwords",
-  //   from: theMinishCap,
-  //   to: theLegendOfZeldaFourSwords,
-  // },
+  {
+    title: "??? (Centuries?)",
+    id: "theMinishCap_vaatiIsSealed",
+    from: theMinishCap,
+    to: vaatiIsSealed,
+  },
   {
     title: "Vaati is Sealed",
     color: "silver",
@@ -302,7 +302,7 @@ export const getUnification = (): Array<eraI | connectionI> => [
   },
   {
     title: "??? (A long time)",
-    id: "theMinishCap_theTriforceWar",
+    id: "theMinishCap_theTriforceWar1",
     from: theMinishCap,
     to: theTriforceWar1,
   },
@@ -412,7 +412,12 @@ export const getUnification = (): Array<eraI | connectionI> => [
     timeline: 1,
     event: 16,
   },
-  /// conexion especial
+  {
+    title: "",
+    id: "ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf",
+    from: ocarinaOfTimeAdult,
+    to: linkWarnsZeldaOfGanondorf,
+  },
   {
     title: "Link Warns Zelda Of Ganondorf",
     color: "silver",

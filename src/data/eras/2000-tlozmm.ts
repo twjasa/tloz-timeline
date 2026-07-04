@@ -8,34 +8,9 @@ export const get2000 = (show = false): Array<eraI | connectionI> => [
   {
     title: "",
     show,
-    id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_1,
-    position: { left: 2302, top: 1861 },
-    length: 72,
-    orientation: "horizontal"
-  },
-  {
-    title: "",
-    show,
-    id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_2,
-    position: { left: 2302, top: 1200 },
-    length: 666,
-    orientation: "vertical"
-  },
-  {
-    title: "",
-    show,
-    id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_3,
-    position: { left: 1943, top: 1199 },
-    length: 384,
-    orientation: "horizontal"
-  },
-  {
-    title: "",
-    show,
-    id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf_4,
-    position: { left: 1755, top: 1200 },
-    length: 94,
-    orientation: "vertical"
+    id: ID.ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf,
+    from: ID.ocarinaOfTimeAdult,
+    to: ID.linkWarnsZeldaOfGanondorf,
   },
   {
     title: "Link Warns Zelda of Ganondorf",
