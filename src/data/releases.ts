@@ -271,7 +271,7 @@ export const releases: releasesI[] = [
           }
         ]
       },
-      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf, action: 'down' },
+      { id: ocarinaOfTimeAdult_linkWarnsZeldaOfGanondorf, action: 'up' },
       { id: linkWarnsZeldaOfGanondorf, action: 'down' },
       { id: linkWarnsZeldaOfGanondorf_majorasMask, action: 'down' },
       { id: majorasMask, action: 'down' }
@@ -503,8 +503,9 @@ export const releases: releasesI[] = [
         parallel: true, animations: [
           { id: creationOfTheMasterSword2, action: "hide" },
           { id: skywardSword, action: "down" },
+          { id: "skywardSword_hyruleKingdomIsEstablished2", action: "down" }
         ]
-      }
+      },
     ]
   }, // "The Legend of Zelda: Skyward Sword" 
   {
@@ -533,7 +534,7 @@ export const releases: releasesI[] = [
               creation1,
               creation1_creationOfTheMasterSword,
               hyruleKingdomIsEstablished2,
-              creationOfTheMasterSword2_hyruleKingdomIsEstablished2,
+              "skywardSword_hyruleKingdomIsEstablished1",
               skywardSword,
               theDemonInvasion_skywardSword,
               theDemonInvasion,

@@ -36,4 +36,11 @@ export const get2011 = (show = false): Array<eraI | connectionI> => [
     event: -3,
     timeline: 2
   },
+  {
+    title: "??? (A long time)",
+    show,
+    id: "skywardSword_hyruleKingdomIsEstablished2",
+    from: ID.skywardSword,
+    to: ID.hyruleKingdomIsEstablished2,
+  }
 ];
