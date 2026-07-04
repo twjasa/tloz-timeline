@@ -57,6 +57,7 @@ export interface releasesI {
   eras: Array<eraI | connectionI>;
   animations: Array<animationBlock>;
   centerWindow?: boolean | string[];
+  resetAllPos?: boolean;
 }
 
 /**
@@ -618,6 +619,7 @@ export const releases: releasesI[] = [
   {
     year: 2001,
     name: "Unification",
+    resetAllPos: true,
     eras: getUnification(),
     animations: [
       { id: "all-elements", action: "hide" },
@@ -625,7 +627,7 @@ export const releases: releasesI[] = [
       { id: "unificationText", action: "down" },
       { pause: 2 },
       { id: "unificationText", action: "hide" },
-      { center: [creation1, hyruleKingdomIsEstablished1] },
+      { center: [creation1, breathOfTheWild] },
       { id: creation1, action: "down" },
       { id: 'creation1_theDemonInvasion', action: "down" },
       { id: theDemonInvasion, action: "down" },

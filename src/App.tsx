@@ -206,6 +206,15 @@ function App() {
       // Aplicar desplazamientos secuencialmente hasta el paso objetivo
       for (let i = 0; i <= targetStepIdx; i++) {
         const r = releases[i];
+        if (r && r.resetAllPos) {
+          stateMap.forEach((val, key) => {
+            stateMap.set(key, {
+              x: 0,
+              y: 0,
+              height: val.height,
+            });
+          });
+        }
         if (r && r.eras) {
           r.eras.forEach((e) => {
             const id = ("backgroundImage" in e ? e.backgroundImage : e.id) || "";
@@ -297,6 +306,15 @@ function App() {
       const stateMap = getElementsStateAtStep(targetStepIdx - 1);
 
       const r = releases[targetStepIdx];
+      if (r && r.resetAllPos) {
+        stateMap.forEach((val, key) => {
+          stateMap.set(key, {
+            x: 0,
+            y: 0,
+            height: val.height,
+          });
+        });
+      }
       if (r && r.eras) {
         r.eras.forEach((e) => {
           const id = ("backgroundImage" in e ? e.backgroundImage : e.id) || "";
