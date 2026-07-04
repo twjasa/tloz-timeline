@@ -22,6 +22,9 @@ import {
   CENTER_EASING,
   GRID_VERTICAL_SPACING,
   GRID_HORIZONTAL_SPACING,
+  CLIP_PATH_DURATION,
+  CLIP_PATH_DELAY,
+  ANIMATION_SPEED,
 } from "./constants/variables.js";
 
 /**
@@ -205,7 +208,7 @@ function App() {
         const r = releases[i];
         if (r && r.eras) {
           r.eras.forEach((e) => {
-            const id = "backgroundImage" in e ? e.backgroundImage : e.id;
+            const id = ("backgroundImage" in e ? e.backgroundImage : e.id) || "";
             const baseDef = getElementBaseDef(id);
             if (baseDef) {
               const current = stateMap.get(id);
@@ -296,7 +299,7 @@ function App() {
       const r = releases[targetStepIdx];
       if (r && r.eras) {
         r.eras.forEach((e) => {
-          const id = "backgroundImage" in e ? e.backgroundImage : e.id;
+          const id = ("backgroundImage" in e ? e.backgroundImage : e.id) || "";
           const baseDef = getElementBaseDef(id);
           if (baseDef) {
             const current = stateMap.get(id);
@@ -560,8 +563,8 @@ function App() {
           targets,
           ...(clipPathValue ? { clipPath: clipPathValue } : {}),
           easing: "easeOutSine",
-          duration: 1000,
-          delay: 100,
+          duration: CLIP_PATH_DURATION,
+          delay: CLIP_PATH_DELAY,
           ...props,
           complete: () => {
             // After completing the animation, set visibility to hidden if hiding
@@ -586,9 +589,9 @@ function App() {
                 const toUnmount = new Set<string>();
                 releases[currentStepRef.current].eras.forEach((release) => {
                   const id =
-                    "backgroundImage" in release
+                    ("backgroundImage" in release
                       ? release.backgroundImage
-                      : release.id;
+                      : release.id) || "";
                   if (!upcoming.has(id)) {
                     toUnmount.add(id);
                   }
@@ -748,7 +751,7 @@ function App() {
         }
       } else if (anim && typeof anim === "object" && "pause" in anim) {
         // Ejecución de una pausa/delay (frena las siguientes animaciones)
-        const ms = anim.pause * 1000;
+        const ms = (anim.pause * 1000) / ANIMATION_SPEED;
         animationTimeoutRef.current = setTimeout(() => {
           animationTimeoutRef.current = null;
           next();
@@ -1352,9 +1355,9 @@ function App() {
           const elementStates = getElementsStateAtStep(step);
           return releases[step].eras.map((release) => {
             const elementId =
-              "backgroundImage" in release
+              ("backgroundImage" in release
                 ? release.backgroundImage
-                : release.id;
+                : release.id) || "";
             if (unmountedIds.has(elementId)) {
               return null;
             }

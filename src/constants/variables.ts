@@ -29,14 +29,18 @@ export const CENTER_PADDING = {
 };
 
 // ─── Animaciones ────────────────────────────────────────────────────────────
+const speedEnv = import.meta.env.VITE_ANIMATION_SPEED;
+/** Factor de velocidad para las animaciones. */
+export const ANIMATION_SPEED = speedEnv && !isNaN(parseFloat(speedEnv)) && parseFloat(speedEnv) > 0 ? parseFloat(speedEnv) : 1;
+
 /** Duración (ms) de la animación de zoom/centrado al cambiar de paso. */
-export const ZOOM_DURATION = 2000;
+export const ZOOM_DURATION = 2000 / ANIMATION_SPEED;
 
 /** Duración (ms) de las animaciones de clip-path al revelar eras/conexiones. */
-export const CLIP_PATH_DURATION = 1000;
+export const CLIP_PATH_DURATION = 1000 / ANIMATION_SPEED;
 
 /** Delay (ms) antes de iniciar cada animación de clip-path. */
-export const CLIP_PATH_DELAY = 100;
+export const CLIP_PATH_DELAY = 100 / ANIMATION_SPEED;
 
 /** Easing por defecto para las animaciones de centrado. */
 export const CENTER_EASING = "easeOutCubic" as const;
