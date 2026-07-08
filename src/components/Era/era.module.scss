@@ -16,16 +16,16 @@ $eraWidth: 530px;
 }
 
 .externalBorder1 {
-  border: $borderSize solid #ff000000;
+  // border: $borderSize solid #5eff0000;
   z-index: 0;
   width: $eraWidth;
   position: absolute;
   box-shadow: 3px 3px 9px 0px rgba(0, 0, 0, 0.75);
 }
 .externalBorder0 {
-  border: $borderSize solid #ff000000;
+  // border: $borderSize solid #ff000000;
   z-index: 0;
-  width: calc(100% - $borderSize * 4);
+  // width: calc(100% - $borderSize * 4);
 }
 
 .title {
@@ -45,12 +45,13 @@ $eraWidth: 530px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  border: $borderSize solid $zeldaColor;
+  border-style: solid;
+  // width: 100%;
+  // border: $borderSize solid $zeldaColor;
   background-position: 77% 63%;
   position: relative;
   height: $eraHeight;
-  z-index: -1;
+  // z-index: -1;
 }
 
 .innerContainer{

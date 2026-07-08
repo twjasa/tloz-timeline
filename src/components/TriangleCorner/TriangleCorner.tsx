@@ -26,7 +26,8 @@ interface TriangleCornerProps {
 export const TriangleCorner = ({ position, color }: TriangleCornerProps) => {
   const injectStyle = useMemo(() => {
     const borderSize = styles.boderSize;
-    const offset = parseInt(borderSize) * -3;
+    // const offset = parseInt(borderSize) * -3;
+    const offset = "-3px";
     if (position === 0) {
       return {
         left: offset,
@@ -66,16 +67,16 @@ export const TriangleCorner = ({ position, color }: TriangleCornerProps) => {
         className={clsx(styles.emptyTriangle, "noiseBackground")}
         style={injectStyle}
       />
-      <div
+      {/* <div
         className={clsx(styles.line0, "noiseBackground")}
         style={injectStyle}
-      />
-      <div className={clsx(styles.line1, styles[color])} style={injectStyle} />
-      <div
+      /> */}
+      {/* <div className={clsx(styles.line1, styles[color])} style={injectStyle} /> */}
+      {/* <div
         className={clsx(styles.line2, "noiseBackground")}
         style={injectStyle}
-      />
-      <div className={clsx(styles.line3, styles[color])} style={injectStyle} />
+      /> */}
+      {/* <div className={clsx(styles.line3, styles[color])} style={injectStyle} /> */}
     </div>
   );
 };

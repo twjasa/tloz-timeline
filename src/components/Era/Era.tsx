@@ -1,9 +1,9 @@
 // import React from "react";
-import { TriangleCorner } from '../TriangleCorner/TriangleCorner';
-import styles from './era.module.scss';
-import clsx from 'clsx';
+import { TriangleCorner } from "../TriangleCorner/TriangleCorner";
+import styles from "./era.module.scss";
+import clsx from "clsx";
 
-import { GRID_VERTICAL_SPACING } from '../../constants/variables';
+import { GRID_VERTICAL_SPACING } from "../../constants/variables";
 
 /**
  * Props del componente Era.
@@ -21,7 +21,7 @@ import { GRID_VERTICAL_SPACING } from '../../constants/variables';
  */
 interface EraProps {
   title: string;
-  color: 'golden' | 'silver' | 'zeldaColor';
+  color: "golden" | "silver" | "zeldaColor";
   backgroundImage: string;
   backgroundPosition?: { left: string | number; top: string | number };
   show: boolean;
@@ -45,19 +45,24 @@ export const Era = ({
   position,
   event,
 }: EraProps) => {
-  const showDebugInfo = import.meta.env.DEV || (window as any).DEBUG_MODE;
-  const topVal = typeof position?.top === "number"
-    ? position.top
-    : typeof position?.top === "string"
-    ? parseFloat(position.top)
-    : 0;
+  const showDebugInfo = (window as any).DEBUG_MODE;
+  const topVal =
+    typeof position?.top === "number"
+      ? position.top
+      : typeof position?.top === "string"
+        ? parseFloat(position.top)
+        : 0;
   const estimatedEvent = Math.round(topVal / GRID_VERTICAL_SPACING);
 
   return (
     <div
       id={backgroundImage}
       className={clsx(styles.externalBorder1, styles[color])}
-      style={{ opacity: show ? 1 : 0, visibility: show ? "visible" : "hidden", ...position }}
+      style={{
+        opacity: show ? 1 : 0,
+        visibility: show ? "visible" : "hidden",
+        ...position,
+      }}
     >
       {showDebugInfo && (
         <div
@@ -79,22 +84,22 @@ export const Era = ({
           {event !== undefined ? `E: ${event}` : `E (est): ${estimatedEvent}`}
         </div>
       )}
-      <div className={clsx(styles.externalBorder0)}>
-        <div className={clsx(styles.eraContainer, styles[color])}>
-          <TriangleCorner position={0} color={color} />
-          <TriangleCorner position={1} color={color} />
-          <TriangleCorner position={2} color={color} />
-          <TriangleCorner position={3} color={color} />
-          <div className={styles.innerContainer}>
-            <img
-              src={backgroundImage + '.png'}
-              className={styles.backgroundImgEra}
-              style={backgroundPosition ?? {}}
-            />
-            <h1 className={styles.title}>{title}</h1>
-          </div>
-        </div>
+      {/* <div className={clsx(styles.externalBorder0)}> */}
+      <div className={clsx(styles.eraContainer, styles[color])}>
+        <TriangleCorner position={0} color={color} />
+        <TriangleCorner position={1} color={color} />
+        <TriangleCorner position={2} color={color} />
+        <TriangleCorner position={3} color={color} />
+        {/* <div className={styles.innerContainer}> */}
+        <img
+          src={backgroundImage + ".png"}
+          className={styles.backgroundImgEra}
+          style={backgroundPosition ?? {}}
+        />
+        <h1 className={styles.title}>{title}</h1>
       </div>
     </div>
+    // </div>
+    // </div>
   );
 };
