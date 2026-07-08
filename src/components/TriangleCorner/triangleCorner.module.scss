@@ -1,7 +1,6 @@
 @import '/src/theme/colors.scss';
 
 $smallBoxCorner: 50px;
-$borderSize: 6px;
 $triangleSize: calc($smallBoxCorner - $borderSize - $borderSize);
 $initialPath: $triangleSize;
 $finalPathLine0: calc($triangleSize + $borderSize);
@@ -10,7 +9,7 @@ $finalPathLine2: calc($finalPathLine1 + $borderSize);
 $finalPathLine3: calc($finalPathLine2 + $borderSize);
 
 :export {
-  boderSize: $borderSize;
+  borderSize: $borderSize;
 }
 
 .triangleContainer {

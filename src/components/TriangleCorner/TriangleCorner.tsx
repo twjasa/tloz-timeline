@@ -25,9 +25,9 @@ interface TriangleCornerProps {
  */
 export const TriangleCorner = ({ position, color }: TriangleCornerProps) => {
   const injectStyle = useMemo(() => {
-    const borderSize = styles.boderSize;
+    const borderSize = styles.borderSize;
     // const offset = parseInt(borderSize) * -3;
-    const offset = "-3px";
+    const offset = `-${parseInt(borderSize) - 1}px`;
     if (position === 0) {
       return {
         left: offset,

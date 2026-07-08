@@ -1,7 +1,6 @@
 @import '/src/theme/colors.scss';
 @import '/src/index.scss';
 
-$borderSize: 6px;
 $eraHeight: 130px;
 $eraWidth: 530px;
 
@@ -51,6 +50,7 @@ $eraWidth: 530px;
   background-position: 77% 63%;
   position: relative;
   height: $eraHeight;
+  border-width: $borderSize;
   // z-index: -1;
 }
 
