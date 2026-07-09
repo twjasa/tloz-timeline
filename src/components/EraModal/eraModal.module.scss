@@ -21,7 +21,6 @@ $maxModalHeight: 85vh;
 }
 
 .externalBorder1 {
-  border: $borderSize solid #ff000000;
   z-index: 10001;
   width: 100%;
   max-width: $modalWidth;
@@ -60,7 +59,6 @@ $maxModalHeight: 85vh;
   height: 32px;
   display: flex;
   justify-content: center;
-  align-items: center;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.2s ease;
@@ -75,25 +73,25 @@ $maxModalHeight: 85vh;
 
 .scrollableContent {
   padding: 30px 25px 25px 25px;
-  overflow-y: auto;
+  // overflow-y: auto;
   max-height: calc($maxModalHeight - 30px);
   width: 100%;
   box-sizing: border-box;
   
-  // Custom scrollbar
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $zeldaColor;
-    border-radius: 3px;
-    &:hover {
-      background: $golden;
-    }
-  }
+  // // Custom scrollbar
+  // &::-webkit-scrollbar {
+  //   width: 6px;
+  // }
+  // &::-webkit-scrollbar-track {
+  //   background: rgba(255, 255, 255, 0.05);
+  // }
+  // &::-webkit-scrollbar-thumb {
+  //   background: $zeldaColor;
+  //   border-radius: 3px;
+  //   &:hover {
+  //     background: $golden;
+  //   }
+  // }
 }
 
 .title {

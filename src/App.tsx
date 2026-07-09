@@ -129,6 +129,17 @@ function App() {
   const [unmountedIds, setUnmountedIds] = useState<Set<string>>(new Set());
   const [selectedEra, setSelectedEra] = useState<any | null>(null);
 
+  // Disable scroll to zoom and panning (pause panzoom) when the modal is open
+  useEffect(() => {
+    if (panzoomRef.current) {
+      if (selectedEra !== null) {
+        panzoomRef.current.pause();
+      } else {
+        panzoomRef.current.resume();
+      }
+    }
+  }, [selectedEra]);
+
   /**
    * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
    */
