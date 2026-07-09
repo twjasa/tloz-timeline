@@ -4,7 +4,6 @@ import eventify from "ngraph.events";
 import kinetic from "./lib/kinetic.js";
 import createTextSelectionInterceptor from "./lib/makeTextSelectionInterceptor.js";
 import Transform from "./lib/transform.js";
-import { makeSvgController, isSVGElement } from "./lib/makeSvgController.js";
 import { makeDomController, isDomElement } from "./lib/makeDomController.js";
 
 var domTextSelectionInterceptor = createTextSelectionInterceptor();
@@ -20,9 +19,7 @@ export default function createPanZoom(domElement, options) {
   var panController = options.controller;
 
   if (!panController) {
-    if (isSVGElement(domElement)) {
-      panController = makeSvgController(domElement, options);
-    } else if (isDomElement(domElement)) {
+    if (isDomElement(domElement)) {
       panController = makeDomController(domElement, options);
     }
   }
