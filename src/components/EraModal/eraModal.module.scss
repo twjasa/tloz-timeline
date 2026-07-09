@@ -1,0 +1,229 @@
+@import '/src/theme/colors.scss';
+
+$modalWidth: 550px;
+$modalHeight: auto;
+$maxModalHeight: 85vh;
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.externalBorder1 {
+  border: $borderSize solid #ff000000;
+  z-index: 10001;
+  width: 100%;
+  max-width: $modalWidth;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  position: relative;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.externalBorder0 {
+  border: $borderSize solid #ff000000;
+  width: calc(100% - $borderSize * 4);
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: $borderSize solid $zeldaColor;
+  position: relative;
+  max-height: $maxModalHeight;
+  background: #111115;
+  box-sizing: border-box;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: $golden;
+    border-color: $golden;
+    background: rgba(252, 217, 57, 0.1);
+    transform: scale(1.1);
+  }
+}
+
+.scrollableContent {
+  padding: 30px 25px 25px 25px;
+  overflow-y: auto;
+  max-height: calc($maxModalHeight - 30px);
+  width: 100%;
+  box-sizing: border-box;
+  
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $zeldaColor;
+    border-radius: 3px;
+    &:hover {
+      background: $golden;
+    }
+  }
+}
+
+.title {
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 10px 0 20px 0;
+  font-size: 1.8rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  letter-spacing: 1px;
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border: 2px solid $zeldaColor;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.95;
+  transition: opacity 0.3s ease;
+  
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.metaRow {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border: 1px solid;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  
+  &.golden {
+    border-color: $golden;
+    background: rgba($golden, 0.1);
+    color: $golden;
+  }
+  &.silver {
+    border-color: $silver;
+    background: rgba($silver, 0.1);
+    color: $silver;
+  }
+  &.zeldaColor {
+    border-color: $zeldaColor;
+    background: rgba($zeldaColor, 0.1);
+    color: $zeldaColor;
+  }
+}
+
+.metaInfo {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: monospace;
+}
+
+.description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: justify;
+  margin: 0;
+}
+
+.golden {
+  border-color: $golden;
+  color: $golden;
+  .modalContainer {
+    border-color: $golden;
+  }
+  .imageWrapper {
+    border-color: $golden;
+  }
+}
+
+.silver {
+  border-color: $silver;
+  color: $silver;
+  .modalContainer {
+    border-color: $silver;
+  }
+  .imageWrapper {
+    border-color: $silver;
+  }
+}
+
+.zeldaColor {
+  border-color: $zeldaColor;
+  color: $zeldaColor;
+  .modalContainer {
+    border-color: $zeldaColor;
+  }
+  .imageWrapper {
+    border-color: $zeldaColor;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

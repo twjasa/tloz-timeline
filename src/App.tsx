@@ -2,8 +2,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.scss";
 import { Era } from "./components/Era/Era";
+import { EraModal } from "./components/EraModal/EraModal";
 import { TimelinePath } from "./components/TimelinePath/TimelinePath";
 import { clipPathAnimation, releases, centerX } from "./data/releases";
+import { eraDescriptions } from "./data/eraDescriptions";
 import type { connectionI } from "./data/releases";
 // import {
 //   debug_majoras_mask as releases,
@@ -125,6 +127,7 @@ function App() {
     `${releases[step].name} - year ${releases[step].year}`
   );
   const [unmountedIds, setUnmountedIds] = useState<Set<string>>(new Set());
+  const [selectedEra, setSelectedEra] = useState<any | null>(null);
 
   /**
    * Obtiene la altura natural de un elemento (limpiando temporalmente su altura inline).
@@ -1428,6 +1431,7 @@ function App() {
                 {...release}
                 position={resolvedPosition}
                 event={currentEvent}
+                onClick={() => setSelectedEra({ ...release, event: currentEvent })}
               />
             );
           });
@@ -1446,6 +1450,17 @@ function App() {
       <section className="releaseTitle">
         <span style={{ marginTop: 10 }}>{title}</span>
       </section>
+
+      <EraModal
+        isOpen={selectedEra !== null}
+        onClose={() => setSelectedEra(null)}
+        title={selectedEra?.title || ""}
+        color={selectedEra?.color || "zeldaColor"}
+        backgroundImage={selectedEra?.backgroundImage || ""}
+        description={selectedEra ? (eraDescriptions[selectedEra.backgroundImage] || "Sin descripción disponible.") : ""}
+        timeline={selectedEra?.timeline}
+        event={selectedEra?.event}
+      />
     </>
   );
 }

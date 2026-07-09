@@ -27,6 +27,7 @@ interface EraProps {
   show: boolean;
   position?: { left: number | string; top: number | string };
   event?: number;
+  onClick?: () => void;
 }
 
 /**
@@ -44,6 +45,7 @@ export const Era = ({
   show,
   position,
   event,
+  onClick,
 }: EraProps) => {
   const showDebugInfo = (window as any).DEBUG_MODE;
   const topVal =
@@ -57,12 +59,13 @@ export const Era = ({
   return (
     <div
       id={backgroundImage}
-      className={clsx(styles.externalBorder1, styles[color])}
+      className={clsx(styles.externalBorder1, styles[color], onClick && styles.clickable)}
       style={{
         opacity: show ? 1 : 0,
         visibility: show ? "visible" : "hidden",
         ...position,
       }}
+      onClick={onClick}
     >
       {showDebugInfo && (
         <div
